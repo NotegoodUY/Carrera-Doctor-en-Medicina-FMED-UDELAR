@@ -1,53 +1,46 @@
-function generarMalla() {
+function crearMalla() {
   const contenedor = document.getElementById("malla");
+  contenedor.innerHTML = "";
 
-  materias.forEach((anioObj, i) => {
-    const anioDiv = document.createElement("div");
-    anioDiv.className = "anio";
-    const anioTitulo = document.createElement("h2");
-    anioTitulo.textContent = anioObj.anio;
-    anioDiv.appendChild(anioTitulo);
+  materias.forEach(anio => {
+    const divAnio = document.createElement("div");
+    divAnio.className = "year";
 
-    anioObj.semestres.forEach((semestreObj, j) => {
-      const semestreDiv = document.createElement("div");
-      semestreDiv.className = "semestre";
-      const semestreTitulo = document.createElement("h3");
-      semestreTitulo.textContent = semestreObj.numero;
-      semestreDiv.appendChild(semestreTitulo);
+    const h2 = document.createElement("h2");
+    h2.textContent = anio.anio;
+    divAnio.appendChild(h2);
 
-      semestreObj.materias.forEach((materia) => {
-        const boton = document.createElement("button");
-        boton.textContent = materia.nombre;
-        boton.className = "materia";
+    anio.semestres.forEach(sem => {
+      const divSem = document.createElement("div");
+      divSem.className = "semestre";
 
-        if (localStorage.getItem(materia.id) === "aprobada") {
-          boton.classList.add("aprobada");
-        }
+      const h3 = document.createElement("h3");
+      h3.textContent = sem.numero;
+      divSem.appendChild(h3);
 
-        boton.addEventListener("click", () => {
-          boton.classList.toggle("aprobada");
-          if (boton.classList.contains("aprobada")) {
-            localStorage.setItem(materia.id, "aprobada");
-          } else {
-            localStorage.removeItem(materia.id);
-          }
+      sem.materias.forEach(materia => {
+        const divMat = document.createElement("div");
+        divMat.className = "materia";
+        divMat.textContent = materia.nombre;
+
+        divMat.addEventListener("click", () => {
+          divMat.classList.toggle("tachada");
         });
 
-        semestreDiv.appendChild(boton);
+        divSem.appendChild(divMat);
       });
 
-      anioDiv.appendChild(semestreDiv);
+      divAnio.appendChild(divSem);
     });
 
-    contenedor.appendChild(anioDiv);
+    contenedor.appendChild(divAnio);
   });
 }
 
-function borrarTodo() {
-  if (confirm("¿Estás seguro de que querés borrar tu avance?")) {
-    localStorage.clear();
-    location.reload();
-  }
-}
+document.getElementById("borrar").addEventListener("click", () => {
+  document.querySelectorAll(".materia").forEach(m => {
+    m.classList.remove("tachada");
+  });
+});
 
-window.onload = generarMalla;
+crearMalla();
