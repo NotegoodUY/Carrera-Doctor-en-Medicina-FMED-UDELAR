@@ -105,5 +105,21 @@ header p {
 
 .materia.tachada {
   text-decoration: line-through;
+  color: #aaa;
+  background-color: #f0f0f0;
+}
+
+.materia.bloqueada {
   opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Footer centrado */
+footer {
+  text-align: center;
+  padding: 15px 10px;
+  font-size: 0.9em;
+  color: #7a3e80;
+  background-color: transparent;
+  width: 100%;
 }
