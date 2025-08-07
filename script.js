@@ -1,87 +1,32 @@
-function guardarEstado() {
-  localStorage.setItem("estadoMaterias", JSON.stringify(estadoMaterias));
-}
+document.addEventListener('DOMContentLoaded', () => {
+  const grid = document.getElementById('grid');
+  const savedData = JSON.parse(localStorage.getItem('materiasAprobadas')) || [];
 
-function mostrarFraseRandom(nombreMateria) {
-  const frases = [
-    `💥 ¡Una menos! Tachaste ${nombreMateria}.`,
-    `📚 ${nombreMateria} ya no te alcanza. Estás a otro nivel.`,
-    `🎯 ${nombreMateria} fue y vino. Next 👉`,
-    `💪 Con ${nombreMateria} ya podés ponerlo en el CV.`,
-    `🚀 ¡Estás on fire! Chau ${nombreMateria}.`
-  ];
-  const elegida = frases[Math.floor(Math.random() * frases.length)];
-  alert(elegida);
-}
+  // Crear la grilla
+  materias.forEach(materia => {
+    const div = document.createElement('div');
+    div.classList.add('materia');
+    div.textContent = materia;
 
-function crearMalla() {
-  const contenedor = document.getElementById("malla");
-  contenedor.innerHTML = "";
+    if (savedData.includes(materia)) {
+      div.classList.add('aprobada');
+    }
 
-  materias.forEach(anio => {
-    const divAnio = document.createElement("div");
-    divAnio.className = "year";
+    div.addEventListener('click', () => {
+      div.classList.toggle('aprobada');
 
-    const h2 = document.createElement("h2");
-    h2.textContent = anio.anio;
-    divAnio.appendChild(h2);
-
-    anio.semestres.forEach(sem => {
-      const divSem = document.createElement("div");
-      divSem.className = "semestre";
-
-      const h3 = document.createElement("h3");
-      h3.textContent = sem.numero;
-      divSem.appendChild(h3);
-
-      sem.materias.forEach(materia => {
-        const divMat = document.createElement("div");
-        divMat.textContent = materia.nombre;
-        divMat.className = "materia";
-        divMat.dataset.id = materia.id;
-
-        if (estadoMaterias[materia.id]) {
-          divMat.classList.add("tachada");
-        }
-
-        const tienePrevias = materia.previas && materia.previas.length > 0;
-        const previasNoCumplidas = tienePrevias && materia.previas.some(p => !estadoMaterias[p]);
-
-        if (previasNoCumplidas) {
-          divMat.classList.add("bloqueada");
-        }
-
-        divMat.addEventListener("click", () => {
-          if (divMat.classList.contains("bloqueada")) return;
-
-          const estaAprobada = divMat.classList.toggle("tachada");
-          estadoMaterias[materia.id] = estaAprobada;
-          guardarEstado();
-          mostrarFraseRandom(materia.nombre);
-          crearMalla();
-        });
-
-        divSem.appendChild(divMat);
-      });
-
-      divAnio.appendChild(divSem);
+      let nuevasAprobadas = document.querySelectorAll('.materia.aprobada');
+      let nombres = Array.from(nuevasAprobadas).map(m => m.textContent);
+      localStorage.setItem('materiasAprobadas', JSON.stringify(nombres));
     });
 
-    contenedor.appendChild(divAnio);
-  });
-}
-
-// Botón borrar avance
-document.addEventListener("DOMContentLoaded", () => {
-  document.getElementById("borrarBtn").addEventListener("click", () => {
-    if (confirm("¿Estás segura de que querés borrar todo tu avance? 🧹")) {
-      localStorage.removeItem("estadoMaterias");
-      Object.keys(estadoMaterias).forEach(k => delete estadoMaterias[k]);
-      crearMalla();
-    }
+    grid.appendChild(div);
   });
 
-  crearMalla();
+  // Botón de borrar
+  const resetBtn = document.getElementById('reset');
+  resetBtn.addEventListener('click', () => {
+    localStorage.removeItem('materiasAprobadas');
+    document.querySelectorAll('.materia').forEach(m => m.classList.remove('aprobada'));
+  });
 });
-
-const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
