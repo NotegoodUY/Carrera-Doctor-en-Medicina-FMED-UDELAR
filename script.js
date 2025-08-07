@@ -1,32 +1,53 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const grid = document.getElementById('grid');
-  const savedData = JSON.parse(localStorage.getItem('materiasAprobadas')) || [];
+function generarMalla() {
+  const contenedor = document.getElementById("malla");
 
-  // Crear la grilla
-  materias.forEach(materia => {
-    const div = document.createElement('div');
-    div.classList.add('materia');
-    div.textContent = materia;
+  materias.forEach((anioObj, i) => {
+    const anioDiv = document.createElement("div");
+    anioDiv.className = "anio";
+    const anioTitulo = document.createElement("h2");
+    anioTitulo.textContent = anioObj.anio;
+    anioDiv.appendChild(anioTitulo);
 
-    if (savedData.includes(materia)) {
-      div.classList.add('aprobada');
-    }
+    anioObj.semestres.forEach((semestreObj, j) => {
+      const semestreDiv = document.createElement("div");
+      semestreDiv.className = "semestre";
+      const semestreTitulo = document.createElement("h3");
+      semestreTitulo.textContent = semestreObj.numero;
+      semestreDiv.appendChild(semestreTitulo);
 
-    div.addEventListener('click', () => {
-      div.classList.toggle('aprobada');
+      semestreObj.materias.forEach((materia) => {
+        const boton = document.createElement("button");
+        boton.textContent = materia.nombre;
+        boton.className = "materia";
 
-      let nuevasAprobadas = document.querySelectorAll('.materia.aprobada');
-      let nombres = Array.from(nuevasAprobadas).map(m => m.textContent);
-      localStorage.setItem('materiasAprobadas', JSON.stringify(nombres));
+        if (localStorage.getItem(materia.id) === "aprobada") {
+          boton.classList.add("aprobada");
+        }
+
+        boton.addEventListener("click", () => {
+          boton.classList.toggle("aprobada");
+          if (boton.classList.contains("aprobada")) {
+            localStorage.setItem(materia.id, "aprobada");
+          } else {
+            localStorage.removeItem(materia.id);
+          }
+        });
+
+        semestreDiv.appendChild(boton);
+      });
+
+      anioDiv.appendChild(semestreDiv);
     });
 
-    grid.appendChild(div);
+    contenedor.appendChild(anioDiv);
   });
+}
 
-  // Botón de borrar
-  const resetBtn = document.getElementById('reset');
-  resetBtn.addEventListener('click', () => {
-    localStorage.removeItem('materiasAprobadas');
-    document.querySelectorAll('.materia').forEach(m => m.classList.remove('aprobada'));
-  });
-});
+function borrarTodo() {
+  if (confirm("¿Estás seguro de que querés borrar tu avance?")) {
+    localStorage.clear();
+    location.reload();
+  }
+}
+
+window.onload = generarMalla;
