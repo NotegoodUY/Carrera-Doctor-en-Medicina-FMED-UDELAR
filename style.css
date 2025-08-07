@@ -1,57 +1,98 @@
 body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fdeaf4;
-  text-align: center;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fff8f4;
   margin: 0;
-  padding: 2rem;
-  color: #4b006e;
+  padding: 0;
+  color: #333;
+}
+
+header {
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #ffe6f0;
 }
 
 h1 {
+  font-size: 1.8rem;
   margin-bottom: 0.5rem;
 }
 
-.acciones {
-  margin: 1rem 0;
+p {
+  margin: 0.5rem 0;
 }
 
-button {
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: 0.3s ease;
+main#malla {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
 }
 
-button:hover {
-  transform: scale(1.05);
-}
-
-.materia {
+.year {
   background-color: #fff;
-  border: 2px solid #bb87cc;
-  color: #4b006e;
-  box-shadow: 0 0 6px #bb87cc33;
+  padding: 1rem;
+  border-radius: 12px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
 }
 
-.materia.aprobada {
-  background-color: #b3f0c6;
-  border-color: #41a55b;
-  color: #2d5938;
+.year h2 {
+  background-color: #ffe0ec;
+  padding: 0.5rem;
+  border-radius: 8px;
 }
 
-.anio {
-  margin-top: 2rem;
+.semestre h3 {
+  color: #555;
+  margin-bottom: 0.5rem;
 }
 
 .semestre {
-  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.materia {
+  background-color: #fff2f7;
+  padding: 0.6rem;
+  margin: 0.3rem 0;
+  border: 1px solid #ffc0cb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.materia:hover {
+  background-color: #ffe0ec;
+}
+
+.materia.tachada {
+  text-decoration: line-through;
+  opacity: 0.5;
 }
 
 footer {
-  margin-top: 3rem;
-  color: #a23aa3;
+  text-align: center;
+  padding: 1.5rem;
+  background-color: #ffe6f0;
+}
+
+footer a {
+  color: #d17c9e;
+  text-decoration: none;
   font-weight: bold;
+}
+
+#borrar {
+  background-color: #ffb3c6;
+  color: white;
+  border: none;
+  padding: 0.7rem 1.2rem;
+  margin-bottom: 1rem;
+  border-radius: 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#borrar:hover {
+  background-color: #ff8ba0;
 }
