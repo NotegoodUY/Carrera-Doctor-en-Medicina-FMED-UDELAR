@@ -43,7 +43,7 @@ header p {
 
 /* Bloque de cada año */
 .year {
-  min-width: 280px;
+  width: 100%;
   max-width: 300px;
   background-color: #ffffff;
   border: 3px solid #f7c9e5;
@@ -104,32 +104,4 @@ header p {
 }
 
 .materia.tachada {
-  text-decoration: line-through;
-  opacity: 0.5;
-}
-
-.materia.bloqueada {
-  background-color: #e0e0e0;
-  color: gray;
-  pointer-events: none;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  font-size: 0.9em;
-  padding: 20px;
-  background-color: transparent;
-  color: #7a3e80;
-}
-
-/* Responsivo */
-@media (max-width: 768px) {
-  .year {
-    min-width: 100%;
-    max-width: 100%;
-  }
-  .container {
-    padding: 10px;
-  }
-}
+  text-de
