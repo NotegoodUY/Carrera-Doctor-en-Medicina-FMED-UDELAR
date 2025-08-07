@@ -1,25 +1,26 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla de Medicina - UDELAR</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <h1>Malla de Medicina - UDELAR</h1>
-  <p>📚 Tocá una materia para marcarla como aprobada. Paso a paso, lo estás logrando 💖</p>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Malla de Medicina - UDELAR</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Materias FMED-UDELAR</h1>
+    <p> Tocá una materia para marcarla como aprobada. Paso a paso, lo estás logrando 💖</p>
+    
+    <div class="acciones">
+      <button onclick="borrarTodo()">🧹 Borrar</button>
+    </div>
 
-  <button id="reset" class="reset-btn">🧹 Borrar</button>
+    <div id="malla"></div>
 
-  <div id="grid" class="grid"></div>
+    <footer>
+      🌸 Hecho con amor y un poco de café por <strong>NotegoodUY</strong>
+    </footer>
 
-  <footer>
-    🌸 Hecho con amor y un poco de café por <strong>NotegoodUY</strong>
-  </footer>
-
-  <!-- ⚠️ IMPORTANTE: data.js DEBE CARGARSE ANTES que script.js -->
-  <script src="data.js"></script>
-  <script src="script.js"></script>
-</body>
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+  </body>
 </html>
