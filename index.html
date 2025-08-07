@@ -1,60 +1,247 @@
-const materias = [
-  {
-    anio: "1er Año",
-    semestres: [
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malla Curricular - Medicina UDELAR</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #FFEFF3;
+      color: #4b2e5d;
+    }
+    h1 {
+      text-align: center;
+      color: #a14da0;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
+    .acciones {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .acciones button {
+      background-color: #f5b7dc;
+      border: none;
+      color: #4b2e5d;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .acciones button:hover {
+      background-color: #f29ac3;
+    }
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .year {
+      min-width: 280px;
+      max-width: 300px;
+      background-color: #ffffff;
+      border: 3px solid #f7c9e5;
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      flex-shrink: 0;
+    }
+    .year h2 {
+      text-align: center;
+      color: #913c9b;
+      margin-bottom: 10px;
+    }
+    .semestre {
+      background-color: #fde4f1;
+      border: 2px dashed #e0b5f7;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+    }
+    .semestre:nth-child(even) {
+      background-color: #ebd8f7;
+    }
+    .semestre h3 {
+      font-size: 1em;
+      margin-bottom: 8px;
+      color: #7b3f8b;
+      text-align: center;
+    }
+    .materia {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 6px 0;
+      cursor: pointer;
+      font-weight: bold;
+      color: #6a1b77;
+      border: 1px solid #e7bdf0;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .materia:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #000;
+      color: #fff;
+      font-size: 0.8em;
+      padding: 5px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+      z-index: 10;
+      margin-top: 5px;
+    }
+    .materia.tachada {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
+    .materia.bloqueada {
+      background-color: #e0e0e0;
+      color: gray;
+      pointer-events: none;
+    }
+    @media (max-width: 768px) {
+      .year {
+        min-width: 100%;
+        max-width: 100%;
+      }
+      .container {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Curricular - Medicina UDELAR</h1>
+  <div class="acciones">
+    <button onclick="reiniciarMalla()">🧹 Borrar todo</button>
+  </div>
+  <div class="container" id="malla"></div>
+
+  <script>
+    const materias = [
       {
-        numero: "Primer Semestre",
-        materias: [
-          { id: "bio", nombre: "Biología" },
-          { id: "quim", nombre: "Química" },
-          { id: "hist", nombre: "Histología" }
+        anio: "1er Año",
+        semestres: [
+          {
+            numero: "Primer Semestre",
+            materias: [
+              { id: "bio", nombre: "Biología" },
+              { id: "quim", nombre: "Química" },
+              { id: "hist", nombre: "Histología" }
+            ]
+          },
+          {
+            numero: "Segundo Semestre",
+            materias: [
+              { id: "anat", nombre: "Anatomía", previas: ["bio", "hist"] },
+              { id: "fisi", nombre: "Fisiología", previas: ["bio", "quim"] }
+            ]
+          }
         ]
       },
       {
-        numero: "Segundo Semestre",
-        materias: [
-          { id: "anat", nombre: "Anatomía", previas: ["bio", "hist"] },
-          { id: "fisi", nombre: "Fisiología", previas: ["bio", "quim"] }
-        ]
-      }
-    ]
-  },
-  {
-    anio: "2do Año",
-    semestres: [
-      {
-        numero: "Primer Semestre",
-        materias: [
-          { id: "neuro", nombre: "Neurociencias", previas: ["anat", "fisi"] },
-          { id: "bioqui", nombre: "Bioquímica", previas: ["quim"] }
-        ]
-      },
-      {
-        numero: "Segundo Semestre",
-        materias: [
-          { id: "micro", nombre: "Microbiología", previas: ["bioqui"] },
-          { id: "farmaco", nombre: "Farmacología", previas: ["bioqui"] }
-        ]
-      }
-    ]
-  },
-  {
-    anio: "3er Año",
-    semestres: [
-      {
-        numero: "Primer Semestre",
-        materias: [
-          { id: "patologia", nombre: "Patología", previas: ["hist", "anat"] },
-          { id: "semiologia", nombre: "Semiología", previas: ["fisi", "anat"] }
+        anio: "2do Año",
+        semestres: [
+          {
+            numero: "Primer Semestre",
+            materias: [
+              { id: "neuro", nombre: "Neurociencias", previas: ["anat", "fisi"] },
+              { id: "bioqui", nombre: "Bioquímica", previas: ["quim"] }
+            ]
+          },
+          {
+            numero: "Segundo Semestre",
+            materias: [
+              { id: "micro", nombre: "Microbiología", previas: ["bioqui"] },
+              { id: "farmaco", nombre: "Farmacología", previas: ["bioqui"] }
+            ]
+          }
         ]
       },
       {
-        numero: "Segundo Semestre",
-        materias: [
-          { id: "clinica", nombre: "Clínica Médica", previas: ["patologia", "semiologia"] },
-          { id: "cirugia", nombre: "Cirugía", previas: ["patologia"] }
+        anio: "3er Año",
+        semestres: [
+          {
+            numero: "Primer Semestre",
+            materias: [
+              { id: "patologia", nombre: "Patología", previas: ["hist", "anat"] },
+              { id: "semiologia", nombre: "Semiología", previas: ["fisi", "anat"] }
+            ]
+          },
+          {
+            numero: "Segundo Semestre",
+            materias: [
+              { id: "clinica", nombre: "Clínica Médica", previas: ["patologia", "semiologia"] },
+              { id: "cirugia", nombre: "Cirugía", previas: ["patologia"] }
+            ]
+          }
         ]
       }
-    ]
-  }
-];
+    ];
+
+    const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
+
+    function crearMalla() {
+      const contenedor = document.getElementById("malla");
+      contenedor.innerHTML = "";
+      materias.forEach(anio => {
+        const divAnio = document.createElement("div");
+        divAnio.className = "year";
+        const h2 = document.createElement("h2");
+        h2.textContent = anio.anio;
+        divAnio.appendChild(h2);
+        anio.semestres.forEach(sem => {
+          const divSem = document.createElement("div");
+          divSem.className = "semestre";
+          const h3 = document.createElement("h3");
+          h3.textContent = sem.numero;
+          divSem.appendChild(h3);
+          sem.materias.forEach(materia => {
+            const divMat = document.createElement("div");
+            divMat.textContent = materia.nombre;
+            divMat.className = "materia";
+            divMat.dataset.id = materia.id;
+            divMat.setAttribute("data-tooltip", materia.previas ? `Requiere: ${materia.previas.join(", ")}` : "Haz clic para marcar como completada");
+            if (estadoMaterias[materia.id]) divMat.classList.add("tachada");
+            if (materia.previas && materia.previas.some(p => !estadoMaterias[p])) divMat.classList.add("bloqueada");
+            divMat.addEventListener("click", () => {
+              if (divMat.classList.contains("bloqueada")) return;
+              divMat.classList.toggle("tachada");
+              estadoMaterias[materia.id] = divMat.classList.contains("tachada");
+              localStorage.setItem("estadoMaterias", JSON.stringify(estadoMaterias));
+              crearMalla();
+            });
+            divSem.appendChild(divMat);
+          });
+          divAnio.appendChild(divSem);
+        });
+        contenedor.appendChild(divAnio);
+      });
+    }
+
+    function reiniciarMalla() {
+      if (confirm("¿Estás segura de que querés borrar todo tu progreso?")) {
+        localStorage.removeItem("estadoMaterias");
+        crearMalla();
+      }
+    }
+
+    crearMalla();
+  </script>
+</body>
+</html>
