@@ -40,16 +40,15 @@ function crearMalla() {
         divMat.className = "materia";
         divMat.dataset.id = materia.id;
 
-        // Verificar si tiene previas y si todas están cumplidas
+        if (estadoMaterias[materia.id]) {
+          divMat.classList.add("tachada");
+        }
+
         const tienePrevias = materia.previas && materia.previas.length > 0;
         const previasNoCumplidas = tienePrevias && materia.previas.some(p => !estadoMaterias[p]);
 
         if (previasNoCumplidas) {
           divMat.classList.add("bloqueada");
-        }
-
-        if (estadoMaterias[materia.id]) {
-          divMat.classList.add("tachada");
         }
 
         divMat.addEventListener("click", () => {
@@ -59,7 +58,7 @@ function crearMalla() {
           estadoMaterias[materia.id] = estaAprobada;
           guardarEstado();
           mostrarFraseRandom(materia.nombre);
-          crearMalla(); // Volver a renderizar con estados actualizados
+          crearMalla();
         });
 
         divSem.appendChild(divMat);
@@ -72,8 +71,17 @@ function crearMalla() {
   });
 }
 
-// Cargar estado guardado en el navegador
-const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
+// Botón borrar avance
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("borrarBtn").addEventListener("click", () => {
+    if (confirm("¿Estás segura de que querés borrar todo tu avance? 🧹")) {
+      localStorage.removeItem("estadoMaterias");
+      Object.keys(estadoMaterias).forEach(k => delete estadoMaterias[k]);
+      crearMalla();
+    }
+  });
 
-// Inicializar la grilla
-crearMalla();
+  crearMalla();
+});
+
+const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
