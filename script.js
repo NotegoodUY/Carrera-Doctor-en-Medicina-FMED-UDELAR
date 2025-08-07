@@ -1,3 +1,19 @@
+function guardarEstado() {
+  localStorage.setItem("estadoMaterias", JSON.stringify(estadoMaterias));
+}
+
+function mostrarFraseRandom(nombreMateria) {
+  const frases = [
+    `💥 ¡Una menos! Tachaste ${nombreMateria}.`,
+    `📚 ${nombreMateria} ya no te alcanza. Estás a otro nivel.`,
+    `🎯 ${nombreMateria} fue y vino. Next 👉`,
+    `💪 Con ${nombreMateria} ya podés ponerlo en el CV.`,
+    `🚀 ¡Estás on fire! Chau ${nombreMateria}.`
+  ];
+  const elegida = frases[Math.floor(Math.random() * frases.length)];
+  alert(elegida);
+}
+
 function crearMalla() {
   const contenedor = document.getElementById("malla");
   contenedor.innerHTML = "";
@@ -20,11 +36,31 @@ function crearMalla() {
 
       sem.materias.forEach(materia => {
         const divMat = document.createElement("div");
-        divMat.className = "materia";
         divMat.textContent = materia.nombre;
+        divMat.className = "materia";
+        divMat.dataset.id = materia.id;
+
+        // Marcar como tachada si ya fue aprobada
+        if (estadoMaterias[materia.id]) {
+          divMat.classList.add("tachada");
+        }
+
+        // Verificar previas
+        const tienePrevias = materia.previas && materia.previas.length > 0;
+        const previasNoCumplidas = tienePrevias && materia.previas.some(p => !estadoMaterias[p]);
+
+        if (previasNoCumplidas) {
+          divMat.classList.add("bloqueada");
+        }
 
         divMat.addEventListener("click", () => {
-          divMat.classList.toggle("tachada");
+          if (divMat.classList.contains("bloqueada")) return;
+
+          const estaAprobada = divMat.classList.toggle("tachada");
+          estadoMaterias[materia.id] = estaAprobada;
+          guardarEstado();
+          mostrarFraseRandom(materia.nombre);
+          crearMalla(); // Volver a renderizar
         });
 
         divSem.appendChild(divMat);
@@ -37,10 +73,8 @@ function crearMalla() {
   });
 }
 
-document.getElementById("borrar").addEventListener("click", () => {
-  document.querySelectorAll(".materia").forEach(m => {
-    m.classList.remove("tachada");
-  });
-});
+// Estado guardado en el navegador
+const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
 
+// Generar malla al cargar
 crearMalla();
