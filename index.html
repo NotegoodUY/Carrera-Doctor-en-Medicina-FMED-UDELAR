@@ -1,1 +1,76 @@
-<!-- Este archivo será completado en el siguiente paso -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla Interactiva Medicina – NoteGood</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <div class="logo">Plataforma NoteGood ✨</div>
+  <h1>Malla Interactiva de Medicina – UDELAR</h1>
+
+  <div class="semestre">
+    <h2>1er Año – CINTRO y CBCC</h2>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Introducción a la Biología Celular y Molecular</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Introducción a la Bioestadística</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Salud Pública e Introducción a la Bioética</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Aprendizaje en Territorio I (AT1)</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> CBCC</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> INTO (Introducción a la Medicina)</label></div>
+  </div>
+
+  <div class="semestre">
+    <h2>2do Año</h2>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Anatomía Clínica y Bioética</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Histología General y Biofísica del Músculo y la Locomoción</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Histología Neuro, Cardio y Respiratorio</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Neurociencias</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Cardiovascular y Respiratorio</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Salud Pública y Humanidades</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> BCM (curso y examen)</label></div>
+  </div>
+
+  <div class="semestre">
+    <h2>3er Año</h2>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> DREM</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Hematología e Inmunobiología</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Metodología Científica I</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> IBEST y una UC del grupo 5–13</label></div>
+  </div>
+
+  <div class="semestre">
+    <h2>4to Año</h2>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Medicina en el Primer Nivel de Atención</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Bases Científicas de la Patología</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Pediatría</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Ginecología y Neonatología</label></div>
+  </div>
+
+  <div class="semestre">
+    <h2>5to Año</h2>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Clínica Médica</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Patología Médica y Terapéutica</label></div>
+  </div>
+
+  <div class="semestre">
+    <h2>6to Año</h2>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Clínica Quirúrgica</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Patología Quirúrgica</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Medicina Familiar y Comunitaria</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Salud Mental en Comunidad</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Psicología Médica</label></div>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Metodología Científica II</label></div>
+  </div>
+
+  <div class="semestre">
+    <h2>Internado Rotatorio</h2>
+    <div class="materia"><label><input type="checkbox" onchange="marcar(this)"> Internado Rotatorio (todo aprobado)</label></div>
+  </div>
+
+  <div class="motivacion" id="mensaje-motivacional"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
