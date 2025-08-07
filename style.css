@@ -1,123 +1,274 @@
-/* Estilo general */
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #FFEFF3;
-  margin: 0;
-  padding: 0;
-  color: #4b2e5d;
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malla Curricular - Medicina UDELAR</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-header, footer {
-  text-align: center;
-  padding: 1.5em;
-  background-color: #f9dbe3;
-  border-bottom: 2px solid #e5b7cc;
-}
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #FFEFF3;
+      color: #4b2e5d;
+    }
 
-h1 {
-  margin: 0;
-  color: #800080;
-  font-size: 2em;
-}
+    h1 {
+      text-align: center;
+      color: #a14da0;
+      margin-top: 30px;
+      margin-bottom: 10px;
+    }
 
-p {
-  margin-top: 0.5em;
-  color: #5a2b67;
-}
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
 
-/* Contenedor principal */
-.container {
-  display: flex;
-  overflow-x: auto;
-  padding: 20px;
-  gap: 20px;
-}
+    .year {
+      min-width: 280px;
+      max-width: 300px;
+      background-color: #ffffff;
+      border: 3px solid #f7c9e5;
+      border-radius: 16px;
+      padding: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+      flex-shrink: 0;
+    }
 
-/* Cada año */
-.year {
-  min-width: 300px;
-  flex-shrink: 0;
-  background-color: #fff;
-  border-radius: 15px;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(128, 0, 128, 0.1);
-}
+    .year h2 {
+      text-align: center;
+      color: #913c9b;
+      margin-bottom: 10px;
+    }
 
-/* Cada semestre */
-.semestre {
-  background-color: #fce8f4;
-  border: 2px dashed #c89cf5;
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 15px;
-}
+    .semestre {
+      background-color: #fde4f1;
+      border: 2px dashed #e0b5f7;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+    }
 
-.semestre:nth-child(even) {
-  background-color: #efe1fc;
-}
+    .semestre:nth-child(even) {
+      background-color: #ebd8f7;
+    }
 
-/* Materias */
-.materia {
-  background-color: white;
-  border-radius: 10px;
-  padding: 10px;
-  margin: 6px 0;
-  cursor: pointer;
-  font-weight: bold;
-  color: #800080;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: all 0.2s ease-in-out;
-}
+    .semestre h3 {
+      font-size: 1em;
+      margin-bottom: 8px;
+      color: #7b3f8b;
+      text-align: center;
+    }
 
-.materia:hover {
-  background-color: #f4d9ec;
-  transform: scale(1.02);
-}
+    .materia {
+      background-color: #ffffff;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 6px 0;
+      cursor: pointer;
+      font-weight: bold;
+      color: #6a1b77;
+      border: 1px solid #e7bdf0;
+      transition: all 0.3s ease;
+    }
 
-.materia.tachada {
-  text-decoration: line-through;
-  opacity: 0.5;
-  background-color: #e0e0e0;
-  color: #666;
-}
+    .materia:hover {
+      background-color: #f5dcf7;
+    }
 
-.materia.bloqueada {
-  background-color: #f0f0f0;
-  color: #999;
-  pointer-events: none;
-  border: 1px dashed #ccc;
-}
+    .materia.tachada {
+      text-decoration: line-through;
+      opacity: 0.5;
+    }
 
-/* ✅ MEDIA QUERY PARA CELULARES */
-@media (max-width: 768px) {
-  h1 {
-    font-size: 1.4em;
-  }
+    .materia.bloqueada {
+      background-color: #e0e0e0;
+      color: gray;
+      pointer-events: none;
+    }
 
-  p {
-    font-size: 0.9em;
-    padding: 0 10px;
-  }
+    @media (max-width: 768px) {
+      .year {
+        min-width: 100%;
+        max-width: 100%;
+      }
 
-  .container {
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-  }
+      .container {
+        padding: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
 
-  .year {
-    min-width: unset;
-    width: 100%;
-    box-shadow: none;
-    border: 1px solid #e1cce5;
-  }
+  <h1>Malla Curricular - Medicina UDELAR</h1>
+  <div class="container" id="malla"></div>
 
-  .semestre {
-    padding: 10px;
-  }
+  <script>
+    const materias = [
+      {
+        anio: "Primero", semestres: [
+          {
+            numero: "1º semestre", materias: [
+              { id: "bio_intro", nombre: "Introducción a la Biología Celular y Molecular" },
+              { id: "bioest", nombre: "Introducción a la Bioestadística" },
+              { id: "bioetica", nombre: "Salud y Humanidades y Bioética" },
+              { id: "at1", nombre: "Aprendizaje en Territorio 1" }
+            ]
+          },
+          {
+            numero: "2º semestre", materias: [
+              { id: "bio", nombre: "Biología Celular y Molecular", previas: ["bio_intro"] },
+              { id: "at2", nombre: "Aprendizaje en Territorio 2", previas: ["at1"] }
+            ]
+          }
+        ]
+      },
+      {
+        anio: "Segundo", semestres: [
+          {
+            numero: "3º semestre", materias: [
+              { id: "anatomia", nombre: "Anatomía (CBCC2)", previas: ["bioetica"] },
+              { id: "histobiof", nombre: "Histología y Biofísica (CBCC2)", previas: ["bio"] }
+            ]
+          },
+          {
+            numero: "4º semestre", materias: [
+              { id: "histoneuro", nombre: "Histología (Neuro y Cardio)", previas: ["bio"] },
+              { id: "neuro", nombre: "Neurociencias", previas: ["bio"] },
+              { id: "cardioresp", nombre: "Cardiovascular y Respiratorio", previas: ["bio"] }
+            ]
+          }
+        ]
+      },
+      {
+        anio: "Tercero", semestres: [
+          {
+            numero: "5º semestre", materias: [
+              { id: "cbcc5", nombre: "Digestivo, Renal, Endocrino, Metabólico y Reproductor", previas: ["bio", "anatomia"] }
+            ]
+          },
+          {
+            numero: "6º semestre", materias: [
+              { id: "b6", nombre: "Hematología e Inmunobiología", previas: ["bio"] },
+              { id: "met1", nombre: "Metodología Científica 1", previas: ["bioest", "cbcc5"] }
+            ]
+          }
+        ]
+      },
+      {
+        anio: "Cuarto", semestres: [
+          {
+            numero: "7º semestre", materias: [
+              { id: "m4pna", nombre: "Medicina en el Primer Nivel de Atención", previas: ["cbcc5", "b6", "met1"] },
+              { id: "m4bcp", nombre: "Bases Científicas de la Patología", previas: ["cbcc5", "b6", "met1"] }
+            ]
+          },
+          {
+            numero: "8º semestre", materias: [
+              { id: "pediatria", nombre: "Pediatría", previas: ["cbcc5", "b6", "met1"] },
+              { id: "gineco", nombre: "Ginecología y Neonatología", previas: ["cbcc5", "b6", "met1"] }
+            ]
+          }
+        ]
+      },
+      {
+        anio: "Quinto", semestres: [
+          {
+            numero: "9º y 10º semestre", materias: [
+              { id: "clinica", nombre: "Clínica Médica", previas: ["m4pna", "m4bcp"] },
+              { id: "patomed", nombre: "Patología Médica y Terapéutica", previas: ["m4bcp"] }
+            ]
+          }
+        ]
+      },
+      {
+        anio: "Sexto", semestres: [
+          {
+            numero: "11º y 12º semestre", materias: [
+              { id: "clinicaq", nombre: "Clínica Quirúrgica", previas: ["m4pna", "m4bcp"] },
+              { id: "patoquir", nombre: "Patología Quirúrgica", previas: ["m4bcp"] },
+              { id: "mfc", nombre: "MFC – Salud Mental en Comunidad – Psicología Médica", previas: ["m4pna"] },
+              { id: "met2", nombre: "Metodología Científica 2", previas: ["m4pna", "m4bcp"] }
+            ]
+          }
+        ]
+      },
+      {
+        anio: "Séptimo", semestres: [
+          {
+            numero: "13º y 14º semestre", materias: [
+              { id: "internado", nombre: "Internado Obligatorio", previas: ["clinica", "patomed", "clinicaq", "patoquir", "mfc", "met2"] }
+            ]
+          }
+        ]
+      }
+    ];
 
-  .materia {
-    font-size: 0.95em;
-    padding: 8px;
-  }
-}
+    const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
+
+    function crearMalla() {
+      const contenedor = document.getElementById("malla");
+      contenedor.innerHTML = "";
+
+      materias.forEach(anio => {
+        const divAnio = document.createElement("div");
+        divAnio.className = "year";
+
+        const h2 = document.createElement("h2");
+        h2.textContent = anio.anio;
+        divAnio.appendChild(h2);
+
+        anio.semestres.forEach(sem => {
+          const divSem = document.createElement("div");
+          divSem.className = "semestre";
+
+          const h3 = document.createElement("h3");
+          h3.textContent = sem.numero;
+          divSem.appendChild(h3);
+
+          sem.materias.forEach(materia => {
+            const divMat = document.createElement("div");
+            divMat.textContent = materia.nombre;
+            divMat.className = "materia";
+            divMat.dataset.id = materia.id;
+
+            if (estadoMaterias[materia.id]) {
+              divMat.classList.add("tachada");
+            }
+
+            if (materia.previas && materia.previas.some(p => !estadoMaterias[p])) {
+              divMat.classList.add("bloqueada");
+            }
+
+            divMat.addEventListener("click", () => {
+              if (divMat.classList.contains("bloqueada")) return;
+              divMat.classList.toggle("tachada");
+              estadoMaterias[materia.id] = divMat.classList.contains("tachada");
+              localStorage.setItem("estadoMaterias", JSON.stringify(estadoMaterias));
+              crearMalla();
+            });
+
+            divSem.appendChild(divMat);
+          });
+
+          divAnio.appendChild(divSem);
+        });
+
+        contenedor.appendChild(divAnio);
+      });
+    }
+
+    crearMalla();
+  </script>
+</body>
+</html>
