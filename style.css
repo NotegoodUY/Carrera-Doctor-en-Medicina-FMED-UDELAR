@@ -1,84 +1,135 @@
-body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #FFEFF3;
+/* Reset básico y estilo global */
+* {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+html, body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fff3f8;
   color: #4b2e5d;
+  overflow-x: hidden;
 }
 
-header, footer {
+/* Encabezado */
+header {
   text-align: center;
-  padding: 1.5em;
-  background-color: #f9dbe3;
-  border-bottom: 2px solid #e5b7cc;
+  padding: 30px 20px 10px;
+  background-color: transparent;
 }
 
-h1 {
-  margin: 0;
-  color: #800080;
+header h1 {
   font-size: 2em;
+  color: #a14da0;
+  margin-bottom: 10px;
 }
 
-p {
-  margin-top: 0.5em;
-  color: #5a2b67;
+header p {
+  font-size: 1em;
+  color: #7a3e80;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
+/* Contenedor de la grilla */
 .container {
   display: flex;
-  overflow-x: auto;
+  flex-wrap: wrap;
+  justify-content: center;
   padding: 20px;
   gap: 20px;
 }
 
+/* Bloque de cada año */
 .year {
-  min-width: 300px;
+  min-width: 280px;
+  max-width: 300px;
+  background-color: #ffffff;
+  border: 3px solid #f7c9e5;
+  border-radius: 16px;
+  padding: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
   flex-shrink: 0;
-  background-color: #fff;
-  border-radius: 15px;
-  padding: 10px;
-  box-shadow: 0 0 10px rgba(128, 0, 128, 0.1);
 }
 
+/* Semestres */
 .semestre {
-  background-color: #fce8f4;
-  border: 2px dashed #c89cf5;
-  padding: 15px;
-  margin: 15px 0;
-  border-radius: 15px;
+  background-color: #fde4f1;
+  border: 2px dashed #e0b5f7;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 12px;
 }
 
 .semestre:nth-child(even) {
-  background-color: #efe1fc;
+  background-color: #ebd8f7;
 }
 
+.semestre h3 {
+  text-align: center;
+  font-size: 1em;
+  color: #7b3f8b;
+  margin-bottom: 8px;
+}
+
+/* Materias */
 .materia {
-  background-color: white;
+  background-color: #ffffff;
   border-radius: 10px;
   padding: 10px;
   margin: 6px 0;
   cursor: pointer;
   font-weight: bold;
-  color: #800080;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-  transition: all 0.2s ease-in-out;
+  color: #6a1b77;
+  border: 1px solid #e7bdf0;
+  position: relative;
+  transition: all 0.3s ease;
 }
 
-.materia:hover {
-  background-color: #f4d9ec;
-  transform: scale(1.02);
+.materia:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #000;
+  color: #fff;
+  font-size: 0.75em;
+  padding: 5px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  z-index: 10;
+  margin-top: 5px;
 }
 
 .materia.tachada {
   text-decoration: line-through;
   opacity: 0.5;
-  background-color: #e0e0e0;
-  color: #666;
 }
 
 .materia.bloqueada {
-  background-color: #f0f0f0;
-  color: #999;
+  background-color: #e0e0e0;
+  color: gray;
   pointer-events: none;
-  border: 1px dashed #ccc;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  font-size: 0.9em;
+  padding: 20px;
+  background-color: transparent;
+  color: #7a3e80;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .year {
+    min-width: 100%;
+    max-width: 100%;
+  }
+  .container {
+    padding: 10px;
+  }
 }
