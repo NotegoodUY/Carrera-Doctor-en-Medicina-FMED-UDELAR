@@ -1,3 +1,4 @@
+/* Estilo general */
 body {
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background-color: #FFEFF3;
@@ -24,6 +25,7 @@ p {
   color: #5a2b67;
 }
 
+/* Contenedor principal */
 .container {
   display: flex;
   overflow-x: auto;
@@ -31,6 +33,7 @@ p {
   gap: 20px;
 }
 
+/* Cada año */
 .year {
   min-width: 300px;
   flex-shrink: 0;
@@ -40,6 +43,7 @@ p {
   box-shadow: 0 0 10px rgba(128, 0, 128, 0.1);
 }
 
+/* Cada semestre */
 .semestre {
   background-color: #fce8f4;
   border: 2px dashed #c89cf5;
@@ -52,6 +56,7 @@ p {
   background-color: #efe1fc;
 }
 
+/* Materias */
 .materia {
   background-color: white;
   border-radius: 10px;
@@ -81,4 +86,38 @@ p {
   color: #999;
   pointer-events: none;
   border: 1px dashed #ccc;
+}
+
+/* ✅ MEDIA QUERY PARA CELULARES */
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.4em;
+  }
+
+  p {
+    font-size: 0.9em;
+    padding: 0 10px;
+  }
+
+  .container {
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .year {
+    min-width: unset;
+    width: 100%;
+    box-shadow: none;
+    border: 1px solid #e1cce5;
+  }
+
+  .semestre {
+    padding: 10px;
+  }
+
+  .materia {
+    font-size: 0.95em;
+    padding: 8px;
+  }
 }
