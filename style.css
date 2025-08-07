@@ -1,125 +1,108 @@
-/* Reset básico y estilo global */
-* {
-  box-sizing: border-box;
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #fdebf2;
+  color: #6b1c63;
   margin: 0;
   padding: 0;
-}
-
-html, body {
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #fff3f8;
-  color: #4b2e5d;
-  overflow-x: hidden;
-}
-
-/* Encabezado */
-header {
   text-align: center;
-  padding: 30px 20px 10px;
-  background-color: transparent;
 }
 
-header h1 {
+h1 {
   font-size: 2em;
-  color: #a14da0;
+  margin-top: 30px;
+  color: #9b3a84;
+}
+
+h2 {
+  margin-top: 30px;
+  font-size: 1.5em;
+}
+
+h3 {
+  font-weight: normal;
+  color: #8e4b7b;
   margin-bottom: 10px;
 }
 
-header p {
-  font-size: 1em;
-  color: #7a3e80;
-  max-width: 600px;
-  margin: 0 auto;
+#mensaje {
+  margin-top: 10px;
+  font-size: 1rem;
 }
 
-/* Contenedor de la grilla */
-.container {
+#malla {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  padding: 20px;
+  padding: 40px 10px 100px;
   gap: 20px;
 }
 
-/* Bloque de cada año */
 .year {
-  width: 100%;
-  max-width: 300px;
-  background-color: #ffffff;
-  border: 3px solid #f7c9e5;
-  border-radius: 16px;
-  padding: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  flex-shrink: 0;
-}
-
-/* Semestres */
-.semestre {
-  background-color: #fde4f1;
-  border: 2px dashed #e0b5f7;
-  padding: 12px;
-  margin-bottom: 15px;
+  border: 2px solid #f9cce3;
   border-radius: 12px;
+  padding: 15px;
+  background-color: #fff0f7;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  max-width: 280px;
+  width: 100%;
 }
 
-.semestre:nth-child(even) {
-  background-color: #ebd8f7;
-}
-
-.semestre h3 {
-  text-align: center;
-  font-size: 1em;
-  color: #7b3f8b;
-  margin-bottom: 8px;
-}
-
-/* Materias */
-.materia {
-  background-color: #ffffff;
-  border-radius: 10px;
+.semestre {
+  margin-bottom: 20px;
+  border: 2px dashed #e6b2d4;
   padding: 10px;
+  border-radius: 10px;
+  background-color: #fbe9f5;
+}
+
+.materia {
+  background-color: white;
+  border: 2px solid #d6a6c8;
+  padding: 8px 10px;
+  border-radius: 6px;
   margin: 6px 0;
   cursor: pointer;
-  font-weight: bold;
-  color: #6a1b77;
-  border: 1px solid #e7bdf0;
-  position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.3s;
 }
 
-.materia:hover::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #000;
-  color: #fff;
-  font-size: 0.75em;
-  padding: 5px 8px;
-  border-radius: 4px;
-  white-space: nowrap;
-  z-index: 10;
-  margin-top: 5px;
+.materia:hover {
+  background-color: #fff6fb;
 }
 
 .materia.tachada {
   text-decoration: line-through;
-  color: #aaa;
-  background-color: #f0f0f0;
+  opacity: 0.6;
 }
 
 .materia.bloqueada {
-  opacity: 0.5;
+  background-color: #f8d7da;
   cursor: not-allowed;
+  border-color: #d88a8a;
 }
 
-/* Footer centrado */
 footer {
-  text-align: center;
-  padding: 15px 10px;
-  font-size: 0.9em;
-  color: #7a3e80;
-  background-color: transparent;
+  position: relative;
+  bottom: 0;
   width: 100%;
+  padding: 20px 0;
+  font-size: 0.9rem;
+  color: #6b1c63;
+  background-color: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+footer span {
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+#borrarBtn {
+  margin-top: 20px;
+  background-color: #f7c0db;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-siz
