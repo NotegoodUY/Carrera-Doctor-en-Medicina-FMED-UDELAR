@@ -104,4 +104,6 @@ header p {
 }
 
 .materia.tachada {
-  text-de
+  text-decoration: line-through;
+  opacity: 0.5;
+}
