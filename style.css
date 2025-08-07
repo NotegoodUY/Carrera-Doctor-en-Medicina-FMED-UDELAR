@@ -1,98 +1,84 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background-color: #fff8f4;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #FFEFF3;
   margin: 0;
   padding: 0;
-  color: #333;
+  color: #4b2e5d;
 }
 
-header {
+header, footer {
   text-align: center;
-  padding: 1.5rem;
-  background-color: #ffe6f0;
+  padding: 1.5em;
+  background-color: #f9dbe3;
+  border-bottom: 2px solid #e5b7cc;
 }
 
 h1 {
-  font-size: 1.8rem;
-  margin-bottom: 0.5rem;
+  margin: 0;
+  color: #800080;
+  font-size: 2em;
 }
 
 p {
-  margin: 0.5rem 0;
+  margin-top: 0.5em;
+  color: #5a2b67;
 }
 
-main#malla {
-  padding: 1rem;
+.container {
   display: flex;
-  flex-direction: column;
-  gap: 2rem;
+  overflow-x: auto;
+  padding: 20px;
+  gap: 20px;
 }
 
 .year {
+  min-width: 300px;
+  flex-shrink: 0;
   background-color: #fff;
-  padding: 1rem;
-  border-radius: 12px;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.05);
-}
-
-.year h2 {
-  background-color: #ffe0ec;
-  padding: 0.5rem;
-  border-radius: 8px;
-}
-
-.semestre h3 {
-  color: #555;
-  margin-bottom: 0.5rem;
+  border-radius: 15px;
+  padding: 10px;
+  box-shadow: 0 0 10px rgba(128, 0, 128, 0.1);
 }
 
 .semestre {
-  margin-bottom: 1rem;
+  background-color: #fce8f4;
+  border: 2px dashed #c89cf5;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 15px;
+}
+
+.semestre:nth-child(even) {
+  background-color: #efe1fc;
 }
 
 .materia {
-  background-color: #fff2f7;
-  padding: 0.6rem;
-  margin: 0.3rem 0;
-  border: 1px solid #ffc0cb;
-  border-radius: 8px;
+  background-color: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 6px 0;
   cursor: pointer;
-  transition: all 0.2s ease;
+  font-weight: bold;
+  color: #800080;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  transition: all 0.2s ease-in-out;
 }
 
 .materia:hover {
-  background-color: #ffe0ec;
+  background-color: #f4d9ec;
+  transform: scale(1.02);
 }
 
 .materia.tachada {
   text-decoration: line-through;
   opacity: 0.5;
+  background-color: #e0e0e0;
+  color: #666;
 }
 
-footer {
-  text-align: center;
-  padding: 1.5rem;
-  background-color: #ffe6f0;
-}
-
-footer a {
-  color: #d17c9e;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-#borrar {
-  background-color: #ffb3c6;
-  color: white;
-  border: none;
-  padding: 0.7rem 1.2rem;
-  margin-bottom: 1rem;
-  border-radius: 20px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-#borrar:hover {
-  background-color: #ff8ba0;
+.materia.bloqueada {
+  background-color: #f0f0f0;
+  color: #999;
+  pointer-events: none;
+  border: 1px dashed #ccc;
 }
