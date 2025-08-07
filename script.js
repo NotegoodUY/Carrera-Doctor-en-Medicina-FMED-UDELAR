@@ -40,17 +40,16 @@ function crearMalla() {
         divMat.className = "materia";
         divMat.dataset.id = materia.id;
 
-        // Marcar como tachada si ya fue aprobada
-        if (estadoMaterias[materia.id]) {
-          divMat.classList.add("tachada");
-        }
-
-        // Verificar previas
+        // Verificar si tiene previas y si todas están cumplidas
         const tienePrevias = materia.previas && materia.previas.length > 0;
         const previasNoCumplidas = tienePrevias && materia.previas.some(p => !estadoMaterias[p]);
 
         if (previasNoCumplidas) {
           divMat.classList.add("bloqueada");
+        }
+
+        if (estadoMaterias[materia.id]) {
+          divMat.classList.add("tachada");
         }
 
         divMat.addEventListener("click", () => {
@@ -60,7 +59,7 @@ function crearMalla() {
           estadoMaterias[materia.id] = estaAprobada;
           guardarEstado();
           mostrarFraseRandom(materia.nombre);
-          crearMalla(); // Volver a renderizar
+          crearMalla(); // Volver a renderizar con estados actualizados
         });
 
         divSem.appendChild(divMat);
@@ -73,8 +72,8 @@ function crearMalla() {
   });
 }
 
-// Estado guardado en el navegador
+// Cargar estado guardado en el navegador
 const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
 
-// Generar malla al cargar
+// Inicializar la grilla
 crearMalla();
