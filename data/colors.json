@@ -1,0 +1,34 @@
+{
+  "IBCM": ["#e8c6c1", "Intro Bio Cel y Mol"],
+  "BIOEST": ["#f5d7d0", "Bioestadística"],
+  "BIOETICA": ["#dfc6d2", "Bioética y Humanidades"],
+  "AT": ["#ffe0c6", "Aprendizaje en Territorio"],
+
+  "CBCC2_ANAT": ["#c6daf0", "Anatomía"],
+  "CBCC2_HISTO_BIOF": ["#c6e0dd", "Histología y Biofísica"],
+
+  "CBCC3_HISTO": ["#d1d7ff", "Histología NCR"],
+  "CBCC3_NEURO": ["#c4c7f8", "Neurociencias"],
+  "CBCC3_CARDIO": ["#c8f0ed", "Cardio y Respi"],
+
+  "CBCC4": ["#f4e0d9", "Digestivo y otros sistemas"],
+  "B6": ["#e2f0c4", "Hematología e Inmuno"],
+
+  "MET1": ["#ffecb3", "Metodología Científica 1"],
+
+  "MEDICINA_PNA": ["#c6f2e3", "Medicina PNA"],
+  "BASES_PAT": ["#e1c6f7", "Bases de Patología"],
+
+  "PEDIATRIA": ["#fbc9d4", "Pediatría"],
+  "GINECO": ["#fbe8c9", "Gineco y Neonatología"],
+
+  "CLINICA": ["#d7c9f7", "Clínica Médica"],
+  "PATO_MED": ["#fad9e0", "Patología Médica"],
+
+  "CLINICAQ": ["#e0d7f5", "Clínica Quirúrgica"],
+  "PATO_QUIR": ["#ffc6b7", "Patología Quirúrgica"],
+  "MFC": ["#b7f7e8", "MFC y Salud Mental"],
+  "MET2": ["#fff2b7", "Metodología Científica 2"],
+
+  "INTERNADO": ["#bfbfbf", "Internado"]
+}
