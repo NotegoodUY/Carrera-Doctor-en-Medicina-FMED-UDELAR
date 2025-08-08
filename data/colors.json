@@ -1,34 +1,26 @@
 {
-  "IBCM": ["#e8c6c1", "Intro Bio Cel y Mol"],
-  "BIOEST": ["#f5d7d0", "Bioestadística"],
-  "BIOETICA": ["#dfc6d2", "Bioética y Humanidades"],
-  "AT": ["#ffe0c6", "Aprendizaje en Territorio"],
-
-  "CBCC2_ANAT": ["#c6daf0", "Anatomía"],
-  "CBCC2_HISTO_BIOF": ["#c6e0dd", "Histología y Biofísica"],
-
-  "CBCC3_HISTO": ["#d1d7ff", "Histología NCR"],
-  "CBCC3_NEURO": ["#c4c7f8", "Neurociencias"],
-  "CBCC3_CARDIO": ["#c8f0ed", "Cardio y Respi"],
-
-  "CBCC4": ["#f4e0d9", "Digestivo y otros sistemas"],
-  "B6": ["#e2f0c4", "Hematología e Inmuno"],
-
-  "MET1": ["#ffecb3", "Metodología Científica 1"],
-
-  "MEDICINA_PNA": ["#c6f2e3", "Medicina PNA"],
-  "BASES_PAT": ["#e1c6f7", "Bases de Patología"],
-
-  "PEDIATRIA": ["#fbc9d4", "Pediatría"],
-  "GINECO": ["#fbe8c9", "Gineco y Neonatología"],
-
-  "CLINICA": ["#d7c9f7", "Clínica Médica"],
-  "PATO_MED": ["#fad9e0", "Patología Médica"],
-
-  "CLINICAQ": ["#e0d7f5", "Clínica Quirúrgica"],
-  "PATO_QUIR": ["#ffc6b7", "Patología Quirúrgica"],
-  "MFC": ["#b7f7e8", "MFC y Salud Mental"],
-  "MET2": ["#fff2b7", "Metodología Científica 2"],
-
-  "INTERNADO": ["#bfbfbf", "Internado"]
+  "IBCM": ["#c298d9", "Introducción a la Biología Celular y Molecular"],
+  "BIOEST": ["#f2b5d4", "Introducción a la Bioestadística"],
+  "BIOETICA": ["#fce38a", "Salud y Humanidades y Bioética"],
+  "AT": ["#f38181", "Aprendizaje en Territorio"],
+  "BIO": ["#bce3d8", "Biología Celular y Molecular"],
+  "ANAT": ["#95e1d3", "Anatomía (CBCC2)"],
+  "HISTOBIOF": ["#fce38a", "Histología y Biofísica (CBCC2)"],
+  "HISTONEURO": ["#f7c59f", "Histología Neuro/Cardio"],
+  "NEURO": ["#9ad3bc", "Neurociencias"],
+  "CARDIORESP": ["#b5ead7", "Cardiovascular y Respiratorio"],
+  "CBCC5": ["#c7ceea", "Digestivo/Renal/Endocrino/etc"],
+  "B6": ["#ffdac1", "Hematología e Inmunobiología"],
+  "MET1": ["#f6abb6", "Metodología Científica 1"],
+  "PNA": ["#ffb5a7", "Medicina en el Primer Nivel de Atención"],
+  "BCP": ["#b28dff", "Bases Científicas de la Patología"],
+  "PEDIATRIA": ["#ffcccb", "Pediatría"],
+  "GINECO": ["#ffc6ff", "Ginecología y Neonatología"],
+  "CLINICA": ["#b5ead7", "Clínica Médica"],
+  "PATOMED": ["#f7d794", "Patología Médica y Terapéutica"],
+  "CLINICAQ": ["#c8d5b9", "Clínica Quirúrgica"],
+  "PATOQUIR": ["#f67280", "Patología Quirúrgica"],
+  "MFC": ["#a7c5eb", "MFC – Salud Mental / Psicología Médica"],
+  "MET2": ["#ff9a76", "Metodología Científica 2"],
+  "INTERNADO": ["#ffb677", "Internado Obligatorio"]
 }
