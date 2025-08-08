@@ -6,13 +6,5 @@
   "Prioridad": {
     "welcomeTitle": "¡Calculá tu prioridad académica!",
     "welcomeDesc": "Seleccioná las materias por semestre e ingresá tus notas para calcular tu prioridad. Las materias aprobadas se tachan automáticamente. También podés crear materias que no estén en la malla desde la tabla de abajo."
-  },
-  "Generadora": {
-    "welcomeTitle": "¡Armá tu malla a medida!",
-    "welcomeDesc": "Personalizá la malla como quieras: agregá o quitá materias y organizalas por semestre. Usá las flechas para navegar entre semestres."
-  },
-  "Personal": {
-    "welcomeTitle": "¡Tu Malla Personal de Medicina – UDELAR!",
-    "welcomeDesc": "Marcá las materias que ya cursaste y desbloqueá las que tienen correlativas. Tocá en cualquier parte de la pantalla para empezar."
   }
 }
