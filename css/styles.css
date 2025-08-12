@@ -198,7 +198,7 @@ body {
   pointer-events: none;
 }
 
-/* Preferimos manejar el tiempo por JS; acá solo estilos/animación sutil */
+/* Controlamos tiempos con JS; acá estilo y transiciones */
 .toast {
   pointer-events: auto;
   background: #111827;
@@ -217,13 +217,8 @@ body {
   transition: opacity .25s ease, transform .12s ease;
   will-change: opacity, transform;
 }
-.toast.show {
-  transform: translateY(-2px);
-}
-.toast.hide {
-  opacity: 0;
-  transform: translateY(4px);
-}
+.toast.show { transform: translateY(-2px); }
+.toast.hide { opacity: 0; transform: translateY(4px); }
 
 .toast .tag {
   background: #10b981;
@@ -235,18 +230,9 @@ body {
 }
 
 /* Pausa visual al hover */
-.toast:hover {
-  box-shadow: 0 12px 30px rgba(0,0,0,.26);
-}
+.toast:hover { box-shadow: 0 12px 30px rgba(0,0,0,.26); }
 
 /* Respeta usuarios con reducción de movimiento */
 @media (prefers-reduced-motion: reduce) {
-  .toast, .toast.show, .toast.hide {
-    transition: none;
-    transform: none;
-  }
+  .toast, .toast.show, .toast.hide { transition: none; transform: none; }
 }
-
-@keyframes pop { from { transform: scale(.98); opacity: 0 } to { transform: scale(1); opacity: 1 } }
-@keyframes fadeOut { 0% {opacity: 1} 85% {opacity:1} 100% {opacity: 0} }
-
