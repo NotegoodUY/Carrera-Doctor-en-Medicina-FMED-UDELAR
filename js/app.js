@@ -1,4 +1,4 @@
-console.log('Notegood Malla v9 cargado');
+console.log('Notegood Malla v11 cargado');
 
 /* ===== Frases Notegood ===== */
 const FRASES = [
@@ -25,7 +25,7 @@ function progressCopy(pct){
   return "Arranquemos tranqui, paso a paso 👟";
 }
 
-/* ===== Etiquetas de año (evita “1ª”) ===== */
+/* ===== Etiquetas de año ===== */
 function yearLabel(idx){
   const map = ["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"];
   return map[idx] || `Año ${idx+1}`;
@@ -47,7 +47,7 @@ const PLAN = [
   ]},
   { semestres: [
     { numero: "3º semestre", materias: [
-      { id:"MANAT", nombre:"Anatomía (CBCC2)" }, /* sin previa explícita en PDF */
+      { id:"MANAT", nombre:"Anatomía (CBCC2)" },
       { id:"MHBIO", nombre:"Histología y Biofísica (CBCC2)", previas:["MBCM"] }
     ]},
     { numero: "4º semestre", materias: [
@@ -98,6 +98,7 @@ const PLAN = [
 
 /* ===== Estado local ===== */
 const KEY='malla-medicina-notegood';
+const THEME_KEY='ng-theme';
 const estado = loadEstado();
 function loadEstado(){ try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return{}} }
 function saveEstado(){ localStorage.setItem(KEY, JSON.stringify(estado)); }
@@ -133,6 +134,24 @@ function faltantesTexto(req){
   if (faltAll.length) parts.push("Te falta aprobar:\n• "+faltAll.map(name).join("\n• "));
   if (grupos.length)  parts.push("Y al menos 1 de:\n• "+grupos[0].map(name).join("\n• "));
   return parts.join("\n\n");
+}
+
+/* ===== Tema (oscuro/claro) ===== */
+function applyTheme(theme){
+  document.body.classList.toggle('dark', theme === 'dark');
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+}
+function currentTheme(){
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved) return saved;
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return prefersDark ? 'dark' : 'light';
+}
+function toggleTheme(){
+  const next = (document.body.classList.contains('dark') ? 'light' : 'dark');
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
 }
 
 /* ===== Toasts ===== */
@@ -176,41 +195,3 @@ function initMalla(plan){
 
         const req=normalizarReq(m);
         const done=isAprobada(m.id);
-        if(done){ div.classList.add('tachada'); aprobadas++; }
-
-        const bloqueada=!requisitosCumplidos(req);
-        if(bloqueada){
-          div.classList.add('bloqueada');
-          const tip=faltantesTexto(req);
-          if(tip) div.setAttribute('data-tip', tip);
-        }
-
-        div.addEventListener('click', ()=>{
-          if(div.classList.contains('bloqueada')) return;
-          const was=isAprobada(m.id);
-          estado[m.id]=!was; saveEstado();
-          if(!was && estado[m.id]){
-            const frase=FRASES[Math.floor(Math.random()*FRASES.length)].replace('{m}', m.nombre);
-            showToast(frase);
-          }
-          initMalla(plan); // re-render
-        });
-
-        box.appendChild(div);
-      });
-
-      col.appendChild(box);
-    });
-
-    cont.appendChild(col);
-  });
-
-  const pct= total? Math.round((aprobadas/total)*100) : 0;
-  const copy=progressCopy(pct);
-  const p=document.getElementById('progressText');
-  if(p){ p.textContent = `${aprobadas} / ${total} materias aprobadas · ${pct}% — ${copy}`; }
-  console.log('Progreso', {aprobadas,total,pct,copy});
-}
-
-/* ===== Start ===== */
-document.addEventListener('DOMContentLoaded', ()=> initMalla(PLAN));
