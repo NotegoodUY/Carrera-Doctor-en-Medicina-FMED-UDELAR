@@ -4,19 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva Medicina – NoteGood</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-  <header>
+  <header class="ng-header" role="banner" aria-label="Encabezado NoteGood">
     <div class="logo">NoteGood ✨</div>
-    <h1>Malla Interactiva – Medicina UDELAR</h1>
+    <h1 class="title">Malla Interactiva – Medicina UDELAR</h1>
+    <p class="subtitle">Tu mapa claro para avanzar con calma y constancia.</p>
+
+    <div class="legend" aria-label="Leyenda de estados">
+      <span class="legend-item"><span class="dot dot-ok" aria-hidden="true">✓</span> Aprobada</span>
+      <span class="legend-item"><span class="dot dot-lock" aria-hidden="true">🔒</span> Bloqueada por previas</span>
+      <span class="legend-item"><span class="dot dot-pend" aria-hidden="true"></span> Pendiente</span>
+    </div>
   </header>
 
-  <main id="malla" class="grid-container"></main>
+  <main id="malla" class="grid-container" role="main" aria-live="polite"></main>
 
-  <footer>
-    <p>Hecho con ❤️ y mucho café por NoteGood</p>
+  <footer class="ng-footer" role="contentinfo">
+    <p id="progressText">0 materias aprobadas · ¡vamos paso a paso!</p>
+    <p class="made">Hecho con 💜 y muuuucho café por NoteGood — organización simple, resultados reales.</p>
   </footer>
 
   <script src="js/app.js"></script>
