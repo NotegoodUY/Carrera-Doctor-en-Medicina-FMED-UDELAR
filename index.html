@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Notegood.uy — Malla Medicina UDELAR</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css?v=21">
+  <style>
+    /* Estilos puntuales para la intro (apoyados en la paleta de styles.css) */
+    .intro-hero{
+      padding: 2.2rem 1rem 1.4rem;
+      background: linear-gradient(90deg, var(--brand), #9a7bff);
+      color:#fff; border-bottom:1px solid rgba(255,255,255,.2);
+      text-align:center;
+    }
+    .intro-hero .logo{
+      display:inline-flex; align-items:center; justify-content:center;
+      height:42px; min-width:170px; padding:0 16px; font-weight:700; letter-spacing:.2px;
+      border-radius:999px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25);
+    }
+    .intro-hero h1{ margin: .9rem 0 .35rem; font-weight:800 }
+    .intro-hero p{ margin:.1rem 0 1rem; font-weight:600; opacity:.96 }
+
+    .intro-wrap{ max-width:1000px; margin:0 auto; padding: 1rem; }
+    .intro-grid{
+      display:grid; grid-template-columns: repeat(12,1fr); gap:1rem; align-items:stretch;
+    }
+    .intro-card{
+      background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow);
+      padding:1rem;
+    }
+    .intro-steps{ grid-column: span 7; }
+    .intro-benefits{ grid-column: span 5; }
+
+    .steps{ display:grid; gap:.6rem; margin:.3rem 0 0 }
+    .step{ background:var(--chip); border:1px solid var(--chip-b); border-radius:12px; padding:.7rem .8rem; font-weight:600 }
+    .step i{ margin-right:.45rem }
+
+    .benefit{ display:flex; align-items:flex-start; gap:.6rem; margin:.4rem 0 }
+    .benefit .icon{
+      width:34px; height:34px; border-radius:10px; display:grid; place-items:center;
+      background:#fff; border:1px solid var(--line);
+    }
+
+    .intro-cta{
+      display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; justify-content:center; margin:1rem 0 .2rem;
+    }
+    .btn-big{
+      padding:.75rem 1rem; border-radius:12px; font-weight:800; border:1px solid transparent; cursor:pointer;
+      background:#6c5ce7; color:#fff;
+    }
+    .btn-big:hover{ filter:brightness(.96) }
+    .btn-ghost{
+      padding:.72rem 1rem; border-radius:12px; font-weight:800; cursor:pointer; border:1px solid var(--line); background:transparent;
+    }
+
+    .intro-opt{ text-align:center; color:var(--muted); margin:.4rem 0 1.2rem }
+    .intro-opt input{ transform: translateY(1px); }
+
+    .ng-footer{ margin-top:.6rem }
+
+    @media (max-width: 900px){
+      .intro-steps{ grid-column: span 12 }
+      .intro-benefits{ grid-column: span 12 }
+    }
+  </style>
+</head>
+<body>
+  <header class="intro-hero">
+    <div class="logo">Notegood.uy ✨</div>
+    <h1>Tu malla, clara y motivadora</h1>
+    <p>Marcá materias aprobadas, guardá notas/calificaciones y seguí tu avance con calma.</p>
+    <div class="intro-cta">
+      <button id="enterBtn" class="btn-big">Entrar a mi malla</button>
+      <a class="btn-ghost" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener">Instagram</a>
+    </div>
+    <div class="intro-opt">
+      <label><input type="checkbox" id="skipIntroChk"> No volver a mostrar esta pantalla</label>
+    </div>
+  </header>
+
+  <main class="intro-wrap">
+    <div class="intro-grid">
+      <section class="intro-card intro-steps">
+        <h2>¿Cómo se usa?</h2>
+        <div class="steps">
+          <div class="step"><i>✅</i> Tocá una materia para marcarla aprobada (y se desbloquean correlativas).</div>
+          <div class="step"><i>📝</i> Abrí “Notas” para guardar apuntes o **calificación (0–12)** por materia.</div>
+          <div class="step"><i>💾</i> Exportá tu avance en un archivo `.json`. Importalo cuando cambies de dispositivo.</div>
+          <div class="step"><i>🌓</i> Usá modo claro/oscuro según tu preferencia.</div>
+          <div class="step"><i>🎉</i> Al avanzar vas a ver **frases Notegood** y confetti — motivación que suma.</div>
+        </div>
+      </section>
+
+      <aside class="intro-card intro-benefits">
+        <h2>¿Por qué Notegood?</h2>
+        <div class="benefit">
+          <div class="icon">📚</div>
+          <div><strong>Organización real</strong><br/>Basada en el plan 2008 y correlativas reales.</div>
+        </div>
+        <div class="benefit">
+          <div class="icon">⚡</div>
+          <div><strong>Eficiencia</strong><br/>Todo a mano: progreso, notas y backups.</div>
+        </div>
+        <div class="benefit">
+          <div class="icon">💜</div>
+          <div><strong>Acompañamiento</strong><br/>Tono cercano y motivador. Sin humo.</div>
+        </div>
+      </aside>
+    </div>
+  </main>
+
+  <footer class="ng-footer">
+    <p class="made">Hecho con 💜 por Notegood.uy — organización simple, resultados reales.</p>
+  </footer>
+
+  <!-- FAB Instagram -->
+  <a class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy">
+    <span>📷</span>
+  </a>
+
+  <script>
+    (function(){
+      const KEY = 'ng-skip-intro';
+      const goMalla = () => { window.location.href = 'malla.html'; };
+
+      // Si está marcada la preferencia, saltar intro
+      try {
+        const skip = localStorage.getItem(KEY);
+        if (skip === '1') goMalla();
+      } catch(e){}
+
+      const enterBtn = document.getElementById('enterBtn');
+      const skipChk  = document.getElementById('skipIntroChk');
+
+      enterBtn?.addEventListener('click', ()=>{
+        try { if (skipChk?.checked) localStorage.setItem(KEY, '1'); } catch(e){}
+        goMalla();
+      });
+    })();
+  </script>
+</body>
+</html>
