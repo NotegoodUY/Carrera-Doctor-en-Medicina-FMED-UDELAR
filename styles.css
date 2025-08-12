@@ -1,6 +1,13 @@
-:root{
-  --bg:#0b0d10; --card:#12161b; --muted:#9aa4b2; --text:#e6edf3; --brand:#5bbcff; --chip:#1b222c; --chip-b:#2a3340; --line:#1f2630; --accent:#8de16f;
-}
+:root {
+  --bg: #ffffff; /* Fondo claro */
+  --card: #f9f9fb; /* Tarjetas ligeramente grises */
+  --muted: #6b7280; /* Texto secundario */
+  --text: #1f2937; /* Texto principal oscuro */
+  --brand: #ff6b6b; /* Color primario Notegood (rojo salmón) */
+  --chip: #ffecec; /* Fondo chips suaves */
+  --chip-b: #ffb3b3; /* Borde chips */
+  --line: #e5e7eb; /* Bordes claros */
+  --accent: #4ade80; /* Verde de acento */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0a0c10,#0f1318 60%,#0a0c10);color:var(--text)}
