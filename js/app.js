@@ -1,7 +1,11 @@
 // Carga de materias (estructura: años → semestres → materias)
 fetch('data/curriculum.json')
   .then(res => res.json())
-  .then(data => initMalla(data));
+  .then(data => initMalla(data))
+  .catch(err => {
+    console.error('Error cargando curriculum.json', err);
+    alert('No se pudo cargar la malla. Revisá data/curriculum.json');
+  });
 
 const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
 
@@ -30,7 +34,7 @@ function initMalla(materias) {
   materias.forEach((anio, idx) => {
     const divAnio = document.createElement("div");
     divAnio.className = "year";
-    divAnio.classList.add(`y${Math.min(idx+1, 7)}`);
+    divAnio.classList.add(`y${Math.min(idx + 1, 7)}`);
 
     const h2 = document.createElement("h2");
     h2.textContent = anio.anio;
@@ -54,17 +58,20 @@ function initMalla(materias) {
         divMat.setAttribute('role', 'button');
         divMat.setAttribute('aria-pressed', !!estadoMaterias[materia.id]);
 
+        // Aprobada
         if (estadoMaterias[materia.id]) {
           divMat.classList.add("tachada");
           aprobadas += 1;
         }
 
-        // Bloquear si no cumple previas (si falta alguna previa aprobada)
-        if (Array.isArray(materia.previas) && materia.previas.some(p => !estadoMaterias[p])) {
+        // Bloqueada si falta alguna previa aprobada
+        const previas = Array.isArray(materia.previas) ? materia.previas : [];
+        if (previas.some(p => !estadoMaterias[p])) {
           divMat.classList.add("bloqueada");
           divMat.setAttribute('aria-disabled', 'true');
         }
 
+        // Toggle aprobar/desaprobar
         divMat.addEventListener("click", () => {
           if (divMat.classList.contains("bloqueada")) return;
 
@@ -78,7 +85,7 @@ function initMalla(materias) {
           // Mensaje NoteGood solo cuando se aprueba
           if (!wasDone && nowDone) {
             const frase = FRASES[Math.floor(Math.random() * FRASES.length)].replace("{m}", materia.nombre);
-            showToast(frase);
+            showToast(frase); // dura 6.5s, se pausa con hover, click para cerrar
           }
 
           // Re-render para actualizar bloqueos y progreso
@@ -111,16 +118,53 @@ function ensureToastContainer() {
   }
 }
 
-function showToast(texto, ms = 2600) {
+/**
+ * Muestra un toast legible:
+ * - Dura 6.5s por defecto
+ * - Pausa al hover
+ * - Click para cerrar
+ * - Máx. 3 simultáneos (borra el más viejo)
+ */
+function showToast(texto, ms = 6500) {
   const tc = document.querySelector('.toast-container');
+
+  // Limita a 3 toasts visibles
+  while (tc.children.length >= 3) {
+    tc.firstElementChild.remove();
+  }
+
   const t = document.createElement('div');
   t.className = 'toast';
+  t.setAttribute('role', 'status');
+  t.setAttribute('aria-live', 'polite');
   t.innerHTML = `<span class="tag">OK</span> ${texto}`;
   tc.appendChild(t);
 
-  setTimeout(() => {
-    t.style.transition = 'opacity .2s ease';
-    t.style.opacity = '0';
-    setTimeout(() => t.remove(), 220);
-  }, ms);
+  // micro delay para animación "show"
+  requestAnimationFrame(() => t.classList.add('show'));
+
+  let timer = startTimer(ms, () => closeToast(t));
+
+  // Pausar al hover (y reanudar al salir)
+  t.addEventListener('mouseenter', () => {
+    clearTimeout(timer);
+    timer = null;
+  });
+  t.addEventListener('mouseleave', () => {
+    if (!timer) timer = startTimer(1800, () => closeToast(t));
+  });
+
+  // Click para cerrar al instante
+  t.addEventListener('click', () => closeToast(t));
+}
+
+function startTimer(ms, cb) {
+  return setTimeout(cb, ms);
+}
+
+function closeToast(t) {
+  if (!t || t.classList.contains('hide')) return;
+  t.classList.remove('show');
+  t.classList.add('hide');
+  setTimeout(() => t.remove(), 220);
 }
