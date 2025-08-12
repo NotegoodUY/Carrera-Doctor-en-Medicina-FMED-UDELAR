@@ -3,6 +3,23 @@
   --brand:#6c5ce7; --accent:#00bfa6; --chip:#eef2ff; --chip-b:#c7d2fe; --line:#e5e7eb;
   --y1:#f3e8ff; --y2:#dbeafe; --y3:#dcfce7; --y4:#fee2e2; --y5:#fef3c7; --y6:#e0e7ff; --y7:#fae8ff;
   --shadow:0 1px 2px rgba(15,23,42,.06), 0 10px 28px rgba(15,23,42,.05);
+
+  /* Progreso */
+  --progress-track:#e5e7eb;
+  --progress-bar:#6c5ce7;
+  --progress-bg:rgba(108,92,231,.12);
+}
+
+/* Tema oscuro */
+body.dark{
+  --bg:#0b1020; --card:#0f162b; --muted:#a0aec0; --text:#e5e7eb;
+  --brand:#8b7dff; --accent:#03c9b5; --chip:#141e3a; --chip-b:#26345c; --line:#1f2a44;
+  --y1:#1b1540; --y2:#14203b; --y3:#0f2e2a; --y4:#3a1b22; --y5:#3b2e12; --y6:#1a1b3a; --y7:#2f1340;
+  --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.35);
+
+  --progress-track:#1f2a44;
+  --progress-bar:#8b7dff;
+  --progress-bg:rgba(139,125,255,.18);
 }
 
 *{box-sizing:border-box}
@@ -15,14 +32,61 @@ body{
 
 /* Header */
 .ng-header{
-  text-align:center; padding:1.2rem 1rem 1.6rem;
+  padding:1rem 1rem 1.4rem;
   background:linear-gradient(90deg,var(--brand),#9a7bff); color:#fff;
   border-bottom:1px solid rgba(255,255,255,.2);
 }
-.logo{font-weight:700; display:inline-block; padding:.25rem .6rem; border-radius:999px; background:rgba(255,255,255,.18)}
-.title{margin:.7rem 0 .25rem; font-weight:700}
-.subtitle{margin:0; opacity:.95; font-weight:600}
-.legend{margin-top:.9rem; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; font-size:.85rem}
+body.dark .ng-header{
+  background:linear-gradient(90deg,#5b4bff,#8b7dff);
+  border-bottom-color:rgba(255,255,255,.15);
+}
+.header-top{
+  display:flex; align-items:center; justify-content:space-between; gap:1rem;
+}
+.logo{font-weight:700; padding:.25rem .6rem; border-radius:999px; background:rgba(255,255,255,.18)}
+.title{margin:.7rem 0 .25rem; font-weight:700; text-align:center}
+.subtitle{margin:0; opacity:.95; font-weight:600; text-align:center}
+
+/* Controles (tema y reset) */
+.controls{display:flex; align-items:center; gap:.6rem}
+.btn{
+  border:1px solid rgba(255,255,255,.35);
+  background:transparent; color:#fff; padding:.4rem .7rem; border-radius:10px; font-weight:600;
+  cursor:pointer;
+}
+.btn:hover{background:rgba(255,255,255,.12)}
+.btn.ghost{backdrop-filter:saturate(120%) blur(2px)}
+
+/* Switch tema */
+.switch{
+  --w:56px; --h:28px;
+  width:var(--w); height:var(--h); border-radius:999px; border:1px solid rgba(255,255,255,.35);
+  background:rgba(255,255,255,.15); position:relative; display:flex; align-items:center; justify-content:space-between;
+  padding:0 6px; cursor:pointer; font-size:14px; line-height:1;
+}
+.switch .icon{opacity:.9}
+.switch .thumb{
+  position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:999px;
+  background:#fff; transition:left .18s ease;
+}
+body.dark .switch .thumb{ left:calc(100% - 3px - 22px); }
+
+/* Barra de progreso */
+.progress-wrap{
+  max-width:900px; margin:.9rem auto 0; padding:0 1rem;
+  display:flex; align-items:center; gap:.6rem;
+}
+.progress-track{
+  flex:1; height:12px; background:var(--progress-track); border-radius:999px; position:relative;
+  box-shadow:inset 0 0 0 3px var(--progress-bg);
+}
+.progress-bar{
+  height:100%; width:0%; background:var(--progress-bar); border-radius:999px; transition:width .25s ease;
+}
+.progress-kpi{ min-width:52px; text-align:right; font-weight:700; }
+
+/* Leyenda */
+.legend{margin-top:.8rem; display:flex; gap:.8rem; justify-content:center; flex-wrap:wrap; font-size:.85rem}
 .legend-item{background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25); padding:.25rem .55rem; border-radius:999px; display:inline-flex; align-items:center; gap:.4rem}
 .dot{width:1.1rem; height:1.1rem; display:inline-grid; place-items:center; border-radius:999px; font-weight:800}
 .dot-ok{background:#10b981; color:#fff}
@@ -36,7 +100,9 @@ body{
 .year{min-width:280px; background:var(--card); border-radius:14px; padding:1rem; border:1px solid var(--line); box-shadow:var(--shadow)}
 .year.y1{background:var(--y1)} .year.y2{background:var(--y2)} .year.y3{background:var(--y3)}
 .year.y4{background:var(--y4)} .year.y5{background:var(--y5)} .year.y6{background:var(--y6)} .year.y7{background:var(--y7)}
+body.dark .year{border-color:var(--line)}
 .year h2{color:#1f2937; text-align:center; margin-top:0}
+body.dark .year h2{color:#e5e7eb}
 
 /* Semestres */
 .semestre{background:var(--chip); border:1px solid var(--chip-b); border-radius:12px; padding:.6rem; margin-top:.7rem}
@@ -49,17 +115,20 @@ body{
   transition:transform .06s ease, border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
   position:relative; padding-left:2rem;
 }
+body.dark .materia{ background:#0f162b; border-color:var(--line); color:#e5e7eb; }
 .materia:hover{border-color:#cbd5e1; box-shadow:0 0 0 3px rgba(108,92,231,.10); transform:translateY(-1px)}
 .materia::before{
   content:''; position:absolute; left:.6rem; top:50%; transform:translateY(-50%);
   width:1.05rem; height:1.05rem; border-radius:999px; border:2px solid #cbd5e1; background:#fff;
 }
+body.dark .materia::before{ border-color:#2c3a66; background:#101a33 }
 
-/* Bloqueada (candado) */
+/* Bloqueada */
 .materia.bloqueada{background:#f7f7f7; color:var(--muted); pointer-events:none}
+body.dark .materia.bloqueada{background:#121a30; color:#8fa1c2}
 .materia.bloqueada::before{content:'🔒'; font-size:.95rem; width:auto; height:auto; border:none; background:transparent}
 
-/* Aprobada (check) */
+/* Aprobada */
 .materia.tachada{opacity:.95; color:#065f46; background:#ecfdf5; border-color:#bbf7d0; text-decoration:none}
 .materia.tachada::before{content:'✓'; display:grid; place-items:center; color:#fff; background:#10b981; border:none; font-weight:700}
 
@@ -70,18 +139,18 @@ body{
   padding:.5rem .6rem; border-radius:10px; font-size:.8rem; line-height:1.2; white-space:pre-wrap; box-shadow:var(--shadow)
 }
 
-/* Footer centrado */
+/* Footer */
 .ng-footer{
   display:flex; flex-direction:column; align-items:center; justify-content:center;
   text-align:center; padding:1rem 1rem 1.6rem; font-size:.9rem; color:var(--muted); border-top:1px solid var(--line)
 }
 .ng-footer .made{margin:.3rem 0 0}
 
-/* Toasts (flotantes, sobre el footer) */
+/* Toasts */
 .toast-container{
   position:fixed;
   left:50%;
-  bottom:calc(env(safe-area-inset-bottom, 0px) + 96px); /* subido para no pegarse al pie */
+  bottom:calc(env(safe-area-inset-bottom, 0px) + 96px);
   transform:translateX(-50%);
   display:grid; gap:10px; z-index:9999; pointer-events:none;
 }
