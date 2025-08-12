@@ -1,84 +1,63 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla Interactiva – Medicina UDELAR (Notegood.uy)</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=19">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Malla Interactiva – Medicina UDELAR (Plan 2008)</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-  <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
-    <div class="header-top">
-      <div class="logo" aria-label="Notegood.uy">Notegood.uy ✨</div>
-
-      <div class="controls" aria-label="Controles de visualización">
-        <button id="resetBtn" class="btn ghost" title="Borrar avance" aria-label="Borrar todo mi avance">🗑️ Borrar avance</button>
-        <button id="exportBtn" class="btn ghost" title="Exportar mi avance" aria-label="Exportar mi avance">💾 Exportar</button>
-        <button id="importBtn" class="btn ghost" title="Importar avance" aria-label="Importar avance">📥 Importar</button>
-        <input id="importFile" type="file" accept="application/json" hidden>
-
-        <button id="themeToggle" class="switch" aria-pressed="false" aria-label="Cambiar tema">
-          <span class="icon sun" aria-hidden="true">☀️</span>
-          <span class="thumb" aria-hidden="true"></span>
-          <span class="icon moon" aria-hidden="true">🌙</span>
-        </button>
-      </div>
-    </div>
-
-    <h1 class="title">Malla Interactiva – Medicina UDELAR (Plan 2008)</h1>
-    <p class="subtitle">Tu mapa claro para avanzar con calma y constancia.</p>
-
-    <!-- Barra de progreso visual -->
-    <div class="progress-wrap" aria-label="Avance de la carrera">
-      <div class="progress-track">
-        <div id="progressBar" class="progress-bar" style="width:0%"></div>
-      </div>
-      <div id="progressKpi" class="progress-kpi">0%</div>
-    </div>
-
-    <div class="legend" aria-label="Leyenda de estados">
-      <span class="legend-item"><span class="dot dot-ok" aria-hidden="true">✓</span> Aprobada</span>
-      <span class="legend-item"><span class="dot dot-lock" aria-hidden="true">🔒</span> Bloqueada por previas</span>
-      <span class="legend-item"><span class="dot dot-pend" aria-hidden="true"></span> Pendiente</span>
-      <span class="legend-item"><span class="dot" aria-hidden="true">📝</span> Notas / Nota</span>
+  <header class="header">
+    <div class="header-buttons">
+      <button class="brand">Notegood.uy ✨</button>
+      <button id="clearProgressBtn"><i class="fa-solid fa-trash"></i> Borrar avance</button>
+      <button id="exportBtn"><i class="fa-solid fa-floppy-disk"></i> Exportar</button>
+      <button id="importBtn"><i class="fa-solid fa-file-import"></i> Importar</button>
+      <label class="theme-toggle">
+        <input type="checkbox" id="themeSwitch">
+        <span class="slider"></span>
+        <i class="fa-solid fa-moon"></i>
+      </label>
     </div>
   </header>
 
-  <main id="malla" class="grid-container" role="main" aria-live="polite"></main>
+  <main>
+    <h1>Malla Interactiva – Medicina <span>UDELAR</span> (Plan 2008)</h1>
+    <p class="subtitulo">Tu mapa claro para avanzar con calma y constancia.</p>
 
-  <footer class="ng-footer" role="contentinfo">
-    <p id="progressText">0 / 0 materias aprobadas · 0% — Arranquemos tranqui, paso a paso 👟</p>
-    <p class="made">Hecho con 💜 y muuuucho café por Notegood.uy — organización simple, resultados reales.</p>
-  </footer>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+      <span id="progressPercent">0%</span>
+    </div>
 
-  <!-- Confetti container -->
-  <div id="confetti"></div>
+    <div class="legend">
+      <span class="status aprobada"><i class="fa-solid fa-circle-check"></i> Aprobada</span>
+      <span class="status bloqueada"><i class="fa-solid fa-lock"></i> Bloqueada por previas</span>
+      <span class="status pendiente"><i class="fa-regular fa-circle"></i> Pendiente</span>
+      <span class="status nota"><i class="fa-solid fa-pen-to-square"></i> Notas / Nota</span>
+    </div>
 
-  <!-- Modal Notas + Nota -->
-  <dialog id="noteModal">
-    <form method="dialog" class="note-form" id="noteForm">
-      <h3 id="noteTitle">Notas</h3>
-      <label class="field">
-        <span>Nota (0–12)</span>
-        <input id="gradeInput" type="number" inputmode="numeric" min="0" max="12" step="1" placeholder="Ej: 10" />
-      </label>
-      <label class="field">
-        <span>Notas (texto libre)</span>
-        <textarea id="noteText" rows="8" placeholder="Tips, bibliografía, fechas clave…"></textarea>
-      </label>
-      <div class="note-actions">
-        <button value="cancel" class="btn-sec">Cancelar</button>
-        <button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button>
-      </div>
-    </form>
-  </dialog>
+    <div id="statsFooter" class="stats-footer"></div>
 
-  <!-- FAB Instagram -->
-  <a id="igFab" class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy">
-    <span>📷</span>
+    <section id="mallaContainer"></section>
+  </main>
+
+  <!-- Botón flotante de Instagram -->
+  <a href="https://www.instagram.com/notegood.uy/" target="_blank" class="instagram-btn">
+    <i class="fab fa-instagram"></i>
   </a>
 
-  <script src="js/app.js?v=19" defer></script>
+  <!-- Modal de notas -->
+  <div id="notesModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <h2>Notas para <span id="modalSubjectName"></span></h2>
+      <textarea id="notesTextarea" placeholder="Escribe aquí tus apuntes o calificación..."></textarea>
+      <button id="saveNoteBtn">Guardar nota</button>
+    </div>
+  </div>
+
+  <script src="js/script.js"></script>
 </body>
 </html>
