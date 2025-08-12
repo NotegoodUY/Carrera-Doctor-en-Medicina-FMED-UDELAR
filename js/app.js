@@ -1,36 +1,35 @@
-// Carga de materias desde curriculum.json (estructura por años/semestres/materias)
+// Carga de materias (estructura: años → semestres → materias)
 fetch('data/curriculum.json')
   .then(res => res.json())
   .then(data => initMalla(data));
 
 const estadoMaterias = JSON.parse(localStorage.getItem("estadoMaterias") || "{}");
 
-// Frases motivacionales / chistes estilo NoteGood
+// Frases NoteGood — tono cercano, motivador, inclusivo
 const FRASES = [
-  "¡{m} aprobada! Tu sinapsis está on fire 🔥",
-  "Nice! {m} ✅ — tu yo del futuro te agradece.",
-  "Otra menos: {m}. Café + constancia = magia ☕✨",
-  "Check en {m}. ¡Seguimos, crack!",
-  "¿Quién dijo miedo? {m} superada 💪",
-  "Tu curva de aprendizaje acaba de subir con {m} 📈",
-  "Leyenda urbana: {m} era difícil. Leyenda confirmada: la aprobaste 😎",
-  "{m} done. Próxima parada: descanso merecido 🧘‍♀️",
-  "¡Boom! {m} fuera de la lista 💥",
-  "{m} ✔️ — tus neuronas te mandan un saludo 🧠"
+  "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
+  "{m} ✅ — organización + constancia = resultados.",
+  "¡Seguimos! {m} fuera de la lista 💪",
+  "Check en {m}. Paso a paso se llega lejos 🚶‍♀️🚶",
+  "Tu curva de aprendizaje sube con {m} 📈",
+  "Leyenda: {m} era difícil. Realidad: la superaste 😎",
+  "¡Qué nivel! {m} completada con estilo ✨",
+  "Respirá hondo: {m} ya es historia 🧘",
+  "Lo lograste: {m} ✔️ — ¡a hidratarse y seguir! 💧",
+  "{m} done. Tu mapa se ve cada vez más claro 🗺️"
 ];
 
-// Render inicial
 function initMalla(materias) {
   const contenedor = document.getElementById("malla");
   contenedor.innerHTML = "";
-
-  // Contenedor de toasts (dinámico, sin tocar HTML)
   ensureToastContainer();
+
+  let total = 0;
+  let aprobadas = 0;
 
   materias.forEach((anio, idx) => {
     const divAnio = document.createElement("div");
     divAnio.className = "year";
-    // Clase de color por año (y1..y7)
     divAnio.classList.add(`y${Math.min(idx+1, 7)}`);
 
     const h2 = document.createElement("h2");
@@ -46,18 +45,24 @@ function initMalla(materias) {
       divSem.appendChild(h3);
 
       sem.materias.forEach(materia => {
+        total += 1;
+
         const divMat = document.createElement("div");
         divMat.textContent = materia.nombre;
         divMat.className = "materia";
         divMat.dataset.id = materia.id;
+        divMat.setAttribute('role', 'button');
+        divMat.setAttribute('aria-pressed', !!estadoMaterias[materia.id]);
 
         if (estadoMaterias[materia.id]) {
           divMat.classList.add("tachada");
+          aprobadas += 1;
         }
 
-        // Bloquear si no cumple previas
-        if (materia.previas && materia.previas.some(p => !estadoMaterias[p])) {
+        // Bloquear si no cumple previas (si falta alguna previa aprobada)
+        if (Array.isArray(materia.previas) && materia.previas.some(p => !estadoMaterias[p])) {
           divMat.classList.add("bloqueada");
+          divMat.setAttribute('aria-disabled', 'true');
         }
 
         divMat.addEventListener("click", () => {
@@ -65,16 +70,18 @@ function initMalla(materias) {
 
           const wasDone = divMat.classList.contains("tachada");
           divMat.classList.toggle("tachada");
-          estadoMaterias[materia.id] = divMat.classList.contains("tachada");
+          const nowDone = divMat.classList.contains("tachada");
+
+          estadoMaterias[materia.id] = nowDone;
           localStorage.setItem("estadoMaterias", JSON.stringify(estadoMaterias));
 
-          // Si se marcó como aprobada recién ahora, mostramos toast
-          if (!wasDone && estadoMaterias[materia.id]) {
+          // Mensaje NoteGood solo cuando se aprueba
+          if (!wasDone && nowDone) {
             const frase = FRASES[Math.floor(Math.random() * FRASES.length)].replace("{m}", materia.nombre);
             showToast(frase);
           }
 
-          // Re-render para actualizar bloqueos por dependencias
+          // Re-render para actualizar bloqueos y progreso
           initMalla(materias);
         });
 
@@ -86,9 +93,16 @@ function initMalla(materias) {
 
     contenedor.appendChild(divAnio);
   });
+
+  // Progreso amigable en el footer
+  const progressText = document.getElementById('progressText');
+  if (progressText) {
+    const pct = total ? Math.round((aprobadas / total) * 100) : 0;
+    progressText.textContent = `${aprobadas} / ${total} materias aprobadas · ${pct}% — tranqui, lo estás haciendo bien.`;
+  }
 }
 
-/* ============ TOASTS ============ */
+/* ======= TOASTS ======= */
 function ensureToastContainer() {
   if (!document.querySelector('.toast-container')) {
     const tc = document.createElement('div');
@@ -104,7 +118,6 @@ function showToast(texto, ms = 2600) {
   t.innerHTML = `<span class="tag">OK</span> ${texto}`;
   tc.appendChild(t);
 
-  // Autocierre
   setTimeout(() => {
     t.style.transition = 'opacity .2s ease';
     t.style.opacity = '0';
