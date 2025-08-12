@@ -1,15 +1,15 @@
 #!/bin/bash
 
-# based on:
+# Basado en:
 # https://unix.stackexchange.com/questions/249701/how-to-minify-javascript-and-css-with-command-line-using-minify-tool
-# minification of js files
+# Minificación de archivos JS
 
 ./scripts/minify_dev.sh
 npx terser js/init.js -c -m -o js/init.js
 find js/ -regex '.*[^(?:min[0-9+)|(init)]\.js' \
   -delete
 
-# minification of css files
+# Minificación de archivos CSS
 find css/ -type f \
     -name "*.css" ! -name "*.min.*" \
     -exec echo {} \; \
@@ -17,11 +17,8 @@ find css/ -type f \
     -exec rm {} \; \
     -exec mv -f {}.min {} \;
 
-# compress js files even more with gzip
-gzip js/*
-
-# Create file representing last update date
+# Crear archivo con la fecha de última actualización
 date +"%s000" | tee date.txt
 
-# moves assets to root
+# Mover los assets a la carpeta raíz
 cp ./assets/* ./
