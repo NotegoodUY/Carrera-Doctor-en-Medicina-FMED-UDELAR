@@ -1,407 +1,117 @@
-{
-  "plan": "UDELAR · Doctor en Medicina · Malla basada en borrador suministrado",
-  "subjects": [
-    // =========================
-    // 1º AÑO
-    // =========================
-    {
-      "id": "bio_intro",
-      "code": "BIO-INTRO",
-      "name": "Introducción a la Biología Celular y Molecular",
-      "year": 1,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Biología Celular y Molecular",
-      "credits": 0,
-      "hours": 0,
-      "prereq": [],
-      "correlatives": ["bio"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "bioest",
-      "code": "BIOEST-INTRO",
-      "name": "Introducción a la Bioestadística",
-      "year": 1,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Bioestadística",
-      "credits": 0,
-      "hours": 0,
-      "prereq": [],
-      "correlatives": ["met1"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "bioetica",
-      "code": "SAL-HUM-BE",
-      "name": "Salud y Humanidades y Bioética",
-      "year": 1,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Salud Pública / Humanidades / Bioética",
-      "credits": 0,
-      "hours": 0,
-      "prereq": [],
-      "correlatives": ["anatomia"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "at1",
-      "code": "AT-1",
-      "name": "Aprendizaje en Territorio 1",
-      "year": 1,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Territorio / Comunidad",
-      "credits": 0,
-      "hours": 0,
-      "prereq": [],
-      "correlatives": ["at2"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "bio",
-      "code": "BCM",
-      "name": "Biología Celular y Molecular",
-      "year": 1,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Biología Celular y Molecular",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bio_intro"],
-      "correlatives": ["histobiof", "histoneuro", "neuro", "cardioresp", "cbcc5", "b6"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "at2",
-      "code": "AT-2",
-      "name": "Aprendizaje en Territorio 2",
-      "year": 1,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Territorio / Comunidad",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["at1"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    },
-
-    // =========================
-    // 2º AÑO
-    // =========================
-    {
-      "id": "anatomia",
-      "code": "ANAT-CBCC2",
-      "name": "Anatomía (CBCC2)",
-      "year": 2,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Anatomía",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bioetica"],
-      "correlatives": ["cbcc5"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "histobiof",
-      "code": "HISTO-BIOF-CBCC2",
-      "name": "Histología y Biofísica (CBCC2)",
-      "year": 2,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Histología / Biofísica",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bio"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "histoneuro",
-      "code": "HISTO-NCR",
-      "name": "Histología (Neuro y Cardio)",
-      "year": 2,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Histología",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bio"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "neuro",
-      "code": "NEURO",
-      "name": "Neurociencias",
-      "year": 2,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Neurociencias",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bio"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "cardioresp",
-      "code": "CARDIO-RESP",
-      "name": "Cardiovascular y Respiratorio",
-      "year": 2,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Fisiología / Sistemas",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bio"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    },
-
-    // =========================
-    // 3º AÑO
-    // =========================
-    {
-      "id": "cbcc5",
-      "code": "DREM",
-      "name": "Digestivo, Renal, Endocrino, Metabólico y Reproductor",
-      "year": 3,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Fisiología / Sistemas",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bio", "anatomia"],
-      "correlatives": ["met1", "m4pna", "m4bcp", "pediatria", "gineco"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "b6",
-      "code": "HEM-INMUNO",
-      "name": "Hematología e Inmunobiología",
-      "year": 3,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Hematología / Inmunología",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bio"],
-      "correlatives": ["m4pna", "m4bcp", "pediatria", "gineco"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "met1",
-      "code": "MET-I",
-      "name": "Metodología Científica 1",
-      "year": 3,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Metodología de la Investigación",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["bioest", "cbcc5"],
-      "correlatives": ["m4pna", "m4bcp", "pediatria", "gineco"],
-      "description": "",
-      "notes": ""
-    },
-
-    // =========================
-    // 4º AÑO
-    // =========================
-    {
-      "id": "m4pna",
-      "code": "MPNA",
-      "name": "Medicina en el Primer Nivel de Atención",
-      "year": 4,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Atención Primaria / Comunidad",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["cbcc5", "b6", "met1"],
-      "correlatives": ["clinica", "clinicaq", "mfc", "met2"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "m4bcp",
-      "code": "BASES-PATO",
-      "name": "Bases Científicas de la Patología",
-      "year": 4,
-      "semester": 1,
-      "type": "obligatoria",
-      "area": "Patología",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["cbcc5", "b6", "met1"],
-      "correlatives": ["clinica", "patomed", "clinicaq", "patoquir", "met2"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "pediatria",
-      "code": "PED",
-      "name": "Pediatría",
-      "year": 4,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Pediatría",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["cbcc5", "b6", "met1"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "gineco",
-      "code": "GINECO-NEO",
-      "name": "Ginecología y Neonatología",
-      "year": 4,
-      "semester": 2,
-      "type": "obligatoria",
-      "area": "Ginecología / Neonatología",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["cbcc5", "b6", "met1"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    },
-
-    // =========================
-    // 5º AÑO (anual)
-    // =========================
-    {
-      "id": "clinica",
-      "code": "CLIN-MED",
-      "name": "Clínica Médica",
-      "year": 5,
-      "semester": "A",
-      "type": "obligatoria",
-      "area": "Clínica Médica",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["m4pna", "m4bcp"],
-      "correlatives": ["internado"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "patomed",
-      "code": "PATO-MED-TER",
-      "name": "Patología Médica y Terapéutica",
-      "year": 5,
-      "semester": "A",
-      "type": "obligatoria",
-      "area": "Patología / Terapéutica",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["m4bcp"],
-      "correlatives": ["internado"],
-      "description": "",
-      "notes": ""
-    },
-
-    // =========================
-    // 6º AÑO (anual)
-    // =========================
-    {
-      "id": "clinicaq",
-      "code": "CLIN-QUIR",
-      "name": "Clínica Quirúrgica",
-      "year": 6,
-      "semester": "A",
-      "type": "obligatoria",
-      "area": "Clínica Quirúrgica",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["m4pna", "m4bcp"],
-      "correlatives": ["internado"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "patoquir",
-      "code": "PATO-QUIR",
-      "name": "Patología Quirúrgica",
-      "year": 6,
-      "semester": "A",
-      "type": "obligatoria",
-      "area": "Patología / Cirugía",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["m4bcp"],
-      "correlatives": ["internado"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "mfc",
-      "code": "MFC-SM-PM",
-      "name": "MFC – Salud Mental en Comunidad – Psicología Médica",
-      "year": 6,
-      "semester": "A",
-      "type": "obligatoria",
-      "area": "APS / Salud Mental / Psicología Médica",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["m4pna"],
-      "correlatives": ["internado"],
-      "description": "",
-      "notes": ""
-    },
-    {
-      "id": "met2",
-      "code": "MET-II",
-      "name": "Metodología Científica 2",
-      "year": 6,
-      "semester": "A",
-      "type": "obligatoria",
-      "area": "Metodología de la Investigación",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["m4pna", "m4bcp"],
-      "correlatives": ["internado"],
-      "description": "",
-      "notes": ""
-    },
-
-    // =========================
-    // 7º AÑO (anual)
-    // =========================
-    {
-      "id": "internado",
-      "code": "IR",
-      "name": "Internado Obligatorio",
-      "year": 7,
-      "semester": "A",
-      "type": "obligatoria",
-      "area": "Internado",
-      "credits": 0,
-      "hours": 0,
-      "prereq": ["clinica", "patomed", "clinicaq", "patoquir", "mfc", "met2"],
-      "correlatives": [],
-      "description": "",
-      "notes": ""
-    }
-  ]
-}
+[
+  {
+    "anio": "Primero",
+    "semestres": [
+      {
+        "numero": "1º semestre",
+        "materias": [
+          { "id": "bio_intro", "nombre": "Introducción a la Biología Celular y Molecular" },
+          { "id": "bioest", "nombre": "Introducción a la Bioestadística" },
+          { "id": "bioetica", "nombre": "Salud y Humanidades y Bioética" },
+          { "id": "at1", "nombre": "Aprendizaje en Territorio 1" }
+        ]
+      },
+      {
+        "numero": "2º semestre",
+        "materias": [
+          { "id": "bio", "nombre": "Biología Celular y Molecular", "previas": ["bio_intro"] },
+          { "id": "at2", "nombre": "Aprendizaje en Territorio 2", "previas": ["at1"] }
+        ]
+      }
+    ]
+  },
+  {
+    "anio": "Segundo",
+    "semestres": [
+      {
+        "numero": "3º semestre",
+        "materias": [
+          { "id": "anatomia", "nombre": "Anatomía (CBCC2)", "previas": ["bioetica"] },
+          { "id": "histobiof", "nombre": "Histología y Biofísica (CBCC2)", "previas": ["bio"] }
+        ]
+      },
+      {
+        "numero": "4º semestre",
+        "materias": [
+          { "id": "histoneuro", "nombre": "Histología (Neuro y Cardio)", "previas": ["bio"] },
+          { "id": "neuro", "nombre": "Neurociencias", "previas": ["bio"] },
+          { "id": "cardioresp", "nombre": "Cardiovascular y Respiratorio", "previas": ["bio"] }
+        ]
+      }
+    ]
+  },
+  {
+    "anio": "Tercero",
+    "semestres": [
+      {
+        "numero": "5º semestre",
+        "materias": [
+          { "id": "cbcc5", "nombre": "Digestivo, Renal, Endocrino, Metabólico y Reproductor", "previas": ["bio", "anatomia"] }
+        ]
+      },
+      {
+        "numero": "6º semestre",
+        "materias": [
+          { "id": "b6", "nombre": "Hematología e Inmunobiología", "previas": ["bio"] },
+          { "id": "met1", "nombre": "Metodología Científica 1", "previas": ["bioest", "cbcc5"] }
+        ]
+      }
+    ]
+  },
+  {
+    "anio": "Cuarto",
+    "semestres": [
+      {
+        "numero": "7º semestre",
+        "materias": [
+          { "id": "m4pna", "nombre": "Medicina en el Primer Nivel de Atención", "previas": ["cbcc5", "b6", "met1"] },
+          { "id": "m4bcp", "nombre": "Bases Científicas de la Patología", "previas": ["cbcc5", "b6", "met1"] }
+        ]
+      },
+      {
+        "numero": "8º semestre",
+        "materias": [
+          { "id": "pediatria", "nombre": "Pediatría", "previas": ["cbcc5", "b6", "met1"] },
+          { "id": "gineco", "nombre": "Ginecología y Neonatología", "previas": ["cbcc5", "b6", "met1"] }
+        ]
+      }
+    ]
+  },
+  {
+    "anio": "Quinto",
+    "semestres": [
+      {
+        "numero": "9º y 10º semestre",
+        "materias": [
+          { "id": "clinica", "nombre": "Clínica Médica", "previas": ["m4pna", "m4bcp"] },
+          { "id": "patomed", "nombre": "Patología Médica y Terapéutica", "previas": ["m4bcp"] }
+        ]
+      }
+    ]
+  },
+  {
+    "anio": "Sexto",
+    "semestres": [
+      {
+        "numero": "11º y 12º semestre",
+        "materias": [
+          { "id": "clinicaq", "nombre": "Clínica Quirúrgica", "previas": ["m4pna", "m4bcp"] },
+          { "id": "patoquir", "nombre": "Patología Quirúrgica", "previas": ["m4bcp"] },
+          { "id": "mfc", "nombre": "MFC – Salud Mental en Comunidad – Psicología Médica", "previas": ["m4pna"] },
+          { "id": "met2", "nombre": "Metodología Científica 2", "previas": ["m4pna", "m4bcp"] }
+        ]
+      }
+    ]
+  },
+  {
+    "anio": "Séptimo",
+    "semestres": [
+      {
+        "numero": "13º y 14º semestre",
+        "materias": [
+          { "id": "internado", "nombre": "Internado Obligatorio", "previas": ["clinica", "patomed", "clinicaq", "patoquir", "mfc", "met2"] }
+        ]
+      }
+    ]
+  }
+]
