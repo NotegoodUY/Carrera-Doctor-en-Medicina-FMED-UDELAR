@@ -1,4 +1,4 @@
-console.log('Notegood Malla v17 cargado');
+console.log('Notegood Malla v19 cargado');
 
 // Arranque seguro
 (function safeStart(){
@@ -15,12 +15,6 @@ console.log('Notegood Malla v17 cargado');
 })();
 
 function boot(){
-  /* ===== Config general ===== */
-  const CONFIG = {
-    showInstagram: false, // ← poné true para mostrar el FAB
-    instagramUrl: 'https://www.instagram.com/notegood.uy/'
-  };
-
   /* ===== Frases Notegood (ampliadas) ===== */
   const FRASES = [
     "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
@@ -89,7 +83,7 @@ function boot(){
     ]},
     { semestres: [
       { numero: "3º semestre", materias: [
-        { id:"MANAT", nombre:"Anatomía (CBCC2)", previas:["MSPHB"] }, // corrección
+        { id:"MANAT", nombre:"Anatomía (CBCC2)", previas:["MSPHB"] },
         { id:"MHBIO", nombre:"Histología y Biofísica (CBCC2)", previas:["MBCM"] }
       ]},
       { numero: "4º semestre", materias: [
@@ -138,13 +132,15 @@ function boot(){
     ]}
   ];
 
-  /* ===== Estado y helpers ===== */
-  const KEY='malla-medicina-notegood';
-  const NOTES_KEY='malla-medicina-notes';
+  /* ===== Estado y storage ===== */
+  const KEY='malla-medicina-notegood';        // aprobadas
+  const NOTES_KEY='malla-medicina-notes';      // texto por materia
+  const GRADES_KEY='malla-medicina-grades';    // calificación por materia
   const THEME_KEY='ng-theme';
 
-  const estado = load(KEY, {});
-  const notas  = load(NOTES_KEY, {}); // { [idMateria]: "texto..." }
+  const estado = load(KEY, {});                // { id: true/false }
+  const notas  = load(NOTES_KEY, {});          // { id: "texto" }
+  const grades = load(GRADES_KEY, {});         // { id: number }
 
   function load(k, fallback){ try{ return JSON.parse(localStorage.getItem(k) || JSON.stringify(fallback)); } catch { return fallback; } }
   function save(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
@@ -193,7 +189,7 @@ function boot(){
   }
   const close = t => { if(!t||t.classList.contains('hide')) return; t.classList.remove('show'); t.classList.add('hide'); setTimeout(()=>t.remove(),220); };
 
-  /* ===== Confetti liviano ===== */
+  /* ===== Confetti ===== */
   const EMOJIS = ["🎉","✨","🎈","🎊","💫","⭐"];
   function confettiBurst(count=36, power=140){
     const root=document.getElementById('confetti'); if(!root) return;
@@ -235,18 +231,34 @@ function boot(){
           total++;
           const div=document.createElement('div'); div.className='materia'; div.dataset.id=m.id;
 
+          // Lado izquierdo: nombre
           const left = document.createElement('span');
           left.textContent = `${m.nombre} (${m.id})`;
           left.style.flex = '1';
           div.appendChild(left);
 
-          // Botón notas
+          // Lado derecho: nota (chip) + botón notas
+          const actions = document.createElement('div');
+          actions.className = 'actions';
+
+          // Chip de nota si existe
+          const gradeVal = grades[m.id];
+          if (typeof gradeVal === 'number' && !Number.isNaN(gradeVal)) {
+            const chip = document.createElement('span');
+            chip.className = 'grade-chip ' + (gradeVal>=11?'grade-high':(gradeVal>=7?'grade-mid':'grade-low'));
+            chip.textContent = `Nota: ${gradeVal}`;
+            actions.appendChild(chip);
+          }
+
+          // Botón Notas/Nota
           const nb = document.createElement('button');
           nb.className = 'note-btn';
           nb.type = 'button';
           nb.innerHTML = `📝 <span class="nb-label">Notas</span>`;
           nb.addEventListener('click', (ev)=>{ ev.stopPropagation(); openNote(m.id, m.nombre); });
-          div.appendChild(nb);
+          actions.appendChild(nb);
+
+          div.appendChild(actions);
 
           // Estado/candado
           const req=normReq(m);
@@ -259,12 +271,12 @@ function boot(){
             if(tip) div.setAttribute('data-tip', tip);
           }
 
-          // Indicador si tiene nota
-          if (notas[m.id] && notas[m.id].trim().length>0) {
+          // Indicador si tiene nota (texto)
+          if ((notas[m.id] && notas[m.id].trim().length>0) || (typeof gradeVal==='number')) {
             div.classList.add('has-note');
           }
 
-          // Toggle de aprobación
+          // Toggle aprobación
           div.addEventListener('click', ()=>{
             if(div.classList.contains('bloqueada')) return;
             const was=isOk(m.id);
@@ -301,17 +313,19 @@ function boot(){
     if (pct === 100) confettiBurst(80, 220);
   }
 
-  /* ===== Notas (modal) ===== */
+  /* ===== Modal Notas + Nota ===== */
   let currentNoteId = null;
   const modal = document.getElementById('noteModal');
   const noteTitle = document.getElementById('noteTitle');
   const noteText  = document.getElementById('noteText');
+  const gradeInput= document.getElementById('gradeInput');
   const saveNoteBtn = document.getElementById('saveNoteBtn');
 
   function openNote(id, nombre){
     currentNoteId = id;
     noteTitle.textContent = `Notas — ${nombre}`;
     noteText.value = notas[id] || '';
+    gradeInput.value = (typeof grades[id]==='number' && !Number.isNaN(grades[id])) ? String(grades[id]) : '';
     if (typeof modal.showModal === 'function') modal.showModal();
     else modal.setAttribute('open','');
   }
@@ -319,8 +333,25 @@ function boot(){
   saveNoteBtn?.addEventListener('click', (e)=>{
     e.preventDefault();
     if (!currentNoteId) return;
+
+    // Guardar texto
     notas[currentNoteId] = noteText.value || '';
     save(NOTES_KEY, notas);
+
+    // Guardar nota (0–12 o vacía)
+    const raw = gradeInput.value.trim();
+    if (raw === '') {
+      delete grades[currentNoteId];
+    } else {
+      let n = Number(raw);
+      if (Number.isFinite(n)) {
+        if (n < 0) n = 0;
+        if (n > 12) n = 12;
+        grades[currentNoteId] = Math.round(n);
+      }
+    }
+    save(GRADES_KEY, grades);
+
     try { modal.close(); } catch { modal.removeAttribute('open'); }
     currentNoteId = null;
     render();
@@ -344,19 +375,21 @@ function boot(){
   const toggleTheme = () => { const next = (document.body.classList.contains('dark') ? 'light' : 'dark'); localStorage.setItem(THEME_KEY, next); applyTheme(next); };
 
   function onReset(){
-    const ok = confirm("¿Seguro que querés borrar TODO tu avance y notas? No se puede deshacer.");
+    const ok = confirm("¿Seguro que querés borrar TODO tu avance, notas y calificaciones? No se puede deshacer.");
     if(!ok) return;
     localStorage.removeItem(KEY);
     localStorage.removeItem(NOTES_KEY);
+    localStorage.removeItem(GRADES_KEY);
     for (const k of Object.keys(estado)) delete estado[k];
     for (const k of Object.keys(notas)) delete notas[k];
-    toast("Se reinició tu avance y notas. Empezamos de cero 💫", 4000);
+    for (const k of Object.keys(grades)) delete grades[k];
+    toast("Se reinició tu avance, notas y calificaciones 💫", 4000);
     render();
   }
 
-  /* ===== Export / Import ===== */
+  /* ===== Export / Import (incluye estado + notas + calificaciones) ===== */
   function exportar(){
-    const payload = { version: 1, fecha: new Date().toISOString(), estado, notas };
+    const payload = { version: 2, fecha: new Date().toISOString(), estado, notas, grades };
     const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
@@ -372,21 +405,18 @@ function boot(){
         if (!data || typeof data !== 'object') throw new Error('JSON inválido');
         if (!data.estado || typeof data.estado !== 'object') throw new Error('Falta "estado"');
         if (!data.notas  || typeof data.notas  !== 'object') throw new Error('Falta "notas"');
+        const importedGrades = (data.grades && typeof data.grades === 'object') ? data.grades : {};
+
         Object.assign(estado, data.estado);
         Object.assign(notas,  data.notas);
-        save(KEY, estado); save(NOTES_KEY, notas);
+        Object.assign(grades, importedGrades);
+
+        save(KEY, estado); save(NOTES_KEY, notas); save(GRADES_KEY, grades);
         toast('Backup importado 📥', 2000);
         render();
       }catch(err){ console.error(err); toast('Archivo inválido ❌', 2500); }
     };
     reader.readAsText(file);
-  }
-
-  /* ===== Instagram FAB (opcional) ===== */
-  const igFab = document.getElementById('igFab');
-  if (CONFIG.showInstagram && igFab){
-    igFab.href = CONFIG.instagramUrl;
-    igFab.hidden = false;
   }
 
   /* ===== Start ===== */
