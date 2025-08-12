@@ -3,14 +3,20 @@
   --brand:#6c5ce7; --accent:#00bfa6; --chip:#eef2ff; --chip-b:#c7d2fe; --line:#e5e7eb;
   --y1:#f3e8ff; --y2:#dbeafe; --y3:#dcfce7; --y4:#fee2e2; --y5:#fef3c7; --y6:#e0e7ff; --y7:#fae8ff;
   --shadow:0 1px 2px rgba(15,23,42,.06), 0 10px 28px rgba(15,23,42,.05);
-  --progress-track:#e5e7eb; --progress-bar:#6c5ce7; --progress-bg:rgba(108,92,231,.12);
+
+  /* Progreso base (color dinámico se setea vía JS) */
+  --progress-track:#e5e7eb;
+  --progress-bar:#6c5ce7;
+  --progress-bg:rgba(108,92,231,.12);
 }
 body.dark{
   --bg:#0b1020; --card:#0f162b; --muted:#a0aec0; --text:#e5e7eb;
   --brand:#8b7dff; --accent:#03c9b5; --chip:#141e3a; --chip-b:#26345c; --line:#1f2a44;
   --y1:#1b1540; --y2:#14203b; --y3:#0f2e2a; --y4:#3a1b22; --y5:#3b2e12; --y6:#1a1b3a; --y7:#2f1340;
   --shadow:0 1px 2px rgba(0,0,0,.35), 0 10px 28px rgba(0,0,0,.35);
-  --progress-track:#1f2a44; --progress-bar:#8b7dff; --progress-bg:rgba(139,125,255,.18);
+
+  --progress-track:#1f2a44;
+  --progress-bg:rgba(139,125,255,.18);
 }
 
 *{box-sizing:border-box}
@@ -31,7 +37,7 @@ body.dark .ng-header{ background:linear-gradient(90deg,#5b4bff,#8b7dff); border-
 
 .header-top{ display:flex; align-items:center; justify-content:space-between; gap:.75rem; }
 
-/* LOGO pill — centrado también en móvil */
+/* LOGO pill — centrado en móvil */
 .logo{
   display:inline-flex; align-items:center; justify-content:center;
   height:38px; min-width:148px; padding:0 14px;
@@ -69,7 +75,7 @@ body.dark .switch .thumb{ left:calc(100% - 3px - 22px); }
 /* Barra de progreso */
 .progress-wrap{ max-width:900px; margin:.9rem auto 0; padding:0 1rem; display:flex; align-items:center; gap:.6rem }
 .progress-track{ flex:1; height:12px; background:var(--progress-track); border-radius:999px; position:relative; box-shadow:inset 0 0 0 3px var(--progress-bg) }
-.progress-bar{ height:100%; width:0%; background:var(--progress-bar); border-radius:999px; transition:width .25s ease }
+.progress-bar{ height:100%; width:0%; background:var(--progress-bar); border-radius:999px; transition:width .25s ease, background .2s ease }
 .progress-kpi{ min-width:52px; text-align:right; font-weight:700 }
 
 /* Leyenda */
@@ -140,10 +146,22 @@ body.dark .materia.bloqueada{ background:#121a30; color:#8fa1c2 }
 .toast .tag{ background:#10b981; color:#052e2b; padding:.15rem .5rem; border-radius:999px; font-size:.75rem; font-weight:800 }
 .toast:hover{ box-shadow:0 12px 30px rgba(0,0,0,.26) }
 
+/* Confetti */
+#confetti{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:9998 }
+.confetti-piece{
+  position:absolute; font-size:18px; will-change:transform, opacity;
+  animation: confetti-fall 900ms linear forwards;
+}
+@keyframes confetti-fall{
+  0%{ transform:translate(var(--x,0), var(--y,0)) rotate(0deg); opacity:1 }
+  100%{ transform:translate(calc(var(--x,0) + var(--dx,0px)), calc(var(--y,0) + var(--dy,140px))) rotate(340deg); opacity:0 }
+}
+
 @media (max-width:480px){
   .logo{ height:40px; min-width:150px; padding:0 16px; font-size:.95rem }
   .toast-container{ bottom:calc(env(safe-area-inset-bottom, 0px) + 120px) }
 }
 @media (prefers-reduced-motion:reduce){
   .toast, .toast.show, .toast.hide{ transition:none; transform:none }
+  .confetti-piece{ animation:none; opacity:0 }
 }
