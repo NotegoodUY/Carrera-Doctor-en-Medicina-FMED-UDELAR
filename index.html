@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood.uy)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=17">
+  <link rel="stylesheet" href="css/styles.css?v=19">
 </head>
 <body>
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
@@ -41,7 +41,7 @@
       <span class="legend-item"><span class="dot dot-ok" aria-hidden="true">✓</span> Aprobada</span>
       <span class="legend-item"><span class="dot dot-lock" aria-hidden="true">🔒</span> Bloqueada por previas</span>
       <span class="legend-item"><span class="dot dot-pend" aria-hidden="true"></span> Pendiente</span>
-      <span class="legend-item"><span class="dot" aria-hidden="true">📝</span> Notas</span>
+      <span class="legend-item"><span class="dot" aria-hidden="true">📝</span> Notas / Nota</span>
     </div>
   </header>
 
@@ -49,17 +49,24 @@
 
   <footer class="ng-footer" role="contentinfo">
     <p id="progressText">0 / 0 materias aprobadas · 0% — Arranquemos tranqui, paso a paso 👟</p>
-    <p class="made">Hecho con 💜 por Notegood.uy — organización simple, resultados reales.</p>
+    <p class="made">Hecho con 💜 y muuuucho café por Notegood.uy — organización simple, resultados reales.</p>
   </footer>
 
   <!-- Confetti container -->
   <div id="confetti"></div>
 
-  <!-- Modal Notas -->
+  <!-- Modal Notas + Nota -->
   <dialog id="noteModal">
-    <form method="dialog" class="note-form">
+    <form method="dialog" class="note-form" id="noteForm">
       <h3 id="noteTitle">Notas</h3>
-      <textarea id="noteText" rows="8" placeholder="Escribe tips, bibliografía, fechas clave…"></textarea>
+      <label class="field">
+        <span>Nota (0–12)</span>
+        <input id="gradeInput" type="number" inputmode="numeric" min="0" max="12" step="1" placeholder="Ej: 10" />
+      </label>
+      <label class="field">
+        <span>Notas (texto libre)</span>
+        <textarea id="noteText" rows="8" placeholder="Tips, bibliografía, fechas clave…"></textarea>
+      </label>
       <div class="note-actions">
         <button value="cancel" class="btn-sec">Cancelar</button>
         <button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button>
@@ -67,11 +74,11 @@
     </form>
   </dialog>
 
-  <!-- (Opcional) FAB Instagram: se controla por config en app.js -->
-  <a id="igFab" class="fab-ig" href="#" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy" hidden>
+  <!-- FAB Instagram -->
+  <a id="igFab" class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy">
     <span>📷</span>
   </a>
 
-  <script src="js/app.js?v=17" defer></script>
+  <script src="js/app.js?v=19" defer></script>
 </body>
 </html>
