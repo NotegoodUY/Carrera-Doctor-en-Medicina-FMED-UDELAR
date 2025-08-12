@@ -1,6 +1,6 @@
-console.log('Notegood Malla v15 cargado');
+console.log('Notegood Malla v16 cargado');
 
-// Arranque seguro: si algo falla lo mostramos en pantalla
+// Arranque seguro
 (function safeStart(){
   try { boot(); }
   catch(e){
@@ -15,7 +15,7 @@ console.log('Notegood Malla v15 cargado');
 })();
 
 function boot(){
-  /* ===== Frases Notegood ===== */
+  /* ===== Frases Notegood (ampliadas) ===== */
   const FRASES = [
     "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
     "{m} ✅ — organización + constancia = resultados.",
@@ -26,8 +26,36 @@ function boot(){
     "¡Qué nivel! {m} completada con estilo ✨",
     "Respirá hondo: {m} ya es historia 🧘",
     "Lo lograste: {m} ✔️ — ¡a hidratarse y seguir! 💧",
-    "{m} done. Tu mapa se ve cada vez más claro 🗺️"
+    "{m} done. Tu mapa se ve cada vez más claro 🗺️",
+    "¡Boom! {m} aprobada. Y sin despeinarte 💅",
+    "Un paso más cerca del título con {m} 💼",
+    "{m} ya es pasado. El presente: seguir avanzando 🚀",
+    "Notegood vibes: {m} superada con éxito ✨",
+    "¡Crack total! {m} ✔️",
+    "Checklist update: {m} ✅ — y seguimos 📋",
+    "Cada materia cuenta: {m} aprobada suma y suma 📊",
+    "Café, esfuerzo y {m}… receta perfecta ☕",
+    "La montaña era alta, pero {m} ya quedó atrás 🏔️",
+    "{m} ✅ — pequeña victoria, gran avance 🏅",
+    "Aprobaste {m} y el mundo sigue girando… pero más a tu favor 🌍",
+    "Otro ladrillo en tu muro del conocimiento: {m} 🧱",
+    "Notegood tip: celebrar {m} te da +10 de motivación 🎯",
+    "La aventura continúa, pero {m} quedó en el capítulo anterior 📖",
+    "Si tu vida fuera una serie, {m} sería el plot twist ganador 📺",
+    "Más materias así y vas a necesitar un trofeo extra 🏆",
+    "{m} aprobada. Tu yo del futuro ya está llorando de orgullo 😭",
+    "La ciencia dice que aprobar {m} libera endorfinas 🧠",
+    "Próximo nivel desbloqueado gracias a {m} 🎮"
   ];
+
+  // Selección aleatoria sin repetición
+  let frasesPool = [...FRASES];
+  function frasePara(materia){
+    if (frasesPool.length === 0) frasesPool = [...FRASES];
+    const i = Math.floor(Math.random()*frasesPool.length);
+    const f = frasesPool.splice(i,1)[0];
+    return f.replace("{m}", materia);
+  }
 
   /* ===== Copy del progreso ===== */
   function progressCopy(pct){
@@ -57,7 +85,7 @@ function boot(){
     ]},
     { semestres: [
       { numero: "3º semestre", materias: [
-        { id:"MANAT", nombre:"Anatomía (CBCC2)", previas:["MSPHB"] }, // ✅ corrección
+        { id:"MANAT", nombre:"Anatomía (CBCC2)", previas:["MSPHB"] }, // corrección
         { id:"MHBIO", nombre:"Histología y Biofísica (CBCC2)", previas:["MBCM"] }
       ]},
       { numero: "4º semestre", materias: [
@@ -117,7 +145,7 @@ function boot(){
   const idsTodoAntes = () => { const out=[]; PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); return out.filter(id=>id!=='INTO'); };
   const TRIENIO1=idsTrienio1(), TODO_ANTES=idsTodoAntes();
 
-  const NOMBRE_M = (()=>{ const map={}; PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>map[m.id]=m.nombre))); return map; })();
+  const NAME = (()=>{ const map={}; PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>map[m.id]=m.nombre))); return map; })();
   const isOk = id => !!estado[id];
 
   function normReq(m){
@@ -128,19 +156,14 @@ function boot(){
     req.allOf=req.allOf.flatMap(id=> id==='__TRIENIO1__'?TRIENIO1 : id==='__TODO_ANTES__'?TODO_ANTES : [id]);
     return req;
   }
-  function cumple(req){
-    const allOk=(req.allOf||[]).every(id=>isOk(id));
-    const groups=req.oneOf||[];
-    const oneOk=groups.length===0 || groups.some(g=>g.some(id=>isOk(id)));
-    return allOk && oneOk;
-  }
+  const cumple = req => (req.allOf||[]).every(id=>isOk(id)) && ((req.oneOf||[]).length===0 || (req.oneOf||[]).some(g=>g.some(id=>isOk(id))));
   function faltantes(req){
     const faltAll=(req.allOf||[]).filter(id=>!isOk(id));
     const grupos=(req.oneOf||[]).map(g=>g.some(id=>isOk(id))?null:g).filter(Boolean);
-    const name=id=>NOMBRE_M[id]||id;
+    const n=id=>NAME[id]||id;
     const parts=[];
-    if (faltAll.length) parts.push("Te falta aprobar:\n• "+faltAll.map(name).join("\n• "));
-    if (grupos.length)  parts.push("Y al menos 1 de:\n• "+grupos[0].map(name).join("\n• "));
+    if (faltAll.length) parts.push("Te falta aprobar:\n• "+faltAll.map(n).join("\n• "));
+    if (grupos.length)  parts.push("Y al menos 1 de:\n• "+grupos[0].map(n).join("\n• "));
     return parts.join("\n\n");
   }
 
@@ -160,12 +183,33 @@ function boot(){
     t.addEventListener('mouseleave', ()=>{ if(!timer) timer=setTimeout(()=>close(t), 1800); });
     t.addEventListener('click', ()=>close(t));
   }
-  function close(t){ if(!t||t.classList.contains('hide')) return; t.classList.remove('show'); t.classList.add('hide'); setTimeout(()=>t.remove(),220); }
+  const close = t => { if(!t||t.classList.contains('hide')) return; t.classList.remove('show'); t.classList.add('hide'); setTimeout(()=>t.remove(),220); };
+
+  /* ===== Confetti liviano ===== */
+  const EMOJIS = ["🎉","✨","🎈","🎊","💫","⭐"];
+  function confettiBurst(count=36, power=140){
+    const root=document.getElementById('confetti'); if(!root) return;
+    const { innerWidth:w, innerHeight:h } = window;
+    for(let i=0;i<count;i++){
+      const s=document.createElement('span');
+      s.className='confetti-piece';
+      s.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      const x = w/2 + (Math.random()*120-60);
+      const y = h*0.18 + (Math.random()*30-15);
+      const dx = (Math.random()*2-1) * power;
+      const dy = (Math.random()*0.7+0.6) * power;
+      s.style.setProperty('--x', x+'px');
+      s.style.setProperty('--y', y+'px');
+      s.style.setProperty('--dx', dx+'px');
+      s.style.setProperty('--dy', dy+'px');
+      root.appendChild(s);
+      setTimeout(()=>s.remove(), 950);
+    }
+  }
 
   /* ===== Render ===== */
   function render(){
     const cont=document.getElementById('malla');
-    if(!cont){ console.warn('#malla no encontrado'); return; }
     cont.innerHTML='';
     ensureToasts();
 
@@ -200,8 +244,8 @@ function boot(){
             const was=isOk(m.id);
             estado[m.id]=!was; save();
             if(!was && estado[m.id]){
-              const frase=FRASES[Math.floor(Math.random()*FRASES.length)].replace('{m}', m.nombre);
-              toast(frase);
+              toast(frasePara(m.nombre));
+              confettiBurst(34, 160);
             }
             render();
           });
@@ -215,11 +259,21 @@ function boot(){
       cont.appendChild(col);
     });
 
-    const pct= total? Math.round((aprob/total)*100) : 0;
-    const copy=progressCopy(pct);
-    const p=document.getElementById('progressText'); if(p){ p.textContent=`${aprob} / ${total} materias aprobadas · ${pct}% — ${copy}`; }
-    const bar=document.getElementById('progressBar'); if(bar){ bar.style.width = pct + '%'; }
+    const pct = total? Math.round((aprob/total)*100) : 0;
+    const copy = progressCopy(pct);
+    const p = document.getElementById('progressText'); if(p){ p.textContent=`${aprob} / ${total} materias aprobadas · ${pct}% — ${copy}`; }
+
+    // Barra con paleta Notegood
+    const bar=document.getElementById('progressBar');
+    if(bar){
+      let col = pct<=25 ? '#ff6b6b' : (pct<=75 ? '#ff9f68' : '#4ade80');
+      bar.style.width = pct + '%';
+      bar.style.background = `linear-gradient(90deg, ${col}, ${col})`;
+    }
     const kpi=document.getElementById('progressKpi'); if(kpi){ kpi.textContent = pct + '%'; }
+
+    // Confetti extra al 100%
+    if (pct === 100) confettiBurst(80, 220);
 
     console.log('Progreso', {aprobadas:aprob,total,pct});
   }
@@ -236,11 +290,7 @@ function boot(){
     const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
     return prefersDark ? 'dark' : 'light';
   }
-  function toggleTheme(){
-    const next = (document.body.classList.contains('dark') ? 'light' : 'dark');
-    localStorage.setItem(THEME_KEY, next);
-    applyTheme(next);
-  }
+  const toggleTheme = () => { const next = (document.body.classList.contains('dark') ? 'light' : 'dark'); localStorage.setItem(THEME_KEY, next); applyTheme(next); };
   function onReset(){
     const ok = confirm("¿Seguro que querés borrar TODO tu avance? No se puede deshacer.");
     if(!ok) return;
