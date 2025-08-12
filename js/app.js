@@ -1,4 +1,4 @@
-console.log('Notegood Malla v16 cargado');
+console.log('Notegood Malla v17 cargado');
 
 // Arranque seguro
 (function safeStart(){
@@ -15,6 +15,12 @@ console.log('Notegood Malla v16 cargado');
 })();
 
 function boot(){
+  /* ===== Config general ===== */
+  const CONFIG = {
+    showInstagram: false, // ← poné true para mostrar el FAB
+    instagramUrl: 'https://www.instagram.com/notegood.uy/'
+  };
+
   /* ===== Frases Notegood (ampliadas) ===== */
   const FRASES = [
     "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
@@ -47,15 +53,13 @@ function boot(){
     "La ciencia dice que aprobar {m} libera endorfinas 🧠",
     "Próximo nivel desbloqueado gracias a {m} 🎮"
   ];
-
-  // Selección aleatoria sin repetición
   let frasesPool = [...FRASES];
-  function frasePara(materia){
+  const frasePara = (materia) => {
     if (frasesPool.length === 0) frasesPool = [...FRASES];
     const i = Math.floor(Math.random()*frasesPool.length);
     const f = frasesPool.splice(i,1)[0];
     return f.replace("{m}", materia);
-  }
+  };
 
   /* ===== Copy del progreso ===== */
   function progressCopy(pct){
@@ -136,11 +140,15 @@ function boot(){
 
   /* ===== Estado y helpers ===== */
   const KEY='malla-medicina-notegood';
+  const NOTES_KEY='malla-medicina-notes';
   const THEME_KEY='ng-theme';
-  const estado = load();
 
-  function load(){ try{return JSON.parse(localStorage.getItem(KEY)||'{}')}catch{return{}} }
-  function save(){ localStorage.setItem(KEY, JSON.stringify(estado)); }
+  const estado = load(KEY, {});
+  const notas  = load(NOTES_KEY, {}); // { [idMateria]: "texto..." }
+
+  function load(k, fallback){ try{ return JSON.parse(localStorage.getItem(k) || JSON.stringify(fallback)); } catch { return fallback; } }
+  function save(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
+
   const idsTrienio1 = () => { const out=[]; PLAN.slice(0,3).forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); return out; };
   const idsTodoAntes = () => { const out=[]; PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); return out.filter(id=>id!=='INTO'); };
   const TRIENIO1=idsTrienio1(), TODO_ANTES=idsTodoAntes();
@@ -226,12 +234,24 @@ function boot(){
         sem.materias.forEach(m=>{
           total++;
           const div=document.createElement('div'); div.className='materia'; div.dataset.id=m.id;
-          div.textContent=`${m.nombre} (${m.id})`;
 
+          const left = document.createElement('span');
+          left.textContent = `${m.nombre} (${m.id})`;
+          left.style.flex = '1';
+          div.appendChild(left);
+
+          // Botón notas
+          const nb = document.createElement('button');
+          nb.className = 'note-btn';
+          nb.type = 'button';
+          nb.innerHTML = `📝 <span class="nb-label">Notas</span>`;
+          nb.addEventListener('click', (ev)=>{ ev.stopPropagation(); openNote(m.id, m.nombre); });
+          div.appendChild(nb);
+
+          // Estado/candado
           const req=normReq(m);
           const done=isOk(m.id);
           if(done){ div.classList.add('tachada'); aprob++; }
-
           const bloqueada=!cumple(req);
           if(bloqueada){
             div.classList.add('bloqueada');
@@ -239,10 +259,16 @@ function boot(){
             if(tip) div.setAttribute('data-tip', tip);
           }
 
+          // Indicador si tiene nota
+          if (notas[m.id] && notas[m.id].trim().length>0) {
+            div.classList.add('has-note');
+          }
+
+          // Toggle de aprobación
           div.addEventListener('click', ()=>{
             if(div.classList.contains('bloqueada')) return;
             const was=isOk(m.id);
-            estado[m.id]=!was; save();
+            estado[m.id]=!was; save(KEY, estado);
             if(!was && estado[m.id]){
               toast(frasePara(m.nombre));
               confettiBurst(34, 160);
@@ -272,11 +298,36 @@ function boot(){
     }
     const kpi=document.getElementById('progressKpi'); if(kpi){ kpi.textContent = pct + '%'; }
 
-    // Confetti extra al 100%
     if (pct === 100) confettiBurst(80, 220);
-
-    console.log('Progreso', {aprobadas:aprob,total,pct});
   }
+
+  /* ===== Notas (modal) ===== */
+  let currentNoteId = null;
+  const modal = document.getElementById('noteModal');
+  const noteTitle = document.getElementById('noteTitle');
+  const noteText  = document.getElementById('noteText');
+  const saveNoteBtn = document.getElementById('saveNoteBtn');
+
+  function openNote(id, nombre){
+    currentNoteId = id;
+    noteTitle.textContent = `Notas — ${nombre}`;
+    noteText.value = notas[id] || '';
+    if (typeof modal.showModal === 'function') modal.showModal();
+    else modal.setAttribute('open','');
+  }
+
+  saveNoteBtn?.addEventListener('click', (e)=>{
+    e.preventDefault();
+    if (!currentNoteId) return;
+    notas[currentNoteId] = noteText.value || '';
+    save(NOTES_KEY, notas);
+    try { modal.close(); } catch { modal.removeAttribute('open'); }
+    currentNoteId = null;
+    render();
+    toast('Notas guardadas ✅', 2000);
+  });
+
+  modal?.addEventListener('close', ()=>{ currentNoteId=null; });
 
   /* ===== Tema y reset ===== */
   function applyTheme(theme){
@@ -291,20 +342,62 @@ function boot(){
     return prefersDark ? 'dark' : 'light';
   }
   const toggleTheme = () => { const next = (document.body.classList.contains('dark') ? 'light' : 'dark'); localStorage.setItem(THEME_KEY, next); applyTheme(next); };
+
   function onReset(){
-    const ok = confirm("¿Seguro que querés borrar TODO tu avance? No se puede deshacer.");
+    const ok = confirm("¿Seguro que querés borrar TODO tu avance y notas? No se puede deshacer.");
     if(!ok) return;
     localStorage.removeItem(KEY);
+    localStorage.removeItem(NOTES_KEY);
     for (const k of Object.keys(estado)) delete estado[k];
-    toast("Se reinició tu avance. Empezamos de cero 💫", 4000);
+    for (const k of Object.keys(notas)) delete notas[k];
+    toast("Se reinició tu avance y notas. Empezamos de cero 💫", 4000);
     render();
+  }
+
+  /* ===== Export / Import ===== */
+  function exportar(){
+    const payload = { version: 1, fecha: new Date().toISOString(), estado, notas };
+    const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = `notegood-malla-backup-${new Date().toISOString().slice(0,10)}.json`;
+    document.body.appendChild(a); a.click(); a.remove();
+    toast('Backup exportado 💾', 1800);
+  }
+  function importar(file){
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      try{
+        const data = JSON.parse(reader.result);
+        if (!data || typeof data !== 'object') throw new Error('JSON inválido');
+        if (!data.estado || typeof data.estado !== 'object') throw new Error('Falta "estado"');
+        if (!data.notas  || typeof data.notas  !== 'object') throw new Error('Falta "notas"');
+        Object.assign(estado, data.estado);
+        Object.assign(notas,  data.notas);
+        save(KEY, estado); save(NOTES_KEY, notas);
+        toast('Backup importado 📥', 2000);
+        render();
+      }catch(err){ console.error(err); toast('Archivo inválido ❌', 2500); }
+    };
+    reader.readAsText(file);
+  }
+
+  /* ===== Instagram FAB (opcional) ===== */
+  const igFab = document.getElementById('igFab');
+  if (CONFIG.showInstagram && igFab){
+    igFab.href = CONFIG.instagramUrl;
+    igFab.hidden = false;
   }
 
   /* ===== Start ===== */
   document.addEventListener('DOMContentLoaded', ()=>{
     applyTheme(currentTheme());
-    const themeBtn = document.getElementById('themeToggle'); if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
-    const resetBtn = document.getElementById('resetBtn'); if (resetBtn) resetBtn.addEventListener('click', onReset);
+    document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
+    document.getElementById('resetBtn')?.addEventListener('click', onReset);
+    document.getElementById('exportBtn')?.addEventListener('click', exportar);
+    document.getElementById('importBtn')?.addEventListener('click', ()=> document.getElementById('importFile').click());
+    document.getElementById('importFile')?.addEventListener('change', (e)=>{ const f=e.target.files?.[0]; if(f) importar(f); e.target.value=''; });
+
     render();
   });
 }
