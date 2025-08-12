@@ -23,6 +23,17 @@ const FRASES = [
   "{m} done. Tu mapa se ve cada vez más claro 🗺️"
 ];
 
+// Copys dinámicos para el progreso (tono NoteGood)
+function progressCopy(pct) {
+  if (pct === 100) return "¡Plan completo! Orgullo total ✨";
+  if (pct >= 90)  return "Últimos detalles y a festejar 🎉";
+  if (pct >= 75)  return "Último sprint, ya casi 💨";
+  if (pct >= 50)  return "Mitad de camino, paso firme 💪";
+  if (pct >= 25)  return "Buen envión, seguí así 🚀";
+  if (pct > 0)    return "Primeros checks, ¡bien ahí! ✅";
+  return "Arranquemos tranqui, paso a paso 👟";
+}
+
 function initMalla(materias) {
   const contenedor = document.getElementById("malla");
   contenedor.innerHTML = "";
@@ -101,11 +112,12 @@ function initMalla(materias) {
     contenedor.appendChild(divAnio);
   });
 
-  // Progreso amigable en el footer
+  // Progreso amigable en el footer (dinámico según %)
   const progressText = document.getElementById('progressText');
   if (progressText) {
     const pct = total ? Math.round((aprobadas / total) * 100) : 0;
-    progressText.textContent = `${aprobadas} / ${total} materias aprobadas · ${pct}% — tranqui, lo estás haciendo bien.`;
+    const copy = progressCopy(pct);
+    progressText.textContent = `${aprobadas} / ${total} materias aprobadas · ${pct}% — ${copy}`;
   }
 }
 
