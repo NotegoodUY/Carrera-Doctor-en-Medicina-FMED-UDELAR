@@ -1,52 +1,158 @@
-:root {
-  --bg: #ffffff; /* Fondo claro */
-  --card: #f9f9fb; /* Tarjetas ligeramente grises */
-  --muted: #6b7280; /* Texto secundario */
-  --text: #1f2937; /* Texto principal oscuro */
-  --brand: #ff6b6b; /* Color primario Notegood (rojo salmón) */
-  --chip: #ffecec; /* Fondo chips suaves */
-  --chip-b: #ffb3b3; /* Borde chips */
-  --line: #e5e7eb; /* Bordes claros */
-  --accent: #4ade80; /* Verde de acento */
+/* ================================
+   Notegood – Tema claro minimal
+   (sin buscador/ni filtros)
+================================== */
+:root{
+  --bg:#ffffff;         /* Fondo principal */
+  --card:#ffffff;       /* Tarjetas */
+  --text:#0f172a;       /* Texto principal */
+  --muted:#64748b;      /* Texto secundario */
+  --brand:#6c5ce7;      /* Primario Notegood (indigo/violeta) */
+  --accent:#00bfa6;     /* Acento (teal) */
+  --line:#e5e7eb;       /* Bordes suaves */
+  --chip:#f3f4f6;       /* Chips / fondos suaves */
+  --chip-b:#e5e7eb;     /* Borde chips */
+  --shadow:0 1px 2px rgba(15,23,42,.06), 0 8px 24px rgba(15,23,42,.05);
+}
+
 *{box-sizing:border-box}
 html,body{height:100%}
-body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,#0a0c10,#0f1318 60%,#0a0c10);color:var(--text)}
-.site-header{position:sticky;top:0;background:rgba(11,13,16,.85);backdrop-filter:saturate(140%) blur(6px);border-bottom:1px solid var(--line);padding:16px 20px;z-index:10}
-.site-header h1{margin:0 0 10px 0;font-weight:700;font-size:22px;display:flex;align-items:center;gap:8px}
-.badge{background:var(--chip);border:1px solid var(--chip-b);padding:2px 8px;border-radius:20px;color:var(--brand);font-size:12px}
-.toolbar{display:flex;flex-wrap:wrap;gap:8px}
-.input{background:#0f1318;border:1px solid var(--line);color:var(--text);padding:10px 12px;border-radius:12px;min-width:140px}
-.input:focus{outline:none;border-color:#2b6fdd;box-shadow:0 0 0 3px rgba(91,188,255,.15)}
-.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:10px 14px;border-radius:12px;cursor:pointer}
-.btn:hover{border-color:#2b6fdd}
-.btn.small{padding:6px 10px;font-size:12px}
-.btn.ghost{background:transparent}
-.btn.icon{width:34px;height:34px;display:grid;place-items:center;border-radius:10px}
-.switch{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--muted)}
-.container{max-width:1200px;margin:24px auto;padding:0 16px}
-.stats{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;color:var(--muted);font-size:14px}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:8px}
-.card-head{display:flex;justify-content:space-between;align-items:center}
-.card .code{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--muted)}
-.card .name{margin:0;font-size:16px}
-.card .meta{display:flex;gap:6px;flex-wrap:wrap}
-.chip{background:var(--chip);border:1px solid var(--chip-b);color:#cbd5e1;padding:4px 8px;border-radius:999px;font-size:12px}
-.chip.type{color:#ffd479}
+body{
+  margin:0;
+  font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* Header */
+.site-header{
+  position:sticky; top:0; z-index:10;
+  background:rgba(255,255,255,.92);
+  backdrop-filter:saturate(140%) blur(6px);
+  border-bottom:1px solid var(--line);
+  padding:16px 20px;
+}
+.site-header h1{
+  margin:0;
+  font-weight:700;
+  font-size:22px;
+  letter-spacing:.2px;
+  display:flex; align-items:center; gap:10px;
+}
+.badge{
+  background:var(--chip);
+  border:1px solid var(--chip-b);
+  color:var(--brand);
+  padding:3px 10px;
+  border-radius:999px;
+  font-size:12px; font-weight:600;
+}
+
+/* Layout principal */
+.container{max-width:1200px; margin:24px auto; padding:0 16px}
+
+/* Grilla de materias */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:16px;
+}
+
+/* Tarjetas */
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:14px;
+  display:flex; flex-direction:column; gap:10px;
+  box-shadow:var(--shadow);
+  transition:border-color .15s ease, transform .08s ease;
+}
+.card:hover{border-color:#d7deea; transform:translateY(-1px)}
+.card-head{display:flex; justify-content:space-between; align-items:center}
+.card .code{
+  font-family:ui-monospace,Consolas,monospace;
+  font-size:12px; color:var(--muted);
+}
+.card .name{margin:0; font-size:16px; font-weight:650; letter-spacing:.2px}
+.card .meta{display:flex; gap:6px; flex-wrap:wrap}
+.chip{
+  background:var(--chip);
+  border:1px solid var(--chip-b);
+  color:#334155;
+  padding:4px 8px;
+  border-radius:999px;
+  font-size:12px; font-weight:600;
+}
+.chip.type{color:#7c3aed}
 .chip.credits{color:var(--accent)}
-.card .area{margin:2px 0 4px;color:var(--muted);font-size:13px}
-.prereq{display:flex;flex-wrap:wrap;gap:6px}
-.prereq .tag{background:#0c1015;border:1px dashed var(--line);color:#9fb0c0;padding:3px 8px;border-radius:999px;font-size:12px;cursor:help}
-.fav{background:transparent;border:1px solid var(--line);border-radius:10px;color:#ffd479;padding:4px 8px;cursor:pointer}
-.fav.active{background:#2a1f11;border-color:#735423}
-.footer{border-top:1px solid var(--line);padding:16px 20px;margin-top:24px;display:flex;justify-content:space-between;color:var(--muted);font-size:14px}
-.modal{border:0;padding:0;background:transparent}
-.modal::backdrop{background:rgba(0,0,0,.6)}
-.modal-card{width:min(760px,92vw);background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden}
-.modal-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px;border-bottom:1px solid var(--line)}
-.modal-body{padding:10px 16px 18px;display:grid;gap:10px}
-.m-row{display:flex;gap:12px;align-items:center}
-.m-row .k{width:140px;color:var(--muted);font-size:13px}
+.card .area{margin:2px 0 2px; color:var(--muted); font-size:13px}
+
+/* Prerequisitos como tags */
+.prereq{display:flex; flex-wrap:wrap; gap:6px}
+.prereq .tag{
+  background:#fff;
+  border:1px dashed var(--line);
+  color:#475569;
+  padding:3px 8px;
+  border-radius:999px;
+  font-size:12px;
+}
+
+/* Botones */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  padding:10px 14px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+  transition:box-shadow .15s ease, border-color .15s ease, transform .06s ease;
+}
+.btn:hover{border-color:var(--brand); box-shadow:0 0 0 3px rgba(108,92,231,.16)}
+.btn:active{transform:translateY(1px)}
+.btn.small{padding:7px 10px; font-size:12px}
+.btn.icon{width:34px; height:34px; border-radius:10px; padding:0}
+
+/* Footer */
+.footer{
+  border-top:1px solid var(--line);
+  background:#fff;
+  padding:16px 20px; margin-top:24px;
+  display:flex; justify-content:space-between; align-items:center;
+  color:var(--muted); font-size:14px;
+}
+.footer a{color:var(--brand); text-decoration:none; font-weight:600}
+.footer a:hover{text-decoration:underline}
+
+/* Modal (detalles) */
+.modal{border:0; padding:0; background:transparent}
+.modal::backdrop{background:rgba(0,0,0,.35)}
+.modal-card{
+  width:min(760px,92vw);
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 16px 40px rgba(2,6,23,.12);
+}
+.modal-head{
+  display:flex; justify-content:space-between; align-items:center;
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+}
+.modal-body{padding:12px 16px 18px; display:grid; gap:10px}
+.m-row{display:flex; gap:12px; align-items:center}
+.m-row .k{width:140px; color:var(--muted); font-size:13px}
 .m-row .v{flex:1}
 .m-row.col{align-items:flex-start}
-@media (max-width:640px){.m-row{flex-direction:column;align-items:flex-start}.m-row .k{width:auto}}
+
+/* Responsive */
+@media (max-width:640px){
+  .m-row{flex-direction:column; align-items:flex-start}
+  .m-row .k{width:auto}
+}
