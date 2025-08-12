@@ -5,7 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood.uy)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=11">
+  <!-- Cache-busting -->
+  <link rel="stylesheet" href="css/styles.css?v=12">
 </head>
 <body>
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
@@ -17,6 +18,7 @@
           🗑️ Borrar avance
         </button>
 
+        <!-- Toggle tema claro/oscuro -->
         <button id="themeToggle" class="switch" aria-pressed="false" aria-label="Cambiar tema">
           <span class="icon sun" aria-hidden="true">☀️</span>
           <span class="thumb" aria-hidden="true"></span>
@@ -43,6 +45,7 @@
     </div>
   </header>
 
+  <!-- Contenedor de la malla -->
   <main id="malla" class="grid-container" role="main" aria-live="polite"></main>
 
   <footer class="ng-footer" role="contentinfo">
@@ -50,6 +53,7 @@
     <p class="made">Hecho con 💜 por Notegood.uy — organización simple, resultados reales.</p>
   </footer>
 
-  <script src="js/app.js?v=11" defer></script>
+  <!-- Cache-busting -->
+  <script src="js/app.js?v=12" defer></script>
 </body>
 </html>
