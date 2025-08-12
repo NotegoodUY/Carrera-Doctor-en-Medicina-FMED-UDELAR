@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Malla Interactiva · Medicina (Notegood)</title>
+  <meta name="description" content="Malla interactiva de la carrera Doctor en Medicina – filtros, búsqueda, prerequisitos y favoritos." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="site-header">
+  <h1>Medicina · Malla Interactiva <span class="badge">Notegood</span></h1>
+  <div class="toolbar">
+    <input id="q" class="input" placeholder="Buscar materia, área o código…" autocomplete="off" />
+    <select id="f-year" class="input">
+      <option value="">Año</option>
+      <option>1</option><option>2</option><option>3</option><option>4</option><option>5</option><option>6</option>
+    </select>
+    <select id="f-sem" class="input">
+      <option value="">Semestre</option>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="A">Anual</option>
+    </select>
+    <select id="f-type" class="input">
+      <option value="">Tipo</option>
+      <option value="obligatoria">Obligatoria</option>
+      <option value="optativa">Optativa</option>
+      <option value="electiva">Electiva</option>
+    </select>
+    <button id="clear" class="btn ghost" title="Limpiar filtros">Limpiar</button>
+    <label class="switch" title="Mostrar solo favoritos">
+      <input type="checkbox" id="onlyFavs" />
+      <span>⭐ Solo favoritos</span>
+    </label>
+  </div>
+</header>
+
+<main class="container">
+  <section id="stats" class="stats"></section>
+
+  <section id="grid" class="grid" aria-live="polite"></section>
+
+  <template id="card-tpl">
+    <article class="card" data-id="">
+      <div class="card-head">
+        <div class="code"></div>
+        <button class="fav" title="Marcar favorito" aria-label="Favorito">☆</button>
+      </div>
+      <h3 class="name"></h3>
+      <div class="meta">
+        <span class="chip year" title="Año"></span>
+        <span class="chip sem" title="Semestre"></span>
+        <span class="chip type" title="Tipo"></span>
+        <span class="chip credits" title="Créditos"></span>
+      </div>
+      <p class="area"></p>
+      <div class="prereq"></div>
+      <button class="btn small more">Detalles</button>
+    </article>
+  </template>
+</main>
+
+<footer class="footer">
+  <div>
+    <strong>Plan:</strong> <span id="planName">–</span>
+    · <strong>Total materias:</strong> <span id="totalSubjects">0</span>
+    · <strong>Créditos visibles:</strong> <span id="visibleCredits">0</span>
+  </div>
+  <div>
+    <a href="#" id="downloadJSON">Descargar JSON</a>
+    · <a href="https://github.com" target="_blank" rel="noreferrer">GitHub</a>
+  </div>
+</footer>
+
+<!-- Modal -->
+<dialog id="modal" class="modal">
+  <article class="modal-card">
+    <header class="modal-head">
+      <h3 id="m-title"></h3>
+      <button id="m-close" class="btn icon" aria-label="Cerrar">✕</button>
+    </header>
+    <section class="modal-body">
+      <div class="m-row"><span class="k">Código</span><span class="v" id="m-code"></span></div>
+      <div class="m-row"><span class="k">Año</span><span class="v" id="m-year"></span></div>
+      <div class="m-row"><span class="k">Semestre</span><span class="v" id="m-sem"></span></div>
+      <div class="m-row"><span class="k">Tipo</span><span class="v" id="m-type"></span></div>
+      <div class="m-row"><span class="k">Créditos</span><span class="v" id="m-credits"></span></div>
+      <div class="m-row"><span class="k">Área</span><span class="v" id="m-area"></span></div>
+      <div class="m-row"><span class="k">Horas</span><span class="v" id="m-hours"></span></div>
+      <div class="m-row col"><span class="k">Descripción</span><span class="v" id="m-desc"></span></div>
+      <div class="m-row col"><span class="k">Prerequisitos</span><span class="v" id="m-pr"></span></div>
+      <div class="m-row col"><span class="k">Correlativas</span><span class="v" id="m-co"></span></div>
+      <div class="m-row col"><span class="k">Notas</span><span class="v" id="m-notes"></span></div>
+    </section>
+  </article>
+</dialog>
+
+<script src="app.js" defer></script>
+</body>
+</html>
