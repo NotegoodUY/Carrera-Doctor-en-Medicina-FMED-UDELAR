@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood.uy)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=16">
+  <link rel="stylesheet" href="css/styles.css?v=17">
 </head>
 <body>
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
@@ -13,9 +13,10 @@
       <div class="logo" aria-label="Notegood.uy">Notegood.uy ✨</div>
 
       <div class="controls" aria-label="Controles de visualización">
-        <button id="resetBtn" class="btn ghost" title="Borrar avance" aria-label="Borrar todo mi avance">
-          🗑️ Borrar avance
-        </button>
+        <button id="resetBtn" class="btn ghost" title="Borrar avance" aria-label="Borrar todo mi avance">🗑️ Borrar avance</button>
+        <button id="exportBtn" class="btn ghost" title="Exportar mi avance" aria-label="Exportar mi avance">💾 Exportar</button>
+        <button id="importBtn" class="btn ghost" title="Importar avance" aria-label="Importar avance">📥 Importar</button>
+        <input id="importFile" type="file" accept="application/json" hidden>
 
         <button id="themeToggle" class="switch" aria-pressed="false" aria-label="Cambiar tema">
           <span class="icon sun" aria-hidden="true">☀️</span>
@@ -28,6 +29,7 @@
     <h1 class="title">Malla Interactiva – Medicina UDELAR (Plan 2008)</h1>
     <p class="subtitle">Tu mapa claro para avanzar con calma y constancia.</p>
 
+    <!-- Barra de progreso visual -->
     <div class="progress-wrap" aria-label="Avance de la carrera">
       <div class="progress-track">
         <div id="progressBar" class="progress-bar" style="width:0%"></div>
@@ -39,6 +41,7 @@
       <span class="legend-item"><span class="dot dot-ok" aria-hidden="true">✓</span> Aprobada</span>
       <span class="legend-item"><span class="dot dot-lock" aria-hidden="true">🔒</span> Bloqueada por previas</span>
       <span class="legend-item"><span class="dot dot-pend" aria-hidden="true"></span> Pendiente</span>
+      <span class="legend-item"><span class="dot" aria-hidden="true">📝</span> Notas</span>
     </div>
   </header>
 
@@ -46,12 +49,29 @@
 
   <footer class="ng-footer" role="contentinfo">
     <p id="progressText">0 / 0 materias aprobadas · 0% — Arranquemos tranqui, paso a paso 👟</p>
-    <p class="made">Hecho con 💜 y muuucho café por Notegood.uy — organización simple, resultados reales.</p>
+    <p class="made">Hecho con 💜 por Notegood.uy — organización simple, resultados reales.</p>
   </footer>
 
   <!-- Confetti container -->
   <div id="confetti"></div>
 
-  <script src="js/app.js?v=16" defer></script>
+  <!-- Modal Notas -->
+  <dialog id="noteModal">
+    <form method="dialog" class="note-form">
+      <h3 id="noteTitle">Notas</h3>
+      <textarea id="noteText" rows="8" placeholder="Escribe tips, bibliografía, fechas clave…"></textarea>
+      <div class="note-actions">
+        <button value="cancel" class="btn-sec">Cancelar</button>
+        <button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- (Opcional) FAB Instagram: se controla por config en app.js -->
+  <a id="igFab" class="fab-ig" href="#" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy" hidden>
+    <span>📷</span>
+  </a>
+
+  <script src="js/app.js?v=17" defer></script>
 </body>
 </html>
