@@ -1,42 +1,61 @@
-# Malla Interactiva – Medicina (Notegood)
+# 📚 Malla Interactiva – Medicina UDELAR by Notegood.uy
 
-Sitio estático para GitHub Pages. Permite buscar, filtrar, marcar favoritos y ver prerequisitos.
+Bienvenido/a a la **Malla Interactiva de Medicina UDELAR** 💜  
+Esta herramienta fue creada con ❤️ y mucho café ☕ para estudiantes que quieren visualizar y llevar un seguimiento de su avance académico de forma **fácil, clara y motivadora**.
 
-## Estructura
-- `index.html` – Interfaz y componentes.
-- `styles.css` – Estilos.
-- `app.js` – Lógica de filtrado, render y modal.
-- `data/curriculum.json` – Plan y materias. **Editá acá**.
+---
 
-## Publicar en GitHub Pages
-1. Crear un repo nuevo, ejemplo: `malla-medicina-notegood`.
-2. Subir estos archivos manteniendo la misma estructura de carpetas:
-   - `index.html`
-   - `styles.css`
-   - `app.js`
-   - `data/curriculum.json` (dentro de la carpeta `data/`)
-3. En **Settings → Pages**:
-   - *Source*: `Deploy from a branch`.
-   - *Branch*: `main` (o `master`) y *Folder* `/root`.
-   - Guardar. Esperar a que aparezca la URL.
+## ✨ Características principales
+- **Modo claro/oscuro** 🌗 para cuidar tus ojitos en maratones de estudio.
+- **Avance visual de la carrera** 📊 con barra de progreso y contador en tiempo real.
+- **Candados y correlatividades** 🔒: las materias se desbloquean automáticamente cuando cumplís las previas.
+- **Frases motivadoras estilo Notegood** 🎯 que te sacan una sonrisa cada vez que tildás una materia.
+- **Confeti 🎉** cada vez que completás una materia, porque aprobar siempre es motivo de fiesta.
+- **Botón para reiniciar** 🗑️ todo tu avance (por si querés empezar desde cero o simular tu recorrido).
+- **Diseño responsive** 📱 pensado para que lo uses desde tu compu, tablet o celular.
 
-> Si usás otra carpeta para `data/`, actualizá la ruta en `app.js` → `fetch('data/curriculum.json')`.
+---
 
-## Cómo editar el plan
-Abrí `data/curriculum.json` y agregá/ajustá materias. Campos soportados:
+## 📌 Cómo usarla
+1. Abrí el archivo `index.html` en tu navegador.
+2. Marcá las materias aprobadas ✅.
+3. Observá cómo se actualiza tu barra de progreso y se desbloquean nuevas materias.
+4. Si querés volver a empezar, tocá el botón **"Borrar avance"**.
 
-```json
-{
-  "id": "UNICO",
-  "code": "CÓDIGO VISUAL (opcional)",
-  "name": "Nombre de la materia",
-  "year": 1,
-  "semester": 1, // 1, 2 o "A" (anual)
-  "type": "obligatoria|optativa|electiva",
-  "area": "Área/cátedra",
-  "credits": 0,
-  "hours": 0,
-  "prereq": ["ID1", "ID2"],
-  "correlatives": ["ID3"],
-  "description": "Texto libre",
-  "notes": "Texto libre"
+---
+
+## 🖌️ Personalización
+- **Colores:** toda la estética está basada en la identidad de Notegood 💜, pero podés cambiar la paleta en `styles.css`.
+- **Frases motivadoras:** están en el archivo JS, en el array `FRASES`. ¡Podés sumar las tuyas!
+
+---
+
+## 🛠️ Tecnologías utilizadas
+- **HTML5**
+- **CSS3**
+- **JavaScript Vanilla** (sin frameworks, fácil de modificar)
+
+---
+
+## 💡 Idea y créditos
+Este proyecto fue desarrollado para estudiantes de **Medicina en la UDELAR** con el objetivo de:
+- Facilitar la planificación de la carrera
+- Hacer el seguimiento más visual y motivador
+- Demostrar que la organización académica también puede ser bonita ✨
+
+---
+
+## 🚀 Contribuir
+Si querés sumar funcionalidades (ej. recordatorios, integración con calendario, exportar a PDF), ¡mandá un pull request!  
+Toda contribución que ayude a estudiantes será bienvenida 💜
+
+---
+
+## 📸 Vista previa
+*(Agregá aquí una captura de pantalla de la malla funcionando)*
+
+---
+
+## 📣 Nota final
+> "Estudiar Medicina no es fácil, pero organizarte sí puede serlo.  
+> Con constancia, organización y un poco de humor, todo es más llevadero." — **Notegood.uy**
