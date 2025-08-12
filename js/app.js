@@ -110,4 +110,138 @@ function normalizarReq(m){
   const req={ allOf:[], oneOf:[] };
   if (Array.isArray(m.previas)) req.allOf.push(...m.previas);
   if (m.req && Array.isArray(m.req.allOf)) req.allOf.push(...m.req.allOf);
-  if (m.req && Array.isArray(m.req.oneOf)) req.oneOf.push(.
+  if (m.req && Array.isArray(m.req.oneOf)) req.oneOf.push(...m.req.oneOf);
+  req.allOf=req.allOf.flatMap(id=> id==='__TRIENIO1__'?TRIENIO1 : id==='__TODO_ANTES__'?TODO_ANTES : [id]);
+  return req;
+}
+function requisitosCumplidos(req){
+  const allOk=(req.allOf||[]).every(id=>isAprobada(id));
+  const groups=req.oneOf||[];
+  const oneOk=groups.length===0 || groups.some(g=>g.some(id=>isAprobada(id)));
+  return allOk && oneOk;
+}
+function faltantesTexto(req){
+  const faltAll=(req.allOf||[]).filter(id=>!isAprobada(id));
+  const grupos=(req.oneOf||[]).map(g=>g.some(id=>isAprobada(id))?null:g).filter(Boolean);
+  const name=id=>NOMBRE_MATERIA[id]||id;
+  const parts=[];
+  if (faltAll.length) parts.push("Te falta aprobar:\n• "+faltAll.map(name).join("\n• "));
+  if (grupos.length)  parts.push("Y al menos 1 de:\n• "+grupos[0].map(name).join("\n• "));
+  return parts.join("\n\n");
+}
+
+/* ===== Tema ===== */
+function applyTheme(theme){
+  document.body.classList.toggle('dark', theme === 'dark');
+  const btn = document.getElementById('themeToggle');
+  if (btn) btn.setAttribute('aria-pressed', theme === 'dark' ? 'true' : 'false');
+}
+function currentTheme(){
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved) return saved;
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  return prefersDark ? 'dark' : 'light';
+}
+function toggleTheme(){
+  const next = (document.body.classList.contains('dark') ? 'light' : 'dark');
+  localStorage.setItem(THEME_KEY, next);
+  applyTheme(next);
+}
+
+/* ===== Toasts ===== */
+function ensureToastContainer(){
+  if(!document.querySelector('.toast-container')){
+    const tc=document.createElement('div'); tc.className='toast-container'; document.body.appendChild(tc);
+  }
+}
+function showToast(texto, ms=6500){
+  const tc=document.querySelector('.toast-container');
+  while (tc.children.length>=3) tc.firstElementChild.remove();
+  const t=document.createElement('div'); t.className='toast'; t.setAttribute('role','status'); t.setAttribute('aria-live','polite');
+  t.innerHTML=`<span class="tag">OK</span> ${texto}`; tc.appendChild(t); requestAnimationFrame(()=>t.classList.add('show'));
+  let timer=setTimeout(()=>closeToast(t), ms);
+  t.addEventListener('mouseenter', ()=>{ clearTimeout(timer); timer=null; });
+  t.addEventListener('mouseleave', ()=>{ if(!timer) timer=setTimeout(()=>closeToast(t), 1800); });
+  t.addEventListener('click', ()=>closeToast(t));
+}
+function closeToast(t){ if(!t||t.classList.contains('hide')) return; t.classList.remove('show'); t.classList.add('hide'); setTimeout(()=>t.remove(),220); }
+
+/* ===== Render ===== */
+function initMalla(plan){
+  const cont=document.getElementById('malla');
+  cont.innerHTML='';
+  ensureToastContainer();
+
+  let total=0, aprobadas=0;
+
+  plan.forEach((anio, idx)=>{
+    const col=document.createElement('div'); col.className='year y'+Math.min(idx+1,7);
+    const h2=document.createElement('h2'); h2.textContent=yearLabel(idx); col.appendChild(h2);
+
+    anio.semestres.forEach(sem=>{
+      const box=document.createElement('div'); box.className='semestre';
+      const h3=document.createElement('h3'); h3.textContent=sem.numero; box.appendChild(h3);
+
+      sem.materias.forEach(m=>{
+        total++;
+        const div=document.createElement('div'); div.className='materia'; div.dataset.id=m.id;
+        div.textContent=`${m.nombre} (${m.id})`;
+
+        const req=normalizarReq(m);
+        const done=isAprobada(m.id);
+        if(done){ div.classList.add('tachada'); aprobadas++; }
+
+        const bloqueada=!requisitosCumplidos(req);
+        if(bloqueada){
+          div.classList.add('bloqueada');
+          const tip=faltantesTexto(req);
+          if(tip) div.setAttribute('data-tip', tip);
+        }
+
+        div.addEventListener('click', ()=>{
+          if(div.classList.contains('bloqueada')) return;
+          const was=isAprobada(m.id);
+          estado[m.id]=!was; saveEstado();
+          if(!was && estado[m.id]){
+            const frase=FRASES[Math.floor(Math.random()*FRASES.length)].replace('{m}', m.nombre);
+            showToast(frase);
+          }
+          initMalla(plan);
+        });
+
+        box.appendChild(div);
+      });
+
+      col.appendChild(box);
+    });
+
+    cont.appendChild(col);
+  });
+
+  // Progreso y barra
+  const pct= total? Math.round((aprobadas/total)*100) : 0;
+  const copy=progressCopy(pct);
+  const p=document.getElementById('progressText'); if(p){ p.textContent=`${aprobadas} / ${total} materias aprobadas · ${pct}% — ${copy}`; }
+  const bar=document.getElementById('progressBar'); if(bar){ bar.style.width = pct + '%'; }
+  const kpi=document.getElementById('progressKpi'); if(kpi){ kpi.textContent = pct + '%'; }
+
+  console.log('Progreso', {aprobadas,total,pct});
+}
+
+/* ===== Reset avance ===== */
+function onReset(){
+  const ok = confirm("¿Seguro que querés borrar TODO tu avance? No se puede deshacer.");
+  if(!ok) return;
+  localStorage.removeItem(KEY);
+  for (const k of Object.keys(estado)) delete estado[k];
+  showToast("Se reinició tu avance. Empezamos de cero 💫", 4000);
+  initMalla(PLAN);
+}
+
+/* ===== Start ===== */
+document.addEventListener('DOMContentLoaded', ()=>{
+  applyTheme(currentTheme());
+  const themeBtn = document.getElementById('themeToggle'); if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+  const resetBtn = document.getElementById('resetBtn'); if (resetBtn) resetBtn.addEventListener('click', onReset);
+  initMalla(PLAN);
+});
