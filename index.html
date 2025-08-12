@@ -1,21 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Plan 2008)</title>
-  <link rel="stylesheet" href="css/styles.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css?v=20" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 </head>
 <body>
   <header class="header">
     <div class="header-buttons">
-      <button class="brand">Notegood.uy ✨</button>
-      <button id="clearProgressBtn"><i class="fa-solid fa-trash"></i> Borrar avance</button>
-      <button id="exportBtn"><i class="fa-solid fa-floppy-disk"></i> Exportar</button>
-      <button id="importBtn"><i class="fa-solid fa-file-import"></i> Importar</button>
-      <label class="theme-toggle">
-        <input type="checkbox" id="themeSwitch">
+      <button class="brand" type="button">Notegood.uy ✨</button>
+
+      <button id="clearProgressBtn" type="button" title="Borrar todo mi avance">
+        <i class="fa-solid fa-trash"></i> Borrar avance
+      </button>
+      <button id="exportBtn" type="button" title="Exportar mi avance">
+        <i class="fa-solid fa-floppy-disk"></i> Exportar
+      </button>
+      <button id="importBtn" type="button" title="Importar avance">
+        <i class="fa-solid fa-file-import"></i> Importar
+      </button>
+      <input id="importFile" type="file" accept="application/json" hidden>
+
+      <label class="theme-toggle" title="Cambiar tema">
+        <input type="checkbox" id="themeSwitch" />
         <span class="slider"></span>
         <i class="fa-solid fa-moon"></i>
       </label>
@@ -26,11 +35,13 @@
     <h1>Malla Interactiva – Medicina <span>UDELAR</span> (Plan 2008)</h1>
     <p class="subtitulo">Tu mapa claro para avanzar con calma y constancia.</p>
 
+    <!-- Progreso -->
     <div class="progress-container">
-      <div class="progress-bar" id="progressBar"></div>
+      <div id="progressBar"></div>
       <span id="progressPercent">0%</span>
     </div>
 
+    <!-- Leyenda -->
     <div class="legend">
       <span class="status aprobada"><i class="fa-solid fa-circle-check"></i> Aprobada</span>
       <span class="status bloqueada"><i class="fa-solid fa-lock"></i> Bloqueada por previas</span>
@@ -38,26 +49,34 @@
       <span class="status nota"><i class="fa-solid fa-pen-to-square"></i> Notas / Nota</span>
     </div>
 
-    <div id="statsFooter" class="stats-footer"></div>
+    <!-- Resumen progreso -->
+    <div id="statsFooter" class="stats-footer">0 / 0 materias aprobadas · 0% — Arranquemos tranqui, paso a paso 👟</div>
 
+    <!-- Malla -->
     <section id="mallaContainer"></section>
   </main>
 
-  <!-- Botón flotante de Instagram -->
-  <a href="https://www.instagram.com/notegood.uy/" target="_blank" class="instagram-btn">
+  <!-- FAB Instagram -->
+  <a href="https://www.instagram.com/notegood.uy/" class="instagram-btn" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy">
     <i class="fab fa-instagram"></i>
   </a>
 
-  <!-- Modal de notas -->
-  <div id="notesModal" class="modal">
+  <!-- Modal Notas/Calificación -->
+  <div id="notesModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalSubjectName">
     <div class="modal-content">
-      <span id="closeModal" class="close">&times;</span>
+      <span id="closeModal" class="close" aria-label="Cerrar">&times;</span>
       <h2>Notas para <span id="modalSubjectName"></span></h2>
-      <textarea id="notesTextarea" placeholder="Escribe aquí tus apuntes o calificación..."></textarea>
-      <button id="saveNoteBtn">Guardar nota</button>
+
+      <label style="display:block; margin:.4rem 0 .3rem; font-weight:700;">Calificación (0–12)</label>
+      <input id="gradeInput" type="number" min="0" max="12" step="1" placeholder="Ej: 10" style="width:140px; padding:.5rem; border-radius:10px; border:1px solid #e5e7eb;">
+
+      <label style="display:block; margin:.85rem 0 .3rem; font-weight:700;">Notas</label>
+      <textarea id="notesTextarea" placeholder="Escribe aquí tus apuntes (parciales, bibliografía, recordatorios)…"></textarea>
+
+      <button id="saveNoteBtn" type="button">Guardar</button>
     </div>
   </div>
 
-  <script src="js/script.js"></script>
+  <script src="js/script.js?v=20"></script>
 </body>
 </html>
