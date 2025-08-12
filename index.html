@@ -1,75 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Malla Interactiva · Medicina (Notegood)</title>
-  <meta name="description" content="Malla interactiva de la carrera Doctor en Medicina – solo visualización de materias y detalles." />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malla Interactiva Medicina – NoteGood</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<header class="site-header">
-  <h1>Medicina · Malla Interactiva <span class="badge">Notegood</span></h1>
-</header>
+  <header>
+    <div class="logo">NoteGood ✨</div>
+    <h1>Malla Interactiva – Medicina UDELAR</h1>
+  </header>
 
-<main class="container">
-  <section id="grid" class="grid" aria-live="polite"></section>
+  <main id="malla" class="grid-container"></main>
 
-  <template id="card-tpl">
-    <article class="card" data-id="">
-      <div class="card-head">
-        <div class="code"></div>
-      </div>
-      <h3 class="name"></h3>
-      <div class="meta">
-        <span class="chip year" title="Año"></span>
-        <span class="chip sem" title="Semestre"></span>
-        <span class="chip type" title="Tipo"></span>
-        <span class="chip credits" title="Créditos"></span>
-      </div>
-      <p class="area"></p>
-      <div class="prereq"></div>
-      <button class="btn small more">Detalles</button>
-    </article>
-  </template>
-</main>
+  <footer>
+    <p>Hecho con ❤️ y mucho café por NoteGood</p>
+  </footer>
 
-<footer class="footer">
-  <div>
-    <strong>Plan:</strong> <span id="planName">–</span>
-    · <strong>Total materias:</strong> <span id="totalSubjects">0</span>
-  </div>
-  <div>
-    <a href="#" id="downloadJSON">Descargar JSON</a>
-  </div>
-</footer>
-
-<!-- Modal -->
-<dialog id="modal" class="modal">
-  <article class="modal-card">
-    <header class="modal-head">
-      <h3 id="m-title"></h3>
-      <button id="m-close" class="btn icon" aria-label="Cerrar">✕</button>
-    </header>
-    <section class="modal-body">
-      <div class="m-row"><span class="k">Código</span><span class="v" id="m-code"></span></div>
-      <div class="m-row"><span class="k">Año</span><span class="v" id="m-year"></span></div>
-      <div class="m-row"><span class="k">Semestre</span><span class="v" id="m-sem"></span></div>
-      <div class="m-row"><span class="k">Tipo</span><span class="v" id="m-type"></span></div>
-      <div class="m-row"><span class="k">Créditos</span><span class="v" id="m-credits"></span></div>
-      <div class="m-row"><span class="k">Área</span><span class="v" id="m-area"></span></div>
-      <div class="m-row"><span class="k">Horas</span><span class="v" id="m-hours"></span></div>
-      <div class="m-row col"><span class="k">Descripción</span><span class="v" id="m-desc"></span></div>
-      <div class="m-row col"><span class="k">Prerequisitos</span><span class="v" id="m-pr"></span></div>
-      <div class="m-row col"><span class="k">Correlativas</span><span class="v" id="m-co"></span></div>
-      <div class="m-row col"><span class="k">Notas</span><span class="v" id="m-notes"></span></div>
-    </section>
-  </article>
-</dialog>
-
-<script src="app.js" defer></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
