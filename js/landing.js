@@ -1,13 +1,13 @@
-/* Landing Notegood v24 – robusto */
+/* Landing Notegood v24 – robusto para esquema index (landing) → malla.html (app) */
 document.addEventListener('DOMContentLoaded', () => {
   const KEY = 'ng-skip-intro';
   const enterLink = document.getElementById('enterLink');
   const skip = document.getElementById('skipIntroChk');
 
-  // Si ya eligió "no volver a mostrar", saltamos directo
+  // Si ya eligió "no volver a mostrar", saltamos directo a la malla
   try {
     if (localStorage.getItem(KEY) === '1') {
-      window.location.href = 'index.html';
+      window.location.href = 'malla.html';
       return;
     }
   } catch(e){ /* ignore */ }
@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
       try {
         if (skip && skip.checked) localStorage.setItem(KEY, '1');
       } catch(e){ /* ignore */ }
-      // No prevenimos la navegación: dejamos que el <a href="index.html"> navegue sí o sí
+      // Dejamos que el <a href="malla.html"> navegue sin impedirlo
     });
   }
 });
