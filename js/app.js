@@ -1,5 +1,5 @@
-/* Notegood Malla – app.js (v21, full plan) */
-console.log('Notegood Malla v21 – app.js');
+/* Notegood Malla – app.js (v22, full plan) */
+console.log('Notegood Malla v22 – app.js');
 
 (function safeStart(){
   try { boot(); }
@@ -67,14 +67,7 @@ function boot(){
   }
   const yearLabel = i => (["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"][i] || `Año ${i+1}`);
 
-  /* ===== PLAN COMPLETO con correlativas (Plan 2008) =====
-     Correcciones claves:
-     - MANAT depende de MSPHB (Salud y Humanidades y Bioética).
-     - TRIENIO1 = todo 1º–3º (años 1–3 completos).
-     - MC1: Bioestadística + (al menos 1 de [HIST, BCC3N, BCC4C]).
-     - MC2: TRIENIO1 + M4BCP + M4PNA + (al menos 1 de [M4PED, M4GYN, MCM, M6CQ, M6MFC]).
-     - INTO: requiere TODO (excepto itself).
-  */
+  /* ===== PLAN COMPLETO con correlativas (Plan 2008) ===== */
   const PLAN = [
     { semestres: [
       { numero: "1º semestre", materias: [
@@ -272,7 +265,7 @@ function boot(){
 
           // Estado/candado
           const req=normReq(m);
-          const done=isOk(m.id);
+          const done=!!estado[m.id];
           if(done){ div.classList.add('tachada'); aprob++; }
           const bloqueada=!cumple(req);
           if(bloqueada){
@@ -289,7 +282,7 @@ function boot(){
           // Toggle aprobación
           div.addEventListener('click', ()=>{
             if(div.classList.contains('bloqueada')) return;
-            const was=isOk(m.id);
+            const was=!!estado[m.id];
             estado[m.id]=!was; save(KEY, estado);
             if(!was && estado[m.id]){
               toast(frasePara(m.nombre));
@@ -422,9 +415,9 @@ function boot(){
     reader.onload = ()=>{
       try{
         const data = JSON.parse(reader.result);
-        if (!data || typeof data !== 'object') throw new Error('JSON inválido');
-        if (!data.estado || typeof data.estado !== 'object') throw new Error('Falta "estado"');
-        if (!data.notas  || typeof data.notas  !== 'object') throw new Error('Falta "notas"');
+        if (!data || typeof data !== 'object') throw new Error('Archivo inválido');
+        if (!data.estado || typeof data.estado !== 'object') throw new Error('Falta “estado”');
+        if (!data.notas  || typeof data.notas  !== 'object') throw new Error('Falta “notas”');
         const importedGrades = (data.grades && typeof data.grades === 'object') ? data.grades : {};
 
         Object.assign(estado, data.estado);
@@ -432,7 +425,7 @@ function boot(){
         Object.assign(grades, importedGrades);
 
         save(KEY, estado); save(NOTES_KEY, notas); save(GRADES_KEY, grades);
-        toast('Backup importado 📥', 2000);
+        toast('Progreso importado 📥', 2000);
         render();
       }catch(err){ console.error(err); toast('Archivo inválido ❌', 2500); }
     };
@@ -447,12 +440,6 @@ function boot(){
     document.getElementById('exportBtn')?.addEventListener('click', exportar);
     document.getElementById('importBtn')?.addEventListener('click', ()=> document.getElementById('importFile').click());
     document.getElementById('importFile')?.addEventListener('change', (e)=>{ const f=e.target.files?.[0]; if(f) importar(f); e.target.value=''; });
-
-    // Hacer clic en el logo vuelve a la intro (si estás usando malla.html)
-    const logo = document.querySelector('.logo[href], .logo');
-    if (logo && logo.tagName === 'A') {
-      // ya navega a index.html
-    }
 
     render();
   });
