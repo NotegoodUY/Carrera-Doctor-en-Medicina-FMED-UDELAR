@@ -1,61 +1,78 @@
-# 📚 Malla Interactiva – Medicina UDELAR by Notegood.uy
+# 📚 Malla Interactiva Medicina – Notegood.uy
 
-Bienvenido/a a la **Malla Interactiva de Medicina UDELAR** 💜  
-Esta herramienta fue creada con ❤️ y mucho café ☕ para estudiantes que quieren visualizar y llevar un seguimiento de su avance académico de forma **fácil, clara y motivadora**.
+Bienvenido/a a la **Malla Interactiva de Medicina** de [Notegood.uy](https://www.instagram.com/notegood.uy/)  
+Un proyecto pensado para que lleves el control de tu carrera universitaria de forma **visual, motivadora y sin enredos**.
 
 ---
 
 ## ✨ Características principales
-- **Modo claro/oscuro** 🌗 para cuidar tus ojitos en maratones de estudio.
-- **Avance visual de la carrera** 📊 con barra de progreso y contador en tiempo real.
-- **Candados y correlatividades** 🔒: las materias se desbloquean automáticamente cuando cumplís las previas.
-- **Frases motivadoras estilo Notegood** 🎯 que te sacan una sonrisa cada vez que tildás una materia.
-- **Confeti 🎉** cada vez que completás una materia, porque aprobar siempre es motivo de fiesta.
-- **Botón para reiniciar** 🗑️ todo tu avance (por si querés empezar desde cero o simular tu recorrido).
-- **Diseño responsive** 📱 pensado para que lo uses desde tu compu, tablet o celular.
+
+- ✅ **Marcar materias aprobadas** con un clic.
+- 🔓 **Desbloqueo automático** de correlativas según plan de estudios.
+- 📈 **Progreso en tiempo real** con barra de avance y frases motivadoras.
+- 📝 **Notas y calificaciones** por materia.
+- 📤 **Importar y exportar** tu avance para guardarlo o pasarlo de dispositivo.
+- 🎉 **Confeti** al completar toda la malla (porque lo merecés).
+- 🌙 **Modo claro/oscuro** a elección.
+- 📱 **Diseño responsive** para usar en computadora, tablet o celular.
 
 ---
 
-## 📌 Cómo usarla
-1. Abrí el archivo `index.html` en tu navegador.
-2. Marcá las materias aprobadas ✅.
-3. Observá cómo se actualiza tu barra de progreso y se desbloquean nuevas materias.
-4. Si querés volver a empezar, tocá el botón **"Borrar avance"**.
+## 🖥️ Cómo usarla
+
+1. **Entrar a la página** y, si es tu primera vez, leer la pantalla inicial *"Cómo se usa"*.
+2. **Marcar materias aprobadas** tocando sobre su nombre.
+3. Al aprobar una materia:
+   - Se desbloquean sus correlativas.
+   - Aparece una frase motivadora estilo Notegood.
+4. Si querés **agregar notas o calificaciones**:
+   - Pulsa el ícono de lápiz ✏️.
+   - Escribí lo que quieras (ejemplo: “12 en el parcial” o “Repasar sistema nervioso”).
+   - Se guarda automáticamente.
+5. **Exportar avance**: Guarda un archivo para respaldo.
+6. **Importar avance**: Carga el archivo para restaurar tu progreso.
+7. **Borrar avance**: Botón para reiniciar todo y empezar desde cero.
 
 ---
 
-## 🖌️ Personalización
-- **Colores:** toda la estética está basada en la identidad de Notegood 💜, pero podés cambiar la paleta en `styles.css`.
-- **Frases motivadoras:** están en el archivo JS, en el array `FRASES`. ¡Podés sumar las tuyas!
+## 📷 Capturas
+
+*(Acá podés poner imágenes o GIFs mostrando la malla en acción)*
 
 ---
 
-## 🛠️ Tecnologías utilizadas
-- **HTML5**
-- **CSS3**
-- **JavaScript Vanilla** (sin frameworks, fácil de modificar)
+## 📋 Tecnologías usadas
+
+- HTML5
+- CSS3
+- JavaScript (Vanilla)
+- LocalStorage (para guardar el progreso en tu navegador)
 
 ---
 
-## 💡 Idea y créditos
-Este proyecto fue desarrollado para estudiantes de **Medicina en la UDELAR** con el objetivo de:
-- Facilitar la planificación de la carrera
-- Hacer el seguimiento más visual y motivador
-- Demostrar que la organización académica también puede ser bonita ✨
+## 🧠 Sobre Notegood.uy
+
+Somos una marca **realista, humana y compañera**.  
+Estudiamos con vos, no desde arriba.  
+Te acompañamos en tu carrera con herramientas y resúmenes que te hacen la vida más fácil.
+
+📍 Instagram: [@notegood.uy](https://www.instagram.com/notegood.uy/)
 
 ---
 
-## 🚀 Contribuir
-Si querés sumar funcionalidades (ej. recordatorios, integración con calendario, exportar a PDF), ¡mandá un pull request!  
-Toda contribución que ayude a estudiantes será bienvenida 💜
+## 📜 Licencia
+
+Este proyecto está bajo la licencia MIT. Podés usarlo, modificarlo y compartirlo, siempre reconociendo la autoría original.
 
 ---
 
-## 📸 Vista previa
-*(Agregá aquí una captura de pantalla de la malla funcionando)*
+## 💡 Idea extra
+
+Si querés sumar funcionalidades, algunas ideas son:
+- Calendario integrado para planificar parciales.
+- Contador de días para exámenes.
+- Seguimiento de horas de estudio.
 
 ---
 
-## 📣 Nota final
-> "Estudiar Medicina no es fácil, pero organizarte sí puede serlo.  
-> Con constancia, organización y un poco de humor, todo es más llevadero." — **Notegood.uy**
+> 🗣️ **Mensaje Notegood**: "Tranqui, lo estás haciendo bien. Paso a paso se llega lejos."
