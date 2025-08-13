@@ -1,5 +1,5 @@
-/* Notegood Malla – app.js (v22, full plan) */
-console.log('Notegood Malla v22 – app.js');
+/* Notegood Malla – app.js (v23, full plan) */
+console.log('Notegood Malla v23 – app.js');
 
 (function safeStart(){
   try { boot(); }
@@ -15,7 +15,7 @@ console.log('Notegood Malla v22 – app.js');
 })();
 
 function boot(){
-  /* ===== Frases Notegood (sin repetición hasta agotar) ===== */
+  /* ===== Frases Notegood (pool sin repetición) ===== */
   const FRASES = [
     "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
     "{m} ✅ — organización + constancia = resultados.",
@@ -67,7 +67,14 @@ function boot(){
   }
   const yearLabel = i => (["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"][i] || `Año ${i+1}`);
 
-  /* ===== PLAN COMPLETO con correlativas (Plan 2008) ===== */
+  /* ===== PLAN COMPLETO con correlativas (Plan 2008) =====
+     Correcciones:
+     - MANAT depende de MSPHB (Salud y Humanidades y Bioética).
+     - TRIENIO1 = años 1–3 completos.
+     - MC1: MIBES + (al menos 1 de [HIST, BCC3N, BCC4C]).
+     - MC2: TRIENIO1 + M4BCP + M4PNA + (al menos 1 de [M4PED, M4GYN, MCM, M6CQ, M6MFC]).
+     - INTO: requiere TODO aprobado (excepto itself).
+  */
   const PLAN = [
     { semestres: [
       { numero: "1º semestre", materias: [
@@ -145,7 +152,7 @@ function boot(){
   function load(k, fallback){ try{ return JSON.parse(localStorage.getItem(k) || JSON.stringify(fallback)); } catch { return fallback; } }
   function save(k, v){ localStorage.setItem(k, JSON.stringify(v)); }
 
-  /* ===== Utilidades de requisitos ===== */
+  /* ===== Requisitos ===== */
   const idsTrienio1 = () => { const out=[]; PLAN.slice(0,3).forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); return out; };
   const idsTodoAntes = () => { const out=[]; PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); return out.filter(id=>id!=='INTO'); };
   const TRIENIO1=idsTrienio1(), TODO_ANTES=idsTodoAntes();
@@ -244,7 +251,6 @@ function boot(){
           const actions = document.createElement('div');
           actions.className = 'actions';
 
-          // Chip de nota si existe
           const gradeVal = grades[m.id];
           if (typeof gradeVal === 'number' && !Number.isNaN(gradeVal)) {
             const chip = document.createElement('span');
@@ -253,7 +259,6 @@ function boot(){
             actions.appendChild(chip);
           }
 
-          // Botón Notas/Nota
           const nb = document.createElement('button');
           nb.className = 'note-btn';
           nb.type = 'button';
@@ -342,13 +347,11 @@ function boot(){
       e.preventDefault();
       if (!currentNoteId) return;
 
-      // Guardar texto
       if (noteText) {
         notas[currentNoteId] = noteText.value || '';
         save(NOTES_KEY, notas);
       }
 
-      // Guardar nota (0–12 o vacía)
       if (gradeInput){
         const raw = gradeInput.value.trim();
         if (raw === '') {
@@ -393,9 +396,6 @@ function boot(){
     localStorage.removeItem(KEY);
     localStorage.removeItem(NOTES_KEY);
     localStorage.removeItem(GRADES_KEY);
-    for (const k of Object.keys(estado)) delete estado[k];
-    for (const k of Object.keys(notas)) delete notas[k];
-    for (const k of Object.keys(grades)) delete grades[k];
     toast("Se reinició tu avance, notas y calificaciones 💫", 4000);
     render();
   }
@@ -420,13 +420,17 @@ function boot(){
         if (!data.notas  || typeof data.notas  !== 'object') throw new Error('Falta “notas”');
         const importedGrades = (data.grades && typeof data.grades === 'object') ? data.grades : {};
 
-        Object.assign(estado, data.estado);
-        Object.assign(notas,  data.notas);
-        Object.assign(grades, importedGrades);
+        // Limpieza y merge (por si traen claves viejas)
+        localStorage.removeItem('malla-medicina-notegood');
+        localStorage.removeItem('malla-medicina-notes');
+        localStorage.removeItem('malla-medicina-grades');
 
-        save(KEY, estado); save(NOTES_KEY, notas); save(GRADES_KEY, grades);
+        localStorage.setItem('malla-medicina-notegood', JSON.stringify(data.estado));
+        localStorage.setItem('malla-medicina-notes', JSON.stringify(data.notas));
+        localStorage.setItem('malla-medicina-grades', JSON.stringify(importedGrades));
+
         toast('Progreso importado 📥', 2000);
-        render();
+        location.reload();
       }catch(err){ console.error(err); toast('Archivo inválido ❌', 2500); }
     };
     reader.readAsText(file);
