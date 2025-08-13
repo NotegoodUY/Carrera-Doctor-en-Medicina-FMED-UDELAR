@@ -5,16 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notegood.uy — Cómo usar tu malla</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/landing.css?v=23">
+  <link rel="stylesheet" href="css/landing.css?v=24">
 </head>
 <body>
   <header class="intro-hero">
     <a href="landing.html" class="logo">Notegood.uy ✨</a>
     <h1>Tu malla, clara y motivadora</h1>
     <p>Marcá materias aprobadas, guardá notas/calificaciones y seguí tu avance con calma.</p>
+
+    <!-- Ahora es un <a> con href directo a index.html -->
     <div class="intro-cta">
-      <button id="enterBtn" class="btn-big">Entrar a mi malla</button>
+      <a id="enterLink" class="btn-big" href="index.html">Entrar a mi malla</a>
     </div>
+
     <div class="intro-opt">
       <label><input type="checkbox" id="skipIntroChk"> No volver a mostrar esta pantalla</label>
     </div>
@@ -27,7 +30,7 @@
         <div class="steps">
           <div class="step"><i>✅</i> Tocá una materia para marcarla aprobada (se desbloquean las que dependen de ella).</div>
           <div class="step"><i>📝</i> Abrí “Notas” para guardar apuntes o tu calificación (0–12).</div>
-          <div class="step"><i>💾</i> Guardá tu progreso y recuperalo cuando quieras, incluso en otro dispositivo.</div>
+          <div class="step"><i>💾</i> Exportá tu avance para guardarlo y recuperalo cuando quieras.</div>
           <div class="step"><i>🌓</i> Elegí entre modo claro u oscuro.</div>
           <div class="step"><i>🎉</i> Frases motivadoras y confetti acompañan cada avance.</div>
         </div>
@@ -60,6 +63,6 @@
     <span>📷</span>
   </a>
 
-  <script src="js/landing.js?v=23"></script>
+  <script src="js/landing.js?v=24" defer></script>
 </body>
 </html>
