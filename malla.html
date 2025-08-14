@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=26">
+  <link rel="stylesheet" href="css/styles.css?v=27">
 </head>
 <body>
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
@@ -16,16 +16,15 @@
         <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
         <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
         <span id="userBadge" style="display:none;font-weight:700"></span>
-        <!-- Utilidades -->
+        <!-- Utilidades (quitamos export/import) -->
         <button id="resetBtn" class="btn ghost" title="Borrar avance">🗑️ Borrar</button>
-        <button id="exportBtn" class="btn ghost" title="Exportar mi avance">📤 Exportar</button>
-        <button id="importBtn" class="btn ghost" title="Importar avance">📥 Importar</button>
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
       </div>
     </div>
 
     <div class="header-bottom">
       <div class="progress">
+        <div class="progress-track"></div>
         <div id="progressBar" class="progress-bar" style="width:0"></div>
       </div>
       <div class="legend">
@@ -70,13 +69,12 @@
       appId: "1:690615845783:web:6f6bfacc9f3d77d1dfbad2",
       measurementId: "G-4SL4JL2GH5"
     };
-    if (!firebase.apps?.length) { firebase.initializeApp(window.FB_CONFIG); }
+    if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
 
     const _auth = firebase.auth();
     _auth.onAuthStateChanged((user) => {
       if (!user) { location.href = 'index.html?redirect=malla.html'; }
       else {
-        // Mostrar badge / logout si querés desde acá (tu app.firebase.js también puede hacerlo)
         const badge = document.getElementById('userBadge');
         const out = document.getElementById('logoutBtn');
         const login = document.getElementById('loginGoogle');
@@ -85,19 +83,68 @@
         if (login) { login.style.display='none'; }
       }
     });
+  </script>
 
-    // Toggle de tema también aquí
-    const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-    const savedTheme = localStorage.getItem('ng-theme');
-    if (savedTheme === 'dark') body.classList.add('dark');
-    themeToggle?.addEventListener('click', () => {
-      body.classList.toggle('dark');
-      localStorage.setItem('ng-theme', body.classList.contains('dark') ? 'dark' : 'light');
-    });
+  <!-- Helpers UI: tema, progreso, confeti -->
+  <script>
+    // Tema
+    (function(){
+      const themeToggle = document.getElementById('themeToggle');
+      const body = document.body;
+      const savedTheme = localStorage.getItem('ng-theme');
+      if (savedTheme === 'dark') body.classList.add('dark');
+      themeToggle?.addEventListener('click', () => {
+        body.classList.toggle('dark');
+        localStorage.setItem('ng-theme', body.classList.contains('dark') ? 'dark' : 'light');
+      });
+    })();
+
+    // Progreso (observa la malla y calcula % por clases .materia / .tachada)
+    (function(){
+      const malla = document.getElementById('malla');
+      const bar = document.getElementById('progressBar');
+      const txt = document.getElementById('progressText');
+      let firedConfetti = false;
+
+      function recalc(){
+        const total = malla.querySelectorAll('.materia').length || 0;
+        const aprob = malla.querySelectorAll('.materia.tachada').length || 0;
+        const pct = total ? Math.round((aprob / total) * 100) : 0;
+        if (bar) bar.style.width = pct + '%';
+        if (txt) txt.textContent = `${aprob} / ${total} materias aprobadas · ${pct}%`;
+        if (pct === 100 && !firedConfetti){ firedConfetti = true; fireConfetti(); }
+      }
+
+      // Recalcular al cargar y ante cambios
+      new MutationObserver(recalc).observe(malla, { childList:true, subtree:true, attributes:true, attributeFilter:['class'] });
+      window.addEventListener('load', recalc);
+    })();
+
+    // Confeti grande y centrado
+    function fireConfetti(){
+      const root = document.getElementById('confetti');
+      if (!root) return;
+      const W = window.innerWidth, H = window.innerHeight;
+      const N = 80; // cantidad
+      for (let i=0;i<N;i++){
+        const el = document.createElement('div');
+        el.className = 'confetti-piece';
+        el.textContent = ['🎉','✨','💜','🎊','🌟'][Math.floor(Math.random()*5)];
+        const angle = (Math.random()*Math.PI*2);
+        const radius = 20 + Math.random()*60;
+        const dx = Math.cos(angle) * (80 + Math.random()*200);
+        const dy = Math.sin(angle) * (80 + Math.random()*240) + 220;
+        el.style.setProperty('--x', (W/2 + Math.cos(angle)*radius) + 'px');
+        el.style.setProperty('--y', (H*0.35 + Math.sin(angle)*radius) + 'px');
+        el.style.setProperty('--dx', dx + 'px');
+        el.style.setProperty('--dy', dy + 'px');
+        root.appendChild(el);
+        setTimeout(()=> el.remove(), 1600);
+      }
+    }
   </script>
 
   <!-- Lógica de la malla (tu archivo existente) -->
-  <script src="js/app.firebase.js?v=26" defer></script>
+  <script src="js/app.firebase.js?v=27" defer></script>
 </body>
 </html>
