@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=27">
+  <link rel="stylesheet" href="css/styles.css?v=28">
 </head>
 <body>
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
@@ -15,8 +15,8 @@
         <!-- Sesión -->
         <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
         <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
-        <span id="userBadge" style="display:none;font-weight:700"></span>
-        <!-- Utilidades (quitamos export/import) -->
+        <span id="userBadge" class="user-badge" style="display:none"></span>
+        <!-- Utilidades -->
         <button id="resetBtn" class="btn ghost" title="Borrar avance">🗑️ Borrar</button>
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
       </div>
@@ -32,20 +32,34 @@
         <span class="chip unlocked">Disponible</span>
         <span class="chip locked">Bloqueada</span>
       </div>
+      <div class="progress-kpi">
+        <span id="progressPct">0%</span>
+        <span id="progressMsg" class="progress-msg">¡A empezar!</span>
+      </div>
     </div>
   </header>
 
   <main id="malla" class="grid-container" role="main" aria-live="polite"></main>
 
-  <footer class="ng-footer"><p id="progressText">0 / 0 materias aprobadas · 0%</p></footer>
+  <footer class="ng-footer">
+    <p id="progressText">0 / 0 materias aprobadas · 0%</p>
+  </footer>
 
   <div id="confetti"></div>
+
+  <a class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Ir a Instagram">@</a>
 
   <dialog id="noteModal">
     <form method="dialog" class="note-form" id="noteForm">
       <h3 id="noteTitle">Notas</h3>
-      <label class="field"><span>Nota (0–12)</span><input id="gradeInput" type="number" min="0" max="12" step="1"/></label>
-      <label class="field"><span>Notas (texto libre)</span><textarea id="noteText" rows="8"></textarea></label>
+      <label class="field">
+        <span>Nota (0–12)</span>
+        <input id="gradeInput" type="number" min="0" max="12" step="1"/>
+      </label>
+      <label class="field">
+        <span>Notas (texto libre)</span>
+        <textarea id="noteText" rows="8"></textarea>
+      </label>
       <div class="note-actions">
         <button value="cancel" class="btn ghost">Cancelar</button>
         <button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button>
@@ -85,9 +99,9 @@
     });
   </script>
 
-  <!-- Helpers UI: tema, progreso, confeti -->
+  <!-- Helpers UI: tema, progreso, confeti y mensajes motivadores -->
   <script>
-    // Tema
+    // ===== Tema (persistente) =====
     (function(){
       const themeToggle = document.getElementById('themeToggle');
       const body = document.body;
@@ -99,52 +113,72 @@
       });
     })();
 
-    // Progreso (observa la malla y calcula % por clases .materia / .tachada)
+    // ===== Progreso + mensajes =====
     (function(){
       const malla = document.getElementById('malla');
       const bar = document.getElementById('progressBar');
       const txt = document.getElementById('progressText');
+      const pctEl = document.getElementById('progressPct');
+      const msgEl = document.getElementById('progressMsg');
       let firedConfetti = false;
+
+      const MOTIV = [
+        [0, 0, "¡A empezar!"],
+        [1, 24, "Buen arranque 🚀"],
+        [25, 49, "¡Seguimos bien! 💪"],
+        [50, 74, "¡Mitad de camino! 🔥"],
+        [75, 99, "¡Casi, casi! 🙌"],
+        [100, 100, "¡MALLA COMPLETA! 🎉"]
+      ];
+
+      function msgFor(p){
+        for (const [a,b,m] of MOTIV){ if (p>=a && p<=b) return m; }
+        return "";
+      }
 
       function recalc(){
         const total = malla.querySelectorAll('.materia').length || 0;
         const aprob = malla.querySelectorAll('.materia.tachada').length || 0;
         const pct = total ? Math.round((aprob / total) * 100) : 0;
+
         if (bar) bar.style.width = pct + '%';
+        if (pctEl) pctEl.textContent = pct + '%';
+        if (msgEl) msgEl.textContent = msgFor(pct);
         if (txt) txt.textContent = `${aprob} / ${total} materias aprobadas · ${pct}%`;
+
         if (pct === 100 && !firedConfetti){ firedConfetti = true; fireConfetti(); }
       }
 
-      // Recalcular al cargar y ante cambios
+      // Observa cambios en la malla (clases, nodos)
       new MutationObserver(recalc).observe(malla, { childList:true, subtree:true, attributes:true, attributeFilter:['class'] });
       window.addEventListener('load', recalc);
     })();
 
-    // Confeti grande y centrado
+    // ===== Confeti grande a pantalla completa =====
     function fireConfetti(){
       const root = document.getElementById('confetti');
       if (!root) return;
       const W = window.innerWidth, H = window.innerHeight;
-      const N = 80; // cantidad
+      const N = 140; // cantidad
       for (let i=0;i<N;i++){
         const el = document.createElement('div');
         el.className = 'confetti-piece';
-        el.textContent = ['🎉','✨','💜','🎊','🌟'][Math.floor(Math.random()*5)];
-        const angle = (Math.random()*Math.PI*2);
-        const radius = 20 + Math.random()*60;
-        const dx = Math.cos(angle) * (80 + Math.random()*200);
-        const dy = Math.sin(angle) * (80 + Math.random()*240) + 220;
-        el.style.setProperty('--x', (W/2 + Math.cos(angle)*radius) + 'px');
-        el.style.setProperty('--y', (H*0.35 + Math.sin(angle)*radius) + 'px');
+        el.textContent = ['🫀','✨','🩺','🎊','✨'][Math.floor(Math.random()*5)];
+        const startX = Math.random()*W;
+        const startY = H*0.25 + Math.random()*H*0.2; // centro alto
+        const dx = (Math.random()*2-1) * (W*0.45);   // abanico horizontal
+        const dy = H*0.6 + Math.random()*H*0.4;      // caída larga
+        el.style.setProperty('--x', startX + 'px');
+        el.style.setProperty('--y', startY + 'px');
         el.style.setProperty('--dx', dx + 'px');
         el.style.setProperty('--dy', dy + 'px');
         root.appendChild(el);
-        setTimeout(()=> el.remove(), 1600);
+        setTimeout(()=> el.remove(), 1800);
       }
     }
   </script>
 
   <!-- Lógica de la malla (tu archivo existente) -->
-  <script src="js/app.firebase.js?v=27" defer></script>
+  <script src="js/app.firebase.js?v=28" defer></script>
 </body>
 </html>
