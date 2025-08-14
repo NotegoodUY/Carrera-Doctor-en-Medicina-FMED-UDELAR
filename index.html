@@ -5,8 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=23">
-  <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias aprobadas, desbloqueá correlativas, guardá notas y progreso. by Notegood.">
+  <link rel="stylesheet" href="css/styles.css?v=25">
+  <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, guardá notas y progreso. by Notegood.uy">
 </head>
 <body class="landing">
   <!-- Encabezado -->
@@ -23,7 +23,10 @@
   <main class="hero" role="main">
     <section class="hero-inner">
       <h1 class="hero-title">Tu <span class="brand">Malla Interactiva</span> de Medicina</h1>
-      <p class="hero-sub">Marcá materias aprobadas, desbloqueá correlativas automáticamente, agregá notas y guardá tu progreso. Sencillo, limpio y con vibra Notegood ✨</p>
+      <p class="hero-sub">
+        Marcá materias aprobadas, desbloqueá correlativas automáticamente, agregá notas y guardá tu progreso.
+        Sencillo, limpio y con vibra Notegood ✨
+      </p>
 
       <div class="hero-cta">
         <button id="loginGoogle" class="btn-pri" aria-label="Iniciar sesión con Google">🔐 Iniciar sesión con Google</button>
@@ -41,7 +44,7 @@
     <section class="feature-cards" aria-label="Características">
       <article class="card">
         <h3>Correlativas inteligentes</h3>
-        <p>Marcás una materia y se habilitan automáticamente las que dependen de ella. Sin fórmulas raras.</p>
+        <p>Marcás una materia y se habilitan automáticamente las que dependen de ella.</p>
       </article>
       <article class="card">
         <h3>Notas y calificaciones</h3>
@@ -76,15 +79,17 @@
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
   </script>
 
-  <!-- Landing logic (solo auth + theme) -->
+  <!-- Lógica landing: auth + login con debug de error -->
   <script>
     const auth = firebase.auth();
+    const provider = new firebase.auth.GoogleAuthProvider();
 
-    // Redireccioná si ya está logueado
-    auth.onAuthStateChanged((u)=>{
+    // Mostrar "Ir a la malla" si ya está logueado
+    auth.onAuthStateChanged((u) => {
       const go = document.getElementById('goMalla');
-      if (u){
-        if (go) go.style.display='inline-flex';
+      if (u) {
+        if (go) go.style.display = 'inline-flex';
+
         // Si vino con ?redirect=malla.html, ir directo
         const p = new URLSearchParams(location.search);
         const want = p.get('redirect');
@@ -92,26 +97,25 @@
       }
     });
 
-    // Login con popup
-    document.getElementById('loginGoogle').addEventListener('click', async ()=>{
+    // Login con Google
+    document.getElementById('loginGoogle').addEventListener('click', async () => {
       try {
-        await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        // Tras login: ir a malla
+        await auth.signInWithPopup(provider);
         location.href = 'malla.html';
-      } catch(e){
-        console.error(e);
-        alert('No se pudo iniciar sesión. Intentá nuevamente.');
+      } catch (e) {
+        console.error('Firebase Auth error:', e.code, e.message);
+        alert(`Error: ${e.code}\n${e.message}`);
       }
     });
 
-    // Theme toggle básico
+    // Theme toggle
     const themeToggle = document.getElementById('themeToggle');
     const body = document.body;
     const saved = localStorage.getItem('ng-theme');
     if (saved === 'dark') body.classList.add('dark');
-    themeToggle?.addEventListener('click', ()=>{
+    themeToggle?.addEventListener('click', () => {
       body.classList.toggle('dark');
-      localStorage.setItem('ng-theme', body.classList.contains('dark')? 'dark':'light');
+      localStorage.setItem('ng-theme', body.classList.contains('dark') ? 'dark' : 'light');
     });
   </script>
 </body>
