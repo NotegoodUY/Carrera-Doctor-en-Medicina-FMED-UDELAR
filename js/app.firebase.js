@@ -1,4 +1,4 @@
-/* Notegood Malla – app.firebase.js (v22, cloud sync) */
+/* Notegood Malla – app.firebase.js (v22, cloud sync + render) */
 console.log('Notegood Malla v22 – app.firebase.js');
 
 (function safeStart(){
@@ -32,7 +32,7 @@ function boot(){
     }, { merge: true });
   }
 
-  /* ===== Frases Notegood ===== */
+  /* ===== Frases Notegood (sin repetición hasta agotar) ===== */
   const FRASES = [
     "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
     "{m} ✅ — organización + constancia = resultados.",
@@ -84,7 +84,7 @@ function boot(){
   }
   const yearLabel = i => (["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"][i] || `Año ${i+1}`);
 
-  /* ===== PLAN (correlativas) ===== */
+  /* ===== PLAN COMPLETO con correlativas (Plan 2008) ===== */
   const PLAN = [
     { semestres: [
       { numero: "1º semestre", materias: [
