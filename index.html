@@ -3,113 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Notegood.uy — Malla Medicina UDELAR</title>
+  <title>NoteGood · Iniciar sesión</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=22">
   <style>
-    /* Estilos puntuales para la intro (se apoya en styles.css) */
-    .intro-hero{
-      padding: 2.2rem 1rem 1.4rem;
-      background: linear-gradient(90deg, var(--brand), #9a7bff);
-      color:#fff; border-bottom:1px solid rgba(255,255,255,.2);
-      text-align:center;
-    }
-    .intro-hero .logo{
-      display:inline-flex; align-items:center; justify-content:center;
-      height:42px; min-width:170px; padding:0 16px; font-weight:700; letter-spacing:.2px;
-      border-radius:999px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25);
-      color:#fff; text-decoration:none;
-    }
-    .intro-hero h1{ margin: .9rem 0 .35rem; font-weight:800 }
-    .intro-hero p{ margin:.1rem 0 1rem; font-weight:600; opacity:.96 }
-
-    .intro-wrap{ max-width:1000px; margin:0 auto; padding: 1rem; }
-    .intro-grid{ display:grid; grid-template-columns: repeat(12,1fr); gap:1rem; }
-    .intro-card{ background:var(--card); border:1px solid var(--line); border-radius:14px; box-shadow:var(--shadow); padding:1rem; }
-    .intro-steps{ grid-column: span 7; }
-    .intro-benefits{ grid-column: span 5; }
-    .steps{ display:grid; gap:.6rem; margin:.3rem 0 0 }
-    .step{ background:var(--chip); border:1px solid var(--chip-b); border-radius:12px; padding:.7rem .8rem; font-weight:600 }
-    .step i{ margin-right:.45rem }
-    .benefit{ display:flex; align-items:flex-start; gap:.6rem; margin:.4rem 0 }
-    .benefit .icon{ width:34px; height:34px; border-radius:10px; display:grid; place-items:center; background:#fff; border:1px solid var(--line); }
-
-    .intro-cta{ display:flex; flex-wrap:wrap; gap:.6rem; align-items:center; justify-content:center; margin:1rem 0 .2rem; }
-    .btn-big{ padding:.75rem 1rem; border-radius:12px; font-weight:800; border:1px solid transparent; cursor:pointer; background:#6c5ce7; color:#fff; }
-    .btn-big:hover{ filter:brightness(.96) }
-
-    .intro-opt{ text-align:center; color:var(--muted); margin:.4rem 0 1.2rem }
-    .intro-opt input{ transform: translateY(1px); }
-
-    @media (max-width: 900px){
-      .intro-steps{ grid-column: span 12 }
-      .intro-benefits{ grid-column: span 12 }
-    }
+    :root{--bg:#0f172a;--fg:#e2e8f0;--card:#111827;--btn:#22c55e;--btnh:#16a34a}
+    *{box-sizing:border-box} body{margin:0;font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;background:linear-gradient(160deg,#0f172a,#111827);color:var(--fg);min-height:100vh;display:grid;place-items:center}
+    .card{width:min(720px,92vw);background:rgba(17,24,39,.75);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
+    h1{margin:0 0 8px;font-size:28px} p{margin:0 0 18px;opacity:.85}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{cursor:pointer;border:0;border-radius:14px;padding:14px 18px;font-weight:700}
+    .btn.primary{background:var(--btn);color:#04210f} .btn.primary:hover{background:var(--btnh)}
+    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--fg)}
+    .hint{font-size:.9rem;opacity:.7;margin-top:8px}
   </style>
 </head>
 <body>
-  <header class="intro-hero">
-    <a href="index.html" class="logo">Notegood.uy ✨</a>
-    <h1>Tu malla, clara y motivadora</h1>
-    <p>Marcá materias aprobadas, guardá notas/calificaciones y seguí tu avance con calma.</p>
-    <div class="intro-cta">
-      <button id="enterBtn" class="btn-big">Entrar a mi malla</button>
-    </div>
-    <div class="intro-opt">
-      <label><input type="checkbox" id="skipIntroChk"> No volver a mostrar esta pantalla</label>
-    </div>
-  </header>
+  <main class="card" role="main">
+    <h1>NoteGood · Malla Interactiva</h1>
+    <p>Iniciá sesión para guardar tu avance, notas y calificaciones en la nube.</p>
 
-  <main class="intro-wrap">
-    <div class="intro-grid">
-      <section class="intro-card intro-steps">
-        <h2>¿Cómo se usa?</h2>
-        <div class="steps">
-          <div class="step"><i>✅</i> Tocá una materia para marcarla aprobada (se desbloquean las que dependen de ella).</div>
-          <div class="step"><i>📝</i> Abrí “Notas” para guardar apuntes o tu calificación (0–12).</div>
-          <div class="step"><i>💾</i> Guardá tu progreso y recuperalo cuando quieras, incluso en otro dispositivo.</div>
-          <div class="step"><i>🌓</i> Elegí entre modo claro u oscuro.</div>
-          <div class="step"><i>🎉</i> Disfrutá frases motivadoras y confetti cada vez que avances.</div>
-        </div>
-      </section>
+    <div id="userRow" style="display:none;margin:14px 0 8px;opacity:.9"></div>
 
-      <aside class="intro-card intro-benefits">
-        <h2>¿Por qué Notegood?</h2>
-        <div class="benefit">
-          <div class="icon">📚</div>
-          <div><strong>Organización real</strong><br/>Basada en el plan 2008 y correlativas reales.</div>
-        </div>
-        <div class="benefit">
-          <div class="icon">⚡</div>
-          <div><strong>Eficiencia</strong><br/>Todo a mano: progreso, notas y respaldos.</div>
-        </div>
-        <div class="benefit">
-          <div class="icon">💜</div>
-          <div><strong>Acompañamiento</strong><br/>Tono cercano y motivador. Sin vueltas.</div>
-        </div>
-      </aside>
+    <div class="actions">
+      <button id="loginGoogleLanding" class="btn primary">🔐 Entrar con Google</button>
+      <a id="goMalla" class="btn ghost" href="malla.html" style="display:none">➡️ Ir a la malla</a>
+      <button id="logoutLanding" class="btn ghost" style="display:none">🚪 Cerrar sesión</button>
     </div>
+    <div class="hint">Usamos tu cuenta solo para identificarte y sincronizar tu progreso. Podés cerrar sesión cuando quieras.</div>
   </main>
 
-  <footer class="ng-footer">
-    <p class="made">Hecho con 💜 por Notegood.uy — organización simple, resultados reales.</p>
-  </footer>
-
-  <!-- FAB Instagram (solo flotante) -->
-  <a class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy">
-    <span>📷</span>
-  </a>
-
+  <!-- Firebase SDKs (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
   <script>
-    (function(){
-      const KEY = 'ng-skip-intro';
-      const goMalla = () => { window.location.href = 'malla.html'; };
-      try { if (localStorage.getItem(KEY) === '1') goMalla(); } catch(e){}
-      document.getElementById('enterBtn')?.addEventListener('click', ()=>{
-        try { if (document.getElementById('skipIntroChk')?.checked) localStorage.setItem(KEY, '1'); } catch(e){}
-        goMalla();
-      });
-    })();
+    // 👉 TU CONFIG REAL
+    window.FB_CONFIG = {
+      apiKey: "AIzaSyB8QcsmSE6YMxNyyBo9y8j6iIT3pHsebs",
+      authDomain: "notegood-uy.firebaseapp.com",
+      projectId: "notegood-uy",
+      storageBucket: "notegood-uy.appspot.com",
+      messagingSenderId: "690615845783",
+      appId: "1:690615845783:web:6f6bfacc9f3d77d1dfbad2",
+      measurementId: "G-4SL4JL2GH5"
+    };
+    // Init (solo una vez)
+    if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
+    const auth = firebase.auth();
+
+    const $ = (id)=>document.getElementById(id);
+    const loginBtn = $('loginGoogleLanding');
+    const goMalla  = $('goMalla');
+    const logoutBtn= $('logoutLanding');
+    const userRow  = $('userRow');
+
+    // Si ya vino desde una redirección, respetamos ?redirect=
+    function nextUrl(){
+      const u = new URL(location.href);
+      const r = u.searchParams.get('redirect');
+      return r || 'malla.html';
+    }
+
+    loginBtn?.addEventListener('click', async ()=>{
+      try{
+        await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        location.href = nextUrl();
+      }catch(e){ alert('No se pudo iniciar sesión: ' + e.message); }
+    });
+
+    logoutBtn?.addEventListener('click', async ()=>{
+      await auth.signOut();
+      location.href = 'index.html';
+    });
+
+    auth.onAuthStateChanged((user)=>{
+      if (user){
+        userRow.style.display='block';
+        userRow.textContent = `Conectada: ${user.displayName || user.email}`;
+        loginBtn.style.display='none';
+        logoutBtn.style.display='';
+        goMalla.style.display='';
+      }else{
+        userRow.style.display='none';
+        loginBtn.style.display='';
+        logoutBtn.style.display='none';
+        goMalla.style.display='none';
+      }
+    });
   </script>
 </body>
 </html>
