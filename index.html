@@ -6,23 +6,21 @@
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
   <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, agregá notas y guardá tu progreso. by Notegood.uy">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=40">
+  <link rel="stylesheet" href="css/styles.css?v=41">
   <style>
-    /* micro-acentos para el landing */
     body.landing .hero{
-      position:relative; overflow:hidden;
+      position:relative;overflow:hidden;
       background:
         radial-gradient(1200px 600px at 90% -10%, rgba(108,92,231,.12), transparent 60%),
         radial-gradient(900px 500px at -10% 0%, rgba(0,191,166,.10), transparent 55%),
         linear-gradient(180deg, var(--bg) 0%, rgba(108,92,231,.06) 100%);
     }
     .hero-title .brand{
-      background: linear-gradient(90deg, var(--brand), var(--accent));
-      -webkit-background-clip:text; background-clip:text; color:transparent;
+      background:linear-gradient(90deg, var(--brand), var(--accent));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
     }
-    .cta-note{ margin-top:.45rem; font-size:.85rem; color:var(--muted) }
-    .feature-cards .card h3{ display:flex; gap:.4rem; align-items:center; margin-top:0 }
-    .closing{ max-width:820px; margin:18px auto 0; padding:0 16px; text-align:center; color:var(--muted); font-style:italic }
+    .feature-cards .card h3{display:flex;gap:.4rem;align-items:center;margin-top:0}
+    .closing{max-width:820px;margin:18px auto 0;padding:0 16px;text-align:center;color:var(--muted);font-style:italic}
   </style>
 </head>
 <body class="landing">
@@ -30,8 +28,6 @@
     <div class="header-top container">
       <a href="index.html" class="logo">Notegood.uy ✨</a>
       <div class="controls">
-        <!-- solo visible si ya está logueado -->
-        <a id="goMalla" href="malla.html" class="btn ghost" style="display:none">Ir a la malla →</a>
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
       </div>
     </div>
@@ -48,28 +44,27 @@
       <div class="hero-cta">
         <button id="loginGoogle" class="btn-pri" aria-label="Empezar con Google"><span>🚀 Empezar mi malla →</span></button>
       </div>
-      <div class="cta-note">Usá tu cuenta Udelar o Gmail, lo que prefieras.</div>
 
       <ul class="hero-list" aria-label="Beneficios">
-        <li>📁 Guarda tu progreso sin perder nada (local + nube)</li>
+        <li>📁 Guardá tu progreso sin perder nada (local + nube)</li>
         <li>🔓 Correlativas inteligentes que se desbloquean solas</li>
-        <li>📝 Agrega tus notas, calificaciones y recordatorios</li>
-        <li>🎉 Fiesta incluida para cuando completes tu camino</li>
+        <li>📝 Agregá tus notas, calificaciones y recordatorios</li>
+        <li>🎉 Confeti incluido cuando completes tu camino</li>
       </ul>
     </section>
 
     <section class="feature-cards container" aria-label="Características">
       <article class="card">
-        <h3>🌱 Empieza sin enredos</h3>
-        <p>Marca tus materias y desbloquea lo que sigue. Sin fórmulas raras.</p>
+        <h3>🌱 Empezá sin enredos</h3>
+        <p>Marcá tus materias y desbloqueá lo que sigue. Sin fórmulas raras.</p>
       </article>
       <article class="card">
-        <h3>✍️ Recuerda lo importante</h3>
-        <p>Guarda tus notas y calificaciones: todo queda guardado en tu usuario.</p>
+        <h3>✍️ Recordá lo importante</h3>
+        <p>Guardá tus notas y calificaciones: todo queda atado a tu usuario.</p>
       </article>
       <article class="card">
         <h3>📊 Motivación visual</h3>
-        <p>Mira cuánto avanzaste con  los contadores visuales, estilo Notegood.</p>
+        <p>Mirá cuánto avanzaste con contadores visuales, estilo Notegood.</p>
       </article>
     </section>
 
@@ -84,7 +79,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
 
-  <!-- Config -->
+  <!-- Config Firebase -->
   <script>
     window.FB_CONFIG = {
       apiKey: "AIzaSyB80csmSE6YMXkNyyBo9y8j6iIT3pHsebs",
@@ -103,21 +98,12 @@
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    auth.onAuthStateChanged((u) => {
-      const go = document.getElementById('goMalla');
-      if (u && go) {
-        go.style.display = 'inline-flex';
-        const want = new URLSearchParams(location.search).get('redirect');
-        if (want) location.replace(want);
-      }
-    });
-
-    document.getElementById('loginGoogle').addEventListener('click', async () => {
+    document.getElementById('loginGoogle')?.addEventListener('click', async () => {
       try { await auth.signInWithPopup(provider); location.href = 'malla.html'; }
       catch (e) { console.error(e); alert(`Error: ${e.code}\n${e.message}`); }
     });
 
-    document.getElementById('themeToggle').addEventListener('click', () => {
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
       document.body.classList.toggle('dark'); // no persistente
     });
   </script>
