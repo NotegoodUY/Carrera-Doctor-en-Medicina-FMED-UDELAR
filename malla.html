@@ -3,43 +3,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malla Interactiva – Medicina UDELAR (Plan 2008)</title>
+  <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=22">
+  <link rel="stylesheet" href="css/styles.css?v=23">
 </head>
 <body>
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
     <div class="header-top">
       <a href="index.html" class="logo">Notegood.uy ✨</a>
       <div class="controls" aria-label="Controles">
-        <div id="authBox" class="controls" style="gap:.4rem">
+        <!-- Sesión -->
+        <div class="controls" style="gap:.4rem">
           <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
           <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
           <span id="userBadge" style="display:none;font-weight:700"></span>
         </div>
-        <button id="resetBtn" class="btn ghost">🗑️ Borrar avance</button>
-        <button id="exportBtn" class="btn ghost">💾 Exportar</button>
-        <button id="importBtn" class="btn ghost">📥 Importar</button>
-        <input id="importFile" type="file" accept="application/json" hidden>
-        <button id="themeToggle" class="switch" aria-pressed="false" aria-label="Cambiar tema">
-          <span class="icon sun">☀️</span><span class="thumb"></span><span class="icon moon">🌙</span>
-        </button>
+        <!-- Utilidades -->
+        <button id="resetBtn" class="btn ghost" title="Borrar avance">🗑️ Borrar</button>
+        <button id="exportBtn" class="btn ghost" title="Exportar mi avance">📤 Exportar</button>
+        <button id="importBtn" class="btn ghost" title="Importar avance">📥 Importar</button>
+        <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
       </div>
     </div>
 
-    <h1 class="title">Malla Interactiva – Medicina UDELAR (Plan 2008)</h1>
-    <p class="subtitle">Tu mapa claro para avanzar con calma y constancia.</p>
-
-    <div class="progress-wrap" aria-label="Avance de la carrera">
-      <div class="progress-track"><div id="progressBar" class="progress-bar" style="width:0%"></div></div>
-      <div id="progressKpi" class="progress-kpi">0%</div>
-    </div>
-
-    <div class="legend">
-      <span class="legend-item"><span class="dot dot-ok">✓</span> Aprobada</span>
-      <span class="legend-item"><span class="dot dot-lock">🔒</span> Bloqueada por previas</span>
-      <span class="legend-item"><span class="dot dot-pend"></span> Pendiente</span>
-      <span class="legend-item"><span class="dot">📝</span> Notas / Nota</span>
+    <div class="header-bottom">
+      <div class="progress">
+        <div id="progressBar" class="progress-bar" style="width:0"></div>
+      </div>
+      <div class="legend">
+        <span class="chip done">Aprobada</span>
+        <span class="chip unlocked">Disponible</span>
+        <span class="chip locked">Bloqueada</span>
+      </div>
     </div>
   </header>
 
@@ -54,18 +49,19 @@
       <h3 id="noteTitle">Notas</h3>
       <label class="field"><span>Nota (0–12)</span><input id="gradeInput" type="number" min="0" max="12" step="1"/></label>
       <label class="field"><span>Notas (texto libre)</span><textarea id="noteText" rows="8"></textarea></label>
-      <div class="note-actions"><button value="cancel" class="btn-sec">Cancelar</button><button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button></div>
+      <div class="note-actions">
+        <button value="cancel" class="btn ghost">Cancelar</button>
+        <button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button>
+      </div>
     </form>
   </dialog>
 
-  <a id="igFab" class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy"><span>📷</span></a>
+  <!-- Firebase (Compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
 
-  <!-- Firebase SDKs (compat) -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
-  <!-- Configuración real de Firebase -->
+  <!-- Config + Guard de acceso -->
   <script>
     window.FB_CONFIG = {
       apiKey: "AIzaSyB8QcsmSE6YMxNyyBo9y8j6iIT3pHsebs",
@@ -76,22 +72,12 @@
       appId: "1:690615845783:web:6f6bfacc9f3d77d1dfbad2",
       measurementId: "G-4SL4JL2GH5"
     };
-
-    // Inicializa Firebase si aún no está
-    if (!firebase.apps?.length) {
-      firebase.initializeApp(window.FB_CONFIG);
-    }
-
-    // 🔒 Protección: si no está logueado, redirige al landing
+    if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
     const _auth = firebase.auth();
-    _auth.onAuthStateChanged((user)=>{
-      if (!user) {
-        location.href = 'index.html?redirect=malla.html';
-      }
-    });
+    _auth.onAuthStateChanged((user)=>{ if (!user) { location.href = 'index.html?redirect=malla.html'; } });
   </script>
 
-  <!-- App con Firebase -->
-  <script src="js/app.firebase.js?v=22" defer></script>
+  <!-- Lógica completa (render + Firestore + notas + progreso + auth UI) -->
+  <script src="js/app.firebase.js?v=23" defer></script>
 </body>
 </html>
