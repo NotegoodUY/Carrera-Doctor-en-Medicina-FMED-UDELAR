@@ -15,6 +15,13 @@
          aria-label="Volver a la pantalla de inicio (cómo se usa)">Notegood.uy ✨</a>
 
       <div class="controls" aria-label="Controles">
+        <!-- Sesión -->
+        <div id="authBox" class="controls" style="gap:.4rem">
+          <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
+          <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
+          <span id="userBadge" style="display:none;font-weight:700"></span>
+        </div>
+
         <button id="resetBtn" class="btn ghost" title="Borrar avance">🗑️ Borrar avance</button>
         <button id="exportBtn" class="btn ghost" title="Exportar mi avance">💾 Exportar</button>
         <button id="importBtn" class="btn ghost" title="Importar avance">📥 Importar</button>
@@ -83,6 +90,25 @@
     <span>📷</span>
   </a>
 
-  <script src="js/app.js?v=22" defer></script>
+  <!-- Firebase SDKs (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- TU CONFIG REAL (ya cargada) -->
+  <script>
+    window.FB_CONFIG = {
+      apiKey: "AIzaSyB8QcsmSE6YMxNyyBo9y8j6iIT3pHsebs",
+      authDomain: "notegood-uy.firebaseapp.com",
+      projectId: "notegood-uy",
+      storageBucket: "notegood-uy.appspot.com",
+      messagingSenderId: "690615845783",
+      appId: "1:690615845783:web:6f6bfacc9f3d77d1dfbad2",
+      measurementId: "G-4SL4JL26H5"
+    };
+  </script>
+
+  <!-- App con Firebase -->
+  <script src="js/app.firebase.js?v=22" defer></script>
 </body>
 </html>
