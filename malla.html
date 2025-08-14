@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=40">
+  <link rel="stylesheet" href="css/styles.css?v=41">
 </head>
 <body>
   <header class="ng-header" role="banner">
@@ -13,9 +13,10 @@
       <a href="index.html" class="logo">Notegood.uy ✨</a>
       <div class="controls">
         <span id="userBadge" class="user-badge" style="display:none"></span>
+        <button id="resetBtn" class="btn ghost" title="Borrar">🗑️ Borrar</button>
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
         <button id="loginGoogle" class="btn ghost" title="Entrar" style="display:none">🔐 Entrar</button>
-        <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button> <!-- último a la derecha -->
+        <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
       </div>
     </div>
 
@@ -42,7 +43,7 @@
     <p id="progressText">0 / 0 materias aprobadas · 0%</p>
   </footer>
 
-  <!-- Modal Notas (evita el error de addEventListener) -->
+  <!-- Modal Notas -->
   <dialog id="noteModal">
     <form method="dialog" class="note-form">
       <h3 id="noteTitle">Notas</h3>
@@ -87,6 +88,6 @@
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
   </script>
 
-  <script src="js/app.firebase.js?v=40" defer></script>
+  <script src="js/app.firebase.js?v=41" defer></script>
 </body>
 </html>
