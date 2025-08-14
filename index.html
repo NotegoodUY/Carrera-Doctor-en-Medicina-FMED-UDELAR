@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=25">
+  <link rel="stylesheet" href="css/styles.css?v=26">
   <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, guardá notas y progreso. by Notegood.uy">
 </head>
 <body class="landing">
@@ -65,32 +65,30 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
 
-  <!-- Config Firebase -->
+  <!-- Config Firebase (TU CONFIG REAL) -->
   <script>
     window.FB_CONFIG = {
-      apiKey: "AIzaSyB8QcsmSE6YMxNyyBo9y8j6iIT3pHsebs",
+      apiKey: "AIzaSyB80csmSE6YMXkNyyBo9y8j6iIT3pHsebs",
       authDomain: "notegood-uy.firebaseapp.com",
       projectId: "notegood-uy",
-      storageBucket: "notegood-uy.appspot.com",
+      storageBucket: "notegood-uy.firebasestorage.app",
       messagingSenderId: "690615845783",
       appId: "1:690615845783:web:6f6bfacc9f3d77d1dfbad2",
       measurementId: "G-4SL4JL2GH5"
     };
-    if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
+    if (!firebase.apps?.length) { firebase.initializeApp(window.FB_CONFIG); }
   </script>
 
-  <!-- Lógica landing: auth + login con debug de error -->
+  <!-- Lógica landing: auth + login con debug -->
   <script>
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    // Mostrar "Ir a la malla" si ya está logueado
+    // Mostrar "Ir a la malla" si ya está logueado (y respetar ?redirect=)
     auth.onAuthStateChanged((u) => {
       const go = document.getElementById('goMalla');
       if (u) {
         if (go) go.style.display = 'inline-flex';
-
-        // Si vino con ?redirect=malla.html, ir directo
         const p = new URLSearchParams(location.search);
         const want = p.get('redirect');
         if (want) location.replace(want);
