@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=27">
+  <link rel="stylesheet" href="css/styles.css?v=30">
   <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, guardá notas y progreso. by Notegood.uy">
 </head>
 <body class="landing">
+  <!-- Encabezado -->
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
-    <div class="header-top">
+    <div class="header-top container">
       <a href="index.html" class="logo">Notegood.uy ✨</a>
       <div class="controls">
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
@@ -18,10 +19,14 @@
     </div>
   </header>
 
+  <!-- Hero -->
   <main class="hero" role="main">
-    <section class="hero-inner">
+    <section class="hero-inner container">
       <h1 class="hero-title">Tu <span class="brand">Malla Interactiva</span> de Medicina</h1>
-      <p class="hero-sub">Marcá materias aprobadas, desbloqueá correlativas automáticamente, agregá notas y guardá tu progreso.</p>
+      <p class="hero-sub">
+        Marcá materias aprobadas, desbloqueá correlativas automáticamente, agregá notas y guardá tu progreso.
+        Sencillo, limpio y con vibra Notegood ✨
+      </p>
 
       <div class="hero-cta">
         <button id="loginGoogle" class="btn-pri" aria-label="Iniciar sesión con Google">🔐 Iniciar sesión con Google</button>
@@ -36,10 +41,19 @@
       </ul>
     </section>
 
-    <section class="feature-cards" aria-label="Características">
-      <article class="card"><h3>Correlativas inteligentes</h3><p>Marcás una materia y se habilitan automáticamente las que dependen de ella.</p></article>
-      <article class="card"><h3>Notas y calificaciones</h3><p>Guardá recordatorios y calificaciones por materia.</p></article>
-      <article class="card"><h3>Progreso claro</h3><p>Barra y contadores para ver cuánto te falta.</p></article>
+    <section class="feature-cards container" aria-label="Características">
+      <article class="card">
+        <h3>Correlativas inteligentes</h3>
+        <p>Marcás una materia y se habilitan automáticamente las que dependen de ella.</p>
+      </article>
+      <article class="card">
+        <h3>Notas y calificaciones</h3>
+        <p>Guardá recordatorios y calificaciones por materia. Todo queda asociado a tu usuario.</p>
+      </article>
+      <article class="card">
+        <h3>Progreso claro</h3>
+        <p>Barra y contadores para ver cuánto te falta. Motivación visual, estilo Notegood.</p>
+      </article>
     </section>
   </main>
 
@@ -85,14 +99,10 @@
       catch (e) { console.error('Firebase Auth error:', e.code, e.message); alert(`Error: ${e.code}\n${e.message}`); }
     });
 
-    // Theme toggle
+    // Theme toggle (no persistente en landing)
     const themeToggle = document.getElementById('themeToggle');
-    const body = document.body;
-    const saved = localStorage.getItem('ng-theme');
-    if (saved === 'dark') body.classList.add('dark');
     themeToggle?.addEventListener('click', () => {
-      body.classList.toggle('dark');
-      localStorage.setItem('ng-theme', body.classList.contains('dark') ? 'dark' : 'light');
+      document.body.classList.toggle('dark');
     });
   </script>
 </body>
