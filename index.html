@@ -4,12 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
+  <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, agregá notas y guardá tu progreso. by Notegood.uy">
+
+  <!-- Fuente + estilos -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=30">
-  <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, guardá notas y progreso. by Notegood.uy">
+  <!-- Asegurate de tener este archivo con los estilos que te pasé -->
+  <link rel="stylesheet" href="css/styles.css?v=31">
 </head>
 <body class="landing">
-  <!-- Encabezado -->
+  <!-- Header -->
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
     <div class="header-top container">
       <a href="index.html" class="logo">Notegood.uy ✨</a>
@@ -33,7 +36,7 @@
         <a id="goMalla" href="malla.html" class="btn ghost" style="display:none">Ir a la malla →</a>
       </div>
 
-      <ul class="hero-list">
+      <ul class="hero-list" aria-label="Beneficios">
         <li>✅ Guardado automático (local) + sync en la nube</li>
         <li>🔓 Correlativas inteligentes</li>
         <li>📝 Notas y calificaciones</li>
@@ -65,7 +68,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
 
-  <!-- Config Firebase -->
+  <!-- Config de tu proyecto Firebase -->
   <script>
     window.FB_CONFIG = {
       apiKey: "AIzaSyB80csmSE6YMXkNyyBo9y8j6iIT3pHsebs",
@@ -79,11 +82,13 @@
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
   </script>
 
-  <!-- Lógica landing -->
+  <!-- Lógica de landing -->
   <script>
+    // Auth
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
+    // Si ya está logueado, muestro “Ir a la malla” y si viene con ?redirect redirijo
     auth.onAuthStateChanged((u) => {
       const go = document.getElementById('goMalla');
       if (u && go) {
@@ -94,16 +99,22 @@
       }
     });
 
+    // Login → a la malla
     document.getElementById('loginGoogle').addEventListener('click', async () => {
-      try { await auth.signInWithPopup(provider); location.href = 'malla.html'; }
-      catch (e) { console.error('Firebase Auth error:', e.code, e.message); alert(`Error: ${e.code}\n${e.message}`); }
+      try {
+        await auth.signInWithPopup(provider);
+        location.href = 'malla.html';
+      } catch (e) {
+        console.error('Firebase Auth error:', e.code, e.message);
+        alert(`Error: ${e.code}\n${e.message}`);
+      }
     });
 
-    // Theme toggle (no persistente en landing)
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle?.addEventListener('click', () => {
+    // Tema (no persistente en landing)
+    document.getElementById('themeToggle')?.addEventListener('click', () => {
       document.body.classList.toggle('dark');
     });
   </script>
 </body>
 </html>
+
