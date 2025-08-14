@@ -5,19 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=28">
+  <link rel="stylesheet" href="css/styles.css?v=29">
 </head>
 <body>
-  <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
+  <header class="ng-header">
     <div class="header-top">
       <a href="index.html" class="logo">Notegood.uy ✨</a>
-      <div class="controls" aria-label="Controles" style="gap:.4rem">
-        <!-- Sesión -->
-        <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
-        <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
+      <div class="controls" style="gap:.4rem">
+        <button id="loginGoogle" class="btn ghost">🔐 Entrar</button>
+        <button id="logoutBtn" class="btn ghost" style="display:none">🚪 Salir</button>
         <span id="userBadge" class="user-badge" style="display:none"></span>
-        <!-- Utilidades -->
-        <button id="resetBtn" class="btn ghost" title="Borrar avance">🗑️ Borrar</button>
+        <button id="resetBtn" class="btn ghost">🗑️ Borrar</button>
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
       </div>
     </div>
@@ -41,38 +39,20 @@
 
   <main id="malla" class="grid-container" role="main" aria-live="polite"></main>
 
-  <footer class="ng-footer">
-    <p id="progressText">0 / 0 materias aprobadas · 0%</p>
-  </footer>
-
+  <footer class="ng-footer"><p id="progressText">0 / 0 materias aprobadas · 0%</p></footer>
   <div id="confetti"></div>
 
-  <a class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Ir a Instagram">@</a>
-
-  <dialog id="noteModal">
-    <form method="dialog" class="note-form" id="noteForm">
-      <h3 id="noteTitle">Notas</h3>
-      <label class="field">
-        <span>Nota (0–12)</span>
-        <input id="gradeInput" type="number" min="0" max="12" step="1"/>
-      </label>
-      <label class="field">
-        <span>Notas (texto libre)</span>
-        <textarea id="noteText" rows="8"></textarea>
-      </label>
-      <div class="note-actions">
-        <button value="cancel" class="btn ghost">Cancelar</button>
-        <button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button>
-      </div>
-    </form>
-  </dialog>
+  <!-- FAB Instagram con logo -->
+  <a class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM18 6.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg>
+  </a>
 
   <!-- Firebase (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
 
-  <!-- Config Firebase + guard -->
+  <!-- Config Firebase (igual que index) -->
   <script>
     window.FB_CONFIG = {
       apiKey: "AIzaSyB80csmSE6YMXkNyyBo9y8j6iIT3pHsebs",
@@ -84,101 +64,9 @@
       measurementId: "G-4SL4JL2GH5"
     };
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
-
-    const _auth = firebase.auth();
-    _auth.onAuthStateChanged((user) => {
-      if (!user) { location.href = 'index.html?redirect=malla.html'; }
-      else {
-        const badge = document.getElementById('userBadge');
-        const out = document.getElementById('logoutBtn');
-        const login = document.getElementById('loginGoogle');
-        if (badge) { badge.textContent = user.displayName || user.email || 'Usuario'; badge.style.display='inline-block'; }
-        if (out) { out.style.display='inline-flex'; out.onclick = ()=> _auth.signOut().then(()=>location.href='index.html'); }
-        if (login) { login.style.display='none'; }
-      }
-    });
   </script>
 
-  <!-- Helpers UI: tema, progreso, confeti y mensajes motivadores -->
-  <script>
-    // ===== Tema (persistente) =====
-    (function(){
-      const themeToggle = document.getElementById('themeToggle');
-      const body = document.body;
-      const savedTheme = localStorage.getItem('ng-theme');
-      if (savedTheme === 'dark') body.classList.add('dark');
-      themeToggle?.addEventListener('click', () => {
-        body.classList.toggle('dark');
-        localStorage.setItem('ng-theme', body.classList.contains('dark') ? 'dark' : 'light');
-      });
-    })();
-
-    // ===== Progreso + mensajes =====
-    (function(){
-      const malla = document.getElementById('malla');
-      const bar = document.getElementById('progressBar');
-      const txt = document.getElementById('progressText');
-      const pctEl = document.getElementById('progressPct');
-      const msgEl = document.getElementById('progressMsg');
-      let firedConfetti = false;
-
-      const MOTIV = [
-        [0, 0, "¡A empezar!"],
-        [1, 24, "Buen arranque 🚀"],
-        [25, 49, "¡Seguimos bien! 💪"],
-        [50, 74, "¡Mitad de camino! 🔥"],
-        [75, 99, "¡Casi, casi! 🙌"],
-        [100, 100, "¡MALLA COMPLETA! 🎉"]
-      ];
-
-      function msgFor(p){
-        for (const [a,b,m] of MOTIV){ if (p>=a && p<=b) return m; }
-        return "";
-      }
-
-      function recalc(){
-        const total = malla.querySelectorAll('.materia').length || 0;
-        const aprob = malla.querySelectorAll('.materia.tachada').length || 0;
-        const pct = total ? Math.round((aprob / total) * 100) : 0;
-
-        if (bar) bar.style.width = pct + '%';
-        if (pctEl) pctEl.textContent = pct + '%';
-        if (msgEl) msgEl.textContent = msgFor(pct);
-        if (txt) txt.textContent = `${aprob} / ${total} materias aprobadas · ${pct}%`;
-
-        if (pct === 100 && !firedConfetti){ firedConfetti = true; fireConfetti(); }
-      }
-
-      // Observa cambios en la malla (clases, nodos)
-      new MutationObserver(recalc).observe(malla, { childList:true, subtree:true, attributes:true, attributeFilter:['class'] });
-      window.addEventListener('load', recalc);
-    })();
-
-    // ===== Confeti grande a pantalla completa =====
-    function fireConfetti(){
-      const root = document.getElementById('confetti');
-      if (!root) return;
-      const W = window.innerWidth, H = window.innerHeight;
-      const N = 140; // cantidad
-      for (let i=0;i<N;i++){
-        const el = document.createElement('div');
-        el.className = 'confetti-piece';
-        el.textContent = ['🫀','✨','🩺','🎊','✨'][Math.floor(Math.random()*5)];
-        const startX = Math.random()*W;
-        const startY = H*0.25 + Math.random()*H*0.2; // centro alto
-        const dx = (Math.random()*2-1) * (W*0.45);   // abanico horizontal
-        const dy = H*0.6 + Math.random()*H*0.4;      // caída larga
-        el.style.setProperty('--x', startX + 'px');
-        el.style.setProperty('--y', startY + 'px');
-        el.style.setProperty('--dx', dx + 'px');
-        el.style.setProperty('--dy', dy + 'px');
-        root.appendChild(el);
-        setTimeout(()=> el.remove(), 1800);
-      }
-    }
-  </script>
-
-  <!-- Lógica de la malla (tu archivo existente) -->
-  <script src="js/app.firebase.js?v=28" defer></script>
+  <!-- Lógica de la malla -->
+  <script src="js/app.firebase.js?v=29" defer></script>
 </body>
 </html>
