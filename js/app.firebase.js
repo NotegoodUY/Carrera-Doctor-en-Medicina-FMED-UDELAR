@@ -1,5 +1,5 @@
-/* Notegood Malla – app.firebase.js (v22, cloud sync + render) */
-console.log('Notegood Malla v22 – app.firebase.js');
+/* Notegood Malla – app.firebase.js (v28, cloud sync + render) */
+console.log('Notegood Malla v28 – app.firebase.js');
 
 (function safeStart(){
   try { boot(); }
@@ -15,10 +15,14 @@ console.log('Notegood Malla v22 – app.firebase.js');
 })();
 
 function boot(){
-  // ===== Firebase init =====
-  const appFB = firebase.initializeApp(window.FB_CONFIG || {});
+  // ===== Firebase init (evitar doble init) =====
+  if (!firebase.apps?.length) {
+    firebase.initializeApp(window.FB_CONFIG || {});
+  } else {
+    firebase.app();
+  }
   const auth = firebase.auth();
-  const db = firebase.firestore();
+  const db   = firebase.firestore();
 
   async function upsertUserProfile(user) {
     const ref = db.collection('users').doc(user.uid);
@@ -32,7 +36,7 @@ function boot(){
     }, { merge: true });
   }
 
-  /* ===== Frases Notegood (sin repetición hasta agotar) ===== */
+  /* ===== Frases Notegood ===== */
   const FRASES = [
     "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
     "{m} ✅ — organización + constancia = resultados.",
@@ -84,7 +88,7 @@ function boot(){
   }
   const yearLabel = i => (["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"][i] || `Año ${i+1}`);
 
-  /* ===== PLAN COMPLETO con correlativas (Plan 2008) ===== */
+  /* ===== PLAN (correlativas) ===== */
   const PLAN = [
     { semestres: [
       { numero: "1º semestre", materias: [
@@ -231,25 +235,25 @@ function boot(){
   }
   const close = t => { if(!t||t.classList.contains('hide')) return; t.classList.remove('show'); t.classList.add('hide'); setTimeout(()=>t.remove(),220); };
 
-  /* ===== Confetti ===== */
-  const EMOJIS = ["🎉","✨","🎈","🎊","💫","⭐"];
-  function confettiBurst(count=36, power=140){
+  /* ===== Confetti (FULL pantalla) ===== */
+  const EMOJIS = ["🎉","✨","🎈","🎊","💫","⭐","💜"];
+  function confettiBurst(count=140){
     const root=document.getElementById('confetti'); if(!root) return;
-    const { innerWidth:w, innerHeight:h } = window;
-    for(let i=0;i<count;i++){
-      const s=document.createElement('span');
-      s.className='confetti-piece';
-      s.textContent=EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
-      const x = w/2 + (Math.random()*120-60);
-      const y = h*0.18 + (Math.random()*30-15);
-      const dx = (Math.random()*2-1) * power;
-      const dy = (Math.random()*0.7+0.6) * power;
-      s.style.setProperty('--x', x+'px');
-      s.style.setProperty('--y', y+'px');
-      s.style.setProperty('--dx', dx+'px');
-      s.style.setProperty('--dy', dy+'px');
-      root.appendChild(s);
-      setTimeout(()=>s.remove(), 950);
+    const W = window.innerWidth, H = window.innerHeight;
+    for (let i=0;i<count;i++){
+      const el = document.createElement('span');
+      el.className = 'confetti-piece';
+      el.textContent = EMOJIS[Math.floor(Math.random()*EMOJIS.length)];
+      const startX = Math.random()*W;
+      const startY = H*0.25 + Math.random()*H*0.2;
+      const dx = (Math.random()*2-1) * (W*0.45);
+      const dy = H*0.6 + Math.random()*H*0.4;
+      el.style.setProperty('--x', startX + 'px');
+      el.style.setProperty('--y', startY + 'px');
+      el.style.setProperty('--dx', dx + 'px');
+      el.style.setProperty('--dy', dy + 'px');
+      root.appendChild(el);
+      setTimeout(()=>el.remove(), 1800);
     }
   }
 
@@ -274,13 +278,13 @@ function boot(){
           total++;
           const div=document.createElement('div'); div.className='materia'; div.dataset.id=m.id;
 
-          // Lado izquierdo: nombre
-          const left = document.createElement('span');
-          left.textContent = `${m.nombre} (${m.id})`;
-          left.style.flex = '1';
-          div.appendChild(left);
+          // Título
+          const title = document.createElement('span');
+          title.className = 'title';
+          title.textContent = `${m.nombre}`;
+          div.appendChild(title);
 
-          // Lado derecho: nota (chip) + botón notas
+          // Acciones a la derecha
           const actions = document.createElement('div');
           actions.className = 'actions';
 
@@ -293,11 +297,11 @@ function boot(){
             actions.appendChild(chip);
           }
 
-          // Botón Notas/Nota
+          // Botón Notas
           const nb = document.createElement('button');
           nb.className = 'note-btn';
           nb.type = 'button';
-          nb.innerHTML = `📝 <span class="nb-label">Notas</span>`;
+          nb.innerHTML = `<span class="nb-label">Notas</span>`;
           nb.addEventListener('click', (ev)=>{ ev.stopPropagation(); openNote(m.id, m.nombre); });
           actions.appendChild(nb);
 
@@ -327,7 +331,7 @@ function boot(){
             if (auth.currentUser) cloudSaveDebounced({ estado, notas, grades });
             if(!was && estado[m.id]){
               toast(frasePara(m.nombre));
-              confettiBurst(34, 160);
+              confettiBurst(48);
             }
             render();
           });
@@ -341,22 +345,23 @@ function boot(){
       cont.appendChild(col);
     });
 
+    // Progreso + KPI + mensaje
     const pct = total? Math.round((aprob/total)*100) : 0;
     const copy = progressCopy(pct);
 
     const p = document.getElementById('progressText');
     if(p){ p.textContent=`${aprob} / ${total} materias aprobadas · ${pct}% — ${copy}`; }
 
-    // Barra con paleta Notegood
     const bar=document.getElementById('progressBar');
-    if(bar){
-      let col = pct<=25 ? '#ff6b6b' : (pct<=75 ? '#ff9f68' : '#4ade80');
-      bar.style.width = pct + '%';
-      bar.style.background = `linear-gradient(90deg, ${col}, ${col})`;
-    }
-    const kpi=document.getElementById('progressKpi'); if(kpi){ kpi.textContent = pct + '%'; }
+    if(bar){ bar.style.width = pct + '%'; }
 
-    if (pct === 100) confettiBurst(80, 220);
+    const pctEl=document.getElementById('progressPct');
+    if(pctEl) pctEl.textContent = pct + '%';
+
+    const msgEl=document.getElementById('progressMsg');
+    if(msgEl) msgEl.textContent = copy;
+
+    if (pct === 100) confettiBurst(140);
   }
 
   /* ===== Modal Notas + Nota ===== */
@@ -412,7 +417,6 @@ function boot(){
       toast('Notas guardadas ✅', 2000);
     });
   }
-
   modal?.addEventListener('close', ()=>{ currentNoteId=null; });
 
   /* ===== Tema y reset ===== */
@@ -492,43 +496,8 @@ function boot(){
     applyTheme(currentTheme());
     document.getElementById('themeToggle')?.addEventListener('click', toggleTheme);
     document.getElementById('resetBtn')?.addEventListener('click', onReset);
-    document.getElementById('exportBtn')?.addEventListener('click', exportar);
-    document.getElementById('importBtn')?.addEventListener('click', ()=> document.getElementById('importFile').click());
-    document.getElementById('importFile')?.addEventListener('change', (e)=>{ const f=e.target.files?.[0]; if(f) importar(f); e.target.value=''; });
 
     bindAuthUI();
     render();
   });
-
-  /* ===== Export / Import ===== */
-  function exportar(){
-    const payload = { version: 2, fecha: new Date().toISOString(), estado, notas, grades };
-    const blob = new Blob([JSON.stringify(payload,null,2)], {type:'application/json'});
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = `notegood-malla-backup-${new Date().toISOString().slice(0,10)}.json`;
-    document.body.appendChild(a); a.click(); a.remove();
-    toast('Backup exportado 💾', 1800);
-  }
-  function importar(file){
-    const reader = new FileReader();
-    reader.onload = ()=>{
-      try{
-        const data = JSON.parse(reader.result);
-        if (!data || typeof data !== 'object') throw new Error('Archivo inválido');
-        if (!data.estado || typeof data.estado !== 'object') throw new Error('Falta “estado”');
-        if (!data.notas  || typeof data.notas  !== 'object') throw new Error('Falta “notas”');
-        const importedGrades = (data.grades && typeof data.grades === 'object') ? data.grades : {};
-
-        Object.assign(estado, data.estado);
-        Object.assign(notas,  data.notas);
-        Object.assign(grades, importedGrades);
-
-        save(KEY, estado); save(NOTES_KEY, notas); save(GRADES_KEY, grades);
-        toast('Progreso importado 📥', 2000);
-        render();
-      }catch(err){ console.error(err); toast('Archivo inválido ❌', 2500); }
-    };
-    reader.readAsText(file);
-  }
 }
