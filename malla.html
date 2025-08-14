@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=31">
+  <link rel="stylesheet" href="css/styles.css?v=40">
 </head>
 <body>
   <header class="ng-header" role="banner">
@@ -13,10 +13,9 @@
       <a href="index.html" class="logo">Notegood.uy ✨</a>
       <div class="controls">
         <span id="userBadge" class="user-badge" style="display:none"></span>
-        <button id="resetBtn" class="btn ghost" title="Borrar">🗑️ Borrar</button>
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
         <button id="loginGoogle" class="btn ghost" title="Entrar" style="display:none">🔐 Entrar</button>
-        <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button> <!-- ← último a la derecha -->
+        <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button> <!-- último a la derecha -->
       </div>
     </div>
 
@@ -43,8 +42,28 @@
     <p id="progressText">0 / 0 materias aprobadas · 0%</p>
   </footer>
 
+  <!-- Modal Notas (evita el error de addEventListener) -->
+  <dialog id="noteModal">
+    <form method="dialog" class="note-form">
+      <h3 id="noteTitle">Notas</h3>
+      <div class="field">
+        <span>Nota (0–12 opcional)</span>
+        <input id="gradeInput" type="number" min="0" max="12" step="1" inputmode="numeric">
+      </div>
+      <div class="field">
+        <span>Notas (texto libre)</span>
+        <textarea id="noteText" rows="6" placeholder="Resumen, recordatorios, etc."></textarea>
+      </div>
+      <div class="note-actions">
+        <button value="cancel" class="btn">Cancelar</button>
+        <button id="saveNoteBtn" class="btn-pri" value="default">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
   <div id="confetti"></div>
 
+  <!-- FAB Instagram -->
   <a class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm0 2a3 3 0 0 0-3 3v10a3 3 0 0 0 3 3h10a3 3 0 0 0 3-3V7a3 3 0 0 0-3-3H7zm5 3.5a5.5 5.5 0 1 1 0 11.001A5.5 5.5 0 0 1 12 7.5zm0 2a3.5 3.5 0 1 0 .001 7.001A3.5 3.5 0 0 0 12 9.5zM18 6.4a1.1 1.1 0 1 1 0 2.2 1.1 1.1 0 0 1 0-2.2z"/></svg>
   </a>
@@ -54,7 +73,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
 
-  <!-- Config Firebase -->
+  <!-- Config -->
   <script>
     window.FB_CONFIG = {
       apiKey: "AIzaSyB80csmSE6YMXkNyyBo9y8j6iIT3pHsebs",
@@ -68,7 +87,6 @@
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
   </script>
 
-  <script src="js/app.firebase.js?v=31" defer></script>
+  <script src="js/app.firebase.js?v=40" defer></script>
 </body>
 </html>
-
