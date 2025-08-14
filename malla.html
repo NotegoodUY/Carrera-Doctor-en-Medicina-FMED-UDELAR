@@ -5,19 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=23">
+  <link rel="stylesheet" href="css/styles.css?v=26">
 </head>
 <body>
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
     <div class="header-top">
       <a href="index.html" class="logo">Notegood.uy ✨</a>
-      <div class="controls" aria-label="Controles">
+      <div class="controls" aria-label="Controles" style="gap:.4rem">
         <!-- Sesión -->
-        <div class="controls" style="gap:.4rem">
-          <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
-          <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
-          <span id="userBadge" style="display:none;font-weight:700"></span>
-        </div>
+        <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
+        <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
+        <span id="userBadge" style="display:none;font-weight:700"></span>
         <!-- Utilidades -->
         <button id="resetBtn" class="btn ghost" title="Borrar avance">🗑️ Borrar</button>
         <button id="exportBtn" class="btn ghost" title="Exportar mi avance">📤 Exportar</button>
@@ -61,23 +59,45 @@
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-firestore-compat.js"></script>
 
-  <!-- Config + Guard de acceso -->
+  <!-- Config Firebase + guard -->
   <script>
     window.FB_CONFIG = {
-      apiKey: "AIzaSyB8QcsmSE6YMxNyyBo9y8j6iIT3pHsebs",
+      apiKey: "AIzaSyB80csmSE6YMXkNyyBo9y8j6iIT3pHsebs",
       authDomain: "notegood-uy.firebaseapp.com",
       projectId: "notegood-uy",
-      storageBucket: "notegood-uy.appspot.com",
+      storageBucket: "notegood-uy.firebasestorage.app",
       messagingSenderId: "690615845783",
       appId: "1:690615845783:web:6f6bfacc9f3d77d1dfbad2",
       measurementId: "G-4SL4JL2GH5"
     };
-    if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
+    if (!firebase.apps?.length) { firebase.initializeApp(window.FB_CONFIG); }
+
     const _auth = firebase.auth();
-    _auth.onAuthStateChanged((user)=>{ if (!user) { location.href = 'index.html?redirect=malla.html'; } });
+    _auth.onAuthStateChanged((user) => {
+      if (!user) { location.href = 'index.html?redirect=malla.html'; }
+      else {
+        // Mostrar badge / logout si querés desde acá (tu app.firebase.js también puede hacerlo)
+        const badge = document.getElementById('userBadge');
+        const out = document.getElementById('logoutBtn');
+        const login = document.getElementById('loginGoogle');
+        if (badge) { badge.textContent = user.displayName || user.email || 'Usuario'; badge.style.display='inline-block'; }
+        if (out) { out.style.display='inline-flex'; out.onclick = ()=> _auth.signOut().then(()=>location.href='index.html'); }
+        if (login) { login.style.display='none'; }
+      }
+    });
+
+    // Toggle de tema también aquí
+    const themeToggle = document.getElementById('themeToggle');
+    const body = document.body;
+    const savedTheme = localStorage.getItem('ng-theme');
+    if (savedTheme === 'dark') body.classList.add('dark');
+    themeToggle?.addEventListener('click', () => {
+      body.classList.toggle('dark');
+      localStorage.setItem('ng-theme', body.classList.contains('dark') ? 'dark' : 'light');
+    });
   </script>
 
-  <!-- Lógica completa (render + Firestore + notas + progreso + auth UI) -->
-  <script src="js/app.firebase.js?v=23" defer></script>
+  <!-- Lógica de la malla (tu archivo existente) -->
+  <script src="js/app.firebase.js?v=26" defer></script>
 </body>
 </html>
