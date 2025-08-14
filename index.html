@@ -5,16 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
   <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, agregá notas y guardá tu progreso. by Notegood.uy">
-  <!-- Fuente + tu hoja de estilos principal -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=33">
-
-  <!-- Micro-estilos para este landing (no tocan tu CSS general) -->
+  <link rel="stylesheet" href="css/styles.css?v=40">
   <style>
-    /* Hero con patrón suave y acentos Notegood */
+    /* micro-acentos para el landing */
     body.landing .hero{
-      position: relative;
-      overflow: hidden;
+      position:relative; overflow:hidden;
       background:
         radial-gradient(1200px 600px at 90% -10%, rgba(108,92,231,.12), transparent 60%),
         radial-gradient(900px 500px at -10% 0%, rgba(0,191,166,.10), transparent 55%),
@@ -22,92 +18,73 @@
     }
     .hero-title .brand{
       background: linear-gradient(90deg, var(--brand), var(--accent));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+      -webkit-background-clip:text; background-clip:text; color:transparent;
     }
-    /* CTA y nota */
-    .cta-note{
-      margin-top: .45rem; font-size: .85rem; color: var(--muted);
-    }
-    .btn-pri span{ font-weight: 700 }
-    /* Bullets en 2 columnas → 1 en móvil (ya soportado por tu CSS, reforzamos) */
-    @media (max-width: 680px){ .hero-list{ grid-template-columns: 1fr } }
-    /* Tarjetas con encabezados emoji + sutil relieve */
-    .feature-cards .card h3{ display:flex; align-items:center; gap:.4rem; margin-top:0 }
-    .feature-cards .card{ background: var(--card); box-shadow: var(--shadow) }
-    /* Frase final */
-    .closing{ max-width: 820px; margin: 18px auto 0; padding: 0 16px; text-align: center; color: var(--muted); font-style: italic }
+    .cta-note{ margin-top:.45rem; font-size:.85rem; color:var(--muted) }
+    .feature-cards .card h3{ display:flex; gap:.4rem; align-items:center; margin-top:0 }
+    .closing{ max-width:820px; margin:18px auto 0; padding:0 16px; text-align:center; color:var(--muted); font-style:italic }
   </style>
 </head>
-
 <body class="landing">
-  <!-- Header -->
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
     <div class="header-top container">
       <a href="index.html" class="logo">Notegood.uy ✨</a>
       <div class="controls">
-        <!-- Link “Ir a la malla” solo si ya está logueado -->
+        <!-- solo visible si ya está logueado -->
         <a id="goMalla" href="malla.html" class="btn ghost" style="display:none">Ir a la malla →</a>
         <button id="themeToggle" class="btn ghost" title="Modo oscuro">🌙</button>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
   <main class="hero" role="main">
     <section class="hero-inner container">
-      <!-- 1) Título y descripción EMOCIONAL -->
       <h1 class="hero-title">✨ Tu <span class="brand">Malla Interactiva</span> para Medicina en la Udelar</h1>
       <p class="hero-sub">
         Hecha por y para estudiantes reales. Marcá, organizá, anotá, y motivate viendo cómo avanzás paso a paso.
         Con estilo Notegood 💜
       </p>
 
-      <!-- 2) CTA mejorado -->
       <div class="hero-cta">
-        <button id="loginGoogle" class="btn-pri" aria-label="Empezar con Google">
-          <span>🚀 Empezar mi malla →</span>
-        </button>
+        <button id="loginGoogle" class="btn-pri" aria-label="Empezar con Google"><span>🚀 Empezar mi malla →</span></button>
       </div>
       <div class="cta-note">Usá tu cuenta Udelar o Gmail, lo que prefieras.</div>
 
-      <!-- 3) Bullets reescritos -->
       <ul class="hero-list" aria-label="Beneficios">
-        <li>📁 Guardá tu progreso sin perder nada (local + nube)</li>
+        <li>📁 Guarda tu progreso sin perder nada (local + nube)</li>
         <li>🔓 Correlativas inteligentes que se desbloquean solas</li>
-        <li>📝 Agregá tus notas, calificaciones y recordatorios</li>
-        <li>🎉 Confeti incluido cuando completes tu camino</li>
+        <li>📝 Agrega tus notas, calificaciones y recordatorios</li>
+        <li>🎉 Fiesta incluida para cuando completes tu camino</li>
       </ul>
     </section>
 
-    <!-- 4) Tarjetas con encabezados cercanos -->
     <section class="feature-cards container" aria-label="Características">
       <article class="card">
-        <h3>🌱 Empezá sin enredos</h3>
-        <p>Marcá tus materias y desbloqueá lo que sigue. Sin fórmulas raras.</p>
+        <h3>🌱 Empieza sin enredos</h3>
+        <p>Marca tus materias y desbloquea lo que sigue. Sin fórmulas raras.</p>
       </article>
       <article class="card">
-        <h3>✍️ Recordá lo importante</h3>
-        <p>Guardá tus notas y calificaciones: todo queda atado a tu usuario.</p>
+        <h3>✍️ Recuerda lo importante</h3>
+        <p>Guarda tus notas y calificaciones: todo queda guardado en tu usuario.</p>
       </article>
       <article class="card">
         <h3>📊 Motivación visual</h3>
-        <p>Mirá cuánto avanzaste con contadores visuales, estilo Notegood.</p>
+        <p>Mira cuánto avanzaste con  los contadores visuales, estilo Notegood.</p>
       </article>
     </section>
 
-    <!-- Bonus: frase de cierre -->
-    <p class="closing">🫶 Esta malla la hice para que no te pierdas. Que estudiar medicina sea difícil, no quiere decir que tengas que hacerlo sola.</p>
+    <p class="closing">🫶 Que estudiar medicina sea difícil, no quiere decir que tengamos que hacerlo solos.</p>
   </main>
 
   <footer class="ng-footer">
-    <p>Hecho con 💜 por Notegood.uy — <a href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener">@notegood.uy</a></p>
+    <p>Hecho con 💜 y muuucho café por Notegood.uy — <a href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener">@notegood.uy</a></p>
   </footer>
 
   <!-- Firebase (Compat) -->
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.11/firebase-auth-compat.js"></script>
 
-  <!-- Config Firebase (tu proyecto) -->
+  <!-- Config -->
   <script>
     window.FB_CONFIG = {
       apiKey: "AIzaSyB80csmSE6YMXkNyyBo9y8j6iIT3pHsebs",
@@ -126,31 +103,22 @@
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
 
-    // Mostrar “Ir a la malla” si ya está logueado
     auth.onAuthStateChanged((u) => {
       const go = document.getElementById('goMalla');
       if (u && go) {
         go.style.display = 'inline-flex';
-        const p = new URLSearchParams(location.search);
-        const want = p.get('redirect');
+        const want = new URLSearchParams(location.search).get('redirect');
         if (want) location.replace(want);
       }
     });
 
-    // CTA → login y redirección a la malla
     document.getElementById('loginGoogle').addEventListener('click', async () => {
-      try {
-        await auth.signInWithPopup(provider);
-        location.href = 'malla.html';
-      } catch (e) {
-        console.error('Firebase Auth error:', e.code, e.message);
-        alert(`Error: ${e.code}\n${e.message}`);
-      }
+      try { await auth.signInWithPopup(provider); location.href = 'malla.html'; }
+      catch (e) { console.error(e); alert(`Error: ${e.code}\n${e.message}`); }
     });
 
-    // Tema (no persistente)
-    document.getElementById('themeToggle')?.addEventListener('click', () => {
-      document.body.classList.toggle('dark');
+    document.getElementById('themeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark'); // no persistente
     });
   </script>
 </body>
