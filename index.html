@@ -3,40 +3,98 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NoteGood · Iniciar sesión</title>
+  <title>Malla Interactiva – Medicina UDELAR (Plan 2008)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0f172a;--fg:#e2e8f0;--card:#111827;--btn:#22c55e;--btnh:#16a34a}
-    *{box-sizing:border-box} body{margin:0;font-family:Poppins,system-ui,Segoe UI,Roboto,sans-serif;background:linear-gradient(160deg,#0f172a,#111827);color:var(--fg);min-height:100vh;display:grid;place-items:center}
-    .card{width:min(720px,92vw);background:rgba(17,24,39,.75);backdrop-filter:blur(6px);border:1px solid rgba(255,255,255,.08);border-radius:22px;padding:32px;box-shadow:0 20px 60px rgba(0,0,0,.45)}
-    h1{margin:0 0 8px;font-size:28px} p{margin:0 0 18px;opacity:.85}
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-    .btn{cursor:pointer;border:0;border-radius:14px;padding:14px 18px;font-weight:700}
-    .btn.primary{background:var(--btn);color:#04210f} .btn.primary:hover{background:var(--btnh)}
-    .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,.18);color:var(--fg)}
-    .hint{font-size:.9rem;opacity:.7;margin-top:8px}
-  </style>
+  <link rel="stylesheet" href="css/styles.css?v=22">
 </head>
 <body>
-  <main class="card" role="main">
-    <h1>NoteGood · Malla Interactiva</h1>
-    <p>Iniciá sesión para guardar tu avance, notas y calificaciones en la nube.</p>
+  <!-- Encabezado -->
+  <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
+    <div class="header-top">
+      <a href="index.html" class="logo">Notegood.uy ✨</a>
 
-    <div id="userRow" style="display:none;margin:14px 0 8px;opacity:.9"></div>
+      <div class="controls" aria-label="Controles">
+        <!-- Sesión -->
+        <div id="authBox" class="controls" style="gap:.4rem">
+          <button id="loginGoogle" class="btn ghost" title="Entrar con Google">🔐 Entrar</button>
+          <button id="logoutBtn" class="btn ghost" title="Salir" style="display:none">🚪 Salir</button>
+          <span id="userBadge" style="display:none;font-weight:700"></span>
+        </div>
 
-    <div class="actions">
-      <button id="loginGoogleLanding" class="btn primary">🔐 Entrar con Google</button>
-      <a id="goMalla" class="btn ghost" href="malla.html" style="display:none">➡️ Ir a la malla</a>
-      <button id="logoutLanding" class="btn ghost" style="display:none">🚪 Cerrar sesión</button>
+        <!-- Utilidades -->
+        <button id="resetBtn" class="btn ghost" title="Borrar avance">🗑️ Borrar avance</button>
+        <button id="exportBtn" class="btn ghost" title="Exportar mi avance">💾 Exportar</button>
+        <button id="importBtn" class="btn ghost" title="Importar avance">📥 Importar</button>
+        <input id="importFile" type="file" accept="application/json" hidden>
+
+        <button id="themeToggle" class="switch" aria-pressed="false" aria-label="Cambiar tema">
+          <span class="icon sun" aria-hidden="true">☀️</span>
+          <span class="thumb" aria-hidden="true"></span>
+          <span class="icon moon" aria-hidden="true">🌙</span>
+        </button>
+      </div>
     </div>
-    <div class="hint">Usamos tu cuenta solo para identificarte y sincronizar tu progreso. Podés cerrar sesión cuando quieras.</div>
-  </main>
 
-  <!-- Firebase SDKs (compat) -->
+    <h1 class="title">Malla Interactiva – Medicina UDELAR (Plan 2008)</h1>
+    <p class="subtitle">Tu mapa claro para avanzar con calma y constancia.</p>
+
+    <!-- Barra de progreso -->
+    <div class="progress-wrap" aria-label="Avance de la carrera">
+      <div class="progress-track">
+        <div id="progressBar" class="progress-bar" style="width:0%"></div>
+      </div>
+      <div id="progressKpi" class="progress-kpi">0%</div>
+    </div>
+
+    <div class="legend" aria-label="Leyenda">
+      <span class="legend-item"><span class="dot dot-ok" aria-hidden="true">✓</span> Aprobada</span>
+      <span class="legend-item"><span class="dot dot-lock" aria-hidden="true">🔒</span> Bloqueada por previas</span>
+      <span class="legend-item"><span class="dot dot-pend" aria-hidden="true"></span> Pendiente</span>
+      <span class="legend-item"><span class="dot" aria-hidden="true">📝</span> Notas / Nota</span>
+    </div>
+  </header>
+
+  <!-- Contenido -->
+  <main id="malla" class="grid-container" role="main" aria-live="polite"></main>
+
+  <!-- Pie -->
+  <footer class="ng-footer" role="contentinfo">
+    <p id="progressText">0 / 0 materias aprobadas · 0%</p>
+  </footer>
+
+  <!-- Confetti + Modal de notas -->
+  <div id="confetti"></div>
+
+  <dialog id="noteModal">
+    <form method="dialog" class="note-form" id="noteForm">
+      <h3 id="noteTitle">Notas</h3>
+      <label class="field">
+        <span>Nota (0–12)</span>
+        <input id="gradeInput" type="number" inputmode="numeric" min="0" max="12" step="1" placeholder="Ej: 10" />
+      </label>
+      <label class="field">
+        <span>Notas (texto libre)</span>
+        <textarea id="noteText" rows="8" placeholder="Tips, bibliografía, fechas clave…"></textarea>
+      </label>
+      <div class="note-actions">
+        <button value="cancel" class="btn-sec">Cancelar</button>
+        <button id="saveNoteBtn" value="default" class="btn-pri">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- FAB Instagram -->
+  <a id="igFab" class="fab-ig" href="https://www.instagram.com/notegood.uy/" target="_blank" rel="noopener" aria-label="Instagram Notegood.uy">
+    <span>📷</span>
+  </a>
+
+  <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <!-- Configuración real + guard de acceso -->
   <script>
-    // 👉 TU CONFIG REAL
     window.FB_CONFIG = {
       apiKey: "AIzaSyB8QcsmSE6YMxNyyBo9y8j6iIT3pHsebs",
       authDomain: "notegood-uy.firebaseapp.com",
@@ -46,49 +104,14 @@
       appId: "1:690615845783:web:6f6bfacc9f3d77d1dfbad2",
       measurementId: "G-4SL4JL2GH5"
     };
-    // Init (solo una vez)
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
-    const auth = firebase.auth();
 
-    const $ = (id)=>document.getElementById(id);
-    const loginBtn = $('loginGoogleLanding');
-    const goMalla  = $('goMalla');
-    const logoutBtn= $('logoutLanding');
-    const userRow  = $('userRow');
-
-    // Si ya vino desde una redirección, respetamos ?redirect=
-    function nextUrl(){
-      const u = new URL(location.href);
-      const r = u.searchParams.get('redirect');
-      return r || 'malla.html';
-    }
-
-    loginBtn?.addEventListener('click', async ()=>{
-      try{
-        await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-        location.href = nextUrl();
-      }catch(e){ alert('No se pudo iniciar sesión: ' + e.message); }
-    });
-
-    logoutBtn?.addEventListener('click', async ()=>{
-      await auth.signOut();
-      location.href = 'index.html';
-    });
-
-    auth.onAuthStateChanged((user)=>{
-      if (user){
-        userRow.style.display='block';
-        userRow.textContent = `Conectada: ${user.displayName || user.email}`;
-        loginBtn.style.display='none';
-        logoutBtn.style.display='';
-        goMalla.style.display='';
-      }else{
-        userRow.style.display='none';
-        loginBtn.style.display='';
-        logoutBtn.style.display='none';
-        goMalla.style.display='none';
-      }
-    });
+    // 🔒 Si NO hay sesión, redirige al landing con retorno a la malla
+    const _auth = firebase.auth();
+    _auth.onAuthStateChanged((u)=>{ if(!u){ location.href = 'index.html?redirect=malla.html'; } });
   </script>
+
+  <!-- Lógica completa (render + Firestore + notas + progreso) -->
+  <script src="js/app.firebase.js?v=22" defer></script>
 </body>
 </html>
