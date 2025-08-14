@@ -32,7 +32,7 @@ function boot(){
     }, { merge: true });
   }
 
-  /* ===== Frases Notegood (sin repetición hasta agotar) ===== */
+  /* ===== Frases Notegood ===== */
   const FRASES = [
     "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
     "{m} ✅ — organización + constancia = resultados.",
@@ -84,7 +84,7 @@ function boot(){
   }
   const yearLabel = i => (["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"][i] || `Año ${i+1}`);
 
-  /* ===== PLAN COMPLETO con correlativas (Plan 2008) ===== */
+  /* ===== PLAN (correlativas) ===== */
   const PLAN = [
     { semestres: [
       { numero: "1º semestre", materias: [
