@@ -1,5 +1,5 @@
-/* Notegood Malla – v40 */
-console.log('Notegood Malla v40');
+/* Notegood Malla – v41 */
+console.log('Notegood Malla v41');
 
 (function(){ try{ boot(); }catch(e){ console.error(e); const m=document.getElementById('malla'); if(m){ m.innerHTML='<div style="padding:1rem;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;max-width:960px;margin:1rem auto;font-weight:600;color:#7f1d1d">Error: '+e.message+'</div>'; } }})();
 
@@ -7,8 +7,8 @@ function boot(){
   if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG || {});
   const auth=firebase.auth(), db=firebase.firestore();
 
-  /* ======= PLAN (igual al que venías usando) ======= */
-  const PLAN=[
+  /* ======= PLAN ======= */
+  const PLAN=[ /* usa el mismo plan que ya tenías (idéntico al último que te pasé) */ 
     { semestres:[{ numero:"1º semestre", materias:[
       {id:"MIBCM",nombre:"Introducción a la Biología Celular y Molecular"},
       {id:"MIBES",nombre:"Introducción a la Bioestadística"},
@@ -80,18 +80,7 @@ function boot(){
   }
 
   /* ======= Copys ======= */
-  const FRASES=[
-    "¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏",
-    "{m} ✅ — organización + constancia = resultados.",
-    "¡Seguimos! {m} fuera de la lista 💪",
-    "Check en {m}. Paso a paso se llega lejos 🚶‍♀️🚶",
-    "Tu curva de aprendizaje sube con {m} 📈",
-    "¡Qué nivel! {m} completada con estilo ✨",
-    "Respirá hondo: {m} ya es historia 🧘",
-    "Lo lograste: {m} ✔️ — ¡a hidratarse y seguir! 💧",
-    "{m} done. Tu mapa se ve cada vez más claro 🗺️",
-    "Un paso más cerca del título gracias a {m} 💼"
-  ];
+  const FRASES=["¡Bien ahí! {m} aprobada. Tu yo del futuro te aplaude 👏","{m} ✅ — organización + constancia = resultados.","¡Seguimos! {m} fuera de la lista 💪","Check en {m}. Paso a paso se llega lejos 🚶‍♀️🚶","Tu curva de aprendizaje sube con {m} 📈","¡Qué nivel! {m} completada con estilo ✨","Respirá hondo: {m} ya es historia 🧘","Lo lograste: {m} ✔️ — ¡a hidratarse y seguir! 💧","{m} done. Tu mapa se ve cada vez más claro 🗺️","Un paso más cerca del título gracias a {m} 💼"];
   let pool=[...FRASES];
   const frasePara=(materia)=>{ if(!pool.length) pool=[...FRASES]; return pool.splice(Math.floor(Math.random()*pool.length),1)[0].replace("{m}",materia); };
   const progressCopy=p=>p===100?"¡Plan completo! Orgullo total ✨":p>=90?"Últimos detalles y a festejar 🎉":p>=75?"Último sprint, ya casi 💨":p>=50?"Mitad de camino, paso firme 💪":p>=25?"Buen envión, seguí así 🚀":p>0?"Primeros checks, ¡bien ahí! ✅":"Arranquemos tranqui, paso a paso 👟";
@@ -108,7 +97,7 @@ function boot(){
     tc.appendChild(t); setTimeout(()=>t.remove(), ms);
   }
 
-  /* ======= Confetti full-screen ======= */
+  /* ======= Confetti ======= */
   const EMOJIS=["🎉","✨","🎈","🎊","💫","⭐","💜"];
   function confettiBurst(n=120){
     const root=document.getElementById('confetti'); if(!root) return;
@@ -220,6 +209,17 @@ function boot(){
   /* ======= Tema (no persistente) ======= */
   document.getElementById('themeToggle')?.addEventListener('click', ()=> document.body.classList.toggle('dark'));
 
+  /* ======= Reset ======= */
+  document.getElementById('resetBtn')?.addEventListener('click', async ()=>{
+    if(!confirm('¿Seguro que querés borrar TODO tu avance, notas y calificaciones?')) return;
+    localStorage.removeItem(KEY); localStorage.removeItem(NOTES_KEY); localStorage.removeItem(GRADES_KEY);
+    for(const k of Object.keys(estado)) delete estado[k];
+    for(const k of Object.keys(notas)) delete notas[k];
+    for(const k of Object.keys(grades)) delete grades[k];
+    if(auth.currentUser){ try{ await progressRef()?.set({estado:{},notas:{},grades:{},updatedAt:firebase.firestore.FieldValue.serverTimestamp()}); }catch{} }
+    toast('Se reinició tu avance 💫',2500); render();
+  });
+
   /* ======= Auth ======= */
   const loginBtn=document.getElementById('loginGoogle');
   const logoutBtn=document.getElementById('logoutBtn');
@@ -232,9 +232,8 @@ function boot(){
     if(!u){ location.href='index.html?redirect=malla.html'; return; }
     const first=(u.displayName||u.email||'Usuario').split(' ')[0];
     badge.style.display=''; badge.textContent=`Hola, ${first}`;
-    logoutBtn.style.display=''; loginBtn && (loginBtn.style.display='none');
+    logoutBtn && (logoutBtn.style.display=''); loginBtn && (loginBtn.style.display='none');
 
-    // perfil y sync inicial
     await db.collection('users').doc(u.uid).set({uid:u.uid,email:u.email||null,displayName:u.displayName||null,lastSeen:firebase.firestore.FieldValue.serverTimestamp()},{merge:true});
     const cloud=await cloudLoad();
     if (cloud){ Object.assign(estado,cloud.estado||{}); Object.assign(notas,cloud.notas||{}); Object.assign(grades,cloud.grades||{}); save(KEY,estado); save(NOTES_KEY,notas); save(GRADES_KEY,grades); }
