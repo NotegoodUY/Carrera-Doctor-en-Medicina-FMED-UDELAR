@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=41">
+  <link rel="stylesheet" href="css/styles.css?v=42">
 </head>
 <body>
   <header class="ng-header" role="banner">
@@ -25,11 +25,7 @@
         <div class="progress-track"></div>
         <div id="progressBar" class="progress-bar" style="width:0"></div>
       </div>
-      <div class="legend">
-        <span class="chip done">Aprobada</span>
-        <span class="chip unlocked">Disponible</span>
-        <span class="chip locked">Bloqueada</span>
-      </div>
+      <!-- Leyenda eliminada a pedido -->
       <div class="progress-kpi">
         <span id="progressPct">0%</span>
         <span id="progressMsg" class="progress-msg">¡A empezar!</span>
@@ -88,6 +84,6 @@
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
   </script>
 
-  <script src="js/app.firebase.js?v=41" defer></script>
+  <script src="js/app.firebase.js?v=42" defer></script>
 </body>
 </html>
