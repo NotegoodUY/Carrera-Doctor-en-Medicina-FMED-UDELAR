@@ -1,10 +1,10 @@
-/* Notegood Malla – v44
-   - Fix: centrados y redirección post login
-   - Confeti full-screen + emojis medicina
+/* Notegood Malla – v45
+   - Onboarding siempre visible (cambia copy si es 1ª vez)
+   - Confeti full-screen + emojis de medicina
    - Modal Notas con Cancelar
    - Progreso, correlativas y estados
 */
-console.log('Notegood Malla v44');
+console.log('Notegood Malla v45');
 
 (function(){ try{ boot(); } catch(e){ console.error(e);
   const m=document.getElementById('malla'); if(m){ m.innerHTML='<div style="padding:1rem;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;max-width:960px;margin:1rem auto;font-weight:600;color:#7f1d1d">Error: '+e.message+'</div>'; }
@@ -261,15 +261,39 @@ function boot(){
     toast('Se reinició tu avance 💫',2500); render();
   });
 
-  /* Onboarding una vez */
-  const welcome=document.getElementById('welcomeModal'), gotIt=document.getElementById('gotItBtn');
-  if(localStorage.getItem('ng-onboarded')!=='1'){ if(welcome?.showModal) welcome.showModal(); else welcome?.setAttribute('open',''); }
-  gotIt?.addEventListener('click',()=>{ localStorage.setItem('ng-onboarded','1'); try{ welcome?.close(); }catch{ welcome?.removeAttribute('open'); } });
+  /* ===== Onboarding SIEMPRE (copy cambia según 1ª vez) ===== */
+  const welcome   = document.getElementById('welcomeModal');
+  const wTitle    = document.getElementById('welcomeTitle');
+  const wBody     = document.getElementById('welcomeBody');
+  const gotIt     = document.getElementById('gotItBtn');
+
+  function openWelcome(){
+    const first = localStorage.getItem('ng-onboarded') !== '1';
+    if (wTitle && wBody){
+      if (first){
+        wTitle.textContent = 'Bienvenida a tu Malla Interactiva ✨';
+        wBody.innerHTML    = 'Marca las materias que ya aprobaste, toma notas y mira tu progreso. <br>¡Todo se guarda solo (local + nube)!';
+        if (gotIt) gotIt.textContent = '¡Entendido!';
+      } else {
+        wTitle.textContent = '¡Qué bueno que estás acá! 💜';
+        wBody.textContent  = '¿Venimos a tachar otra materia? Marca, organiza y sigue avanzando.';
+        if (gotIt) gotIt.textContent = '¡Vamos!';
+      }
+    }
+    if (welcome?.showModal) welcome.showModal();
+    else welcome?.setAttribute('open','');
+  }
+
+  gotIt?.addEventListener('click', () => {
+    if (localStorage.getItem('ng-onboarded') !== '1') {
+      localStorage.setItem('ng-onboarded', '1');
+    }
+    try { welcome?.close(); } catch { welcome?.removeAttribute('open'); }
+  });
 
   /* Auth */
   const loginBtn=document.getElementById('loginGoogle'), logoutBtn=document.getElementById('logoutBtn'), badge=document.getElementById('userBadge');
 
-  // por si alguien entra directo a malla sin sesion
   if(!auth.currentUser){ loginBtn?.style.setProperty('display',''); }
 
   loginBtn?.addEventListener('click', async()=>{ 
@@ -279,7 +303,7 @@ function boot(){
   logoutBtn?.addEventListener('click', async()=>{ await auth.signOut(); location.href='index.html'; });
 
   auth.onAuthStateChanged(async user=>{
-    if(!user){ /* si se desloguea, vuelve a landing */ return; }
+    if(!user){ /* sin sesión, igual mostramos la bienvenida y la malla vacía */ return; }
     const first=(user.displayName||user.email||'Usuario').split(' ')[0];
     if(badge){ badge.style.display=''; badge.textContent=`Hola, ${first}`; }
     if(logoutBtn) logoutBtn.style.display='';
@@ -292,9 +316,14 @@ function boot(){
       Object.assign(estado,cloud.estado||{}); Object.assign(notas,cloud.notas||{}); Object.assign(grades,cloud.grades||{});
       save(KEY,estado); save(NOTES_KEY,notas); save(GRADES_KEY,grades);
     }
-    render(); // asegura que la malla aparece tras login
+    render();           // render con datos
+    openWelcome();      // siempre mostrar luego de iniciar sesión
     toast('Sesión iniciada ☁️',1600);
   });
 
-  document.addEventListener('DOMContentLoaded', render);
+  // Al cargar (con o sin sesión): render + bienvenida
+  document.addEventListener('DOMContentLoaded', () => {
+    render();
+    openWelcome();
+  });
 }
