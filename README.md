@@ -1,78 +1,64 @@
-# 📚 Malla Interactiva Medicina – Notegood.uy
+# 📚 Malla Interactiva de Medicina — Notegood.uy
 
-Bienvenido/a a la **Malla Interactiva de Medicina** de [Notegood.uy](https://www.instagram.com/notegood.uy/)  
-Un proyecto pensado para que lleves el control de tu carrera universitaria de forma **visual, motivadora y sin enredos**.
-
----
-
-## ✨ Características principales
-
-- ✅ **Marcar materias aprobadas** con un clic.
-- 🔓 **Desbloqueo automático** de correlativas según plan de estudios.
-- 📈 **Progreso en tiempo real** con barra de avance y frases motivadoras.
-- 📝 **Notas y calificaciones** por materia.
-- 📤 **Importar y exportar** tu avance para guardarlo o pasarlo de dispositivo.
-- 🎉 **Confeti** al completar toda la malla (porque lo merecés).
-- 🌙 **Modo claro/oscuro** a elección.
-- 📱 **Diseño responsive** para usar en computadora, tablet o celular.
+✨ **Tu Malla Interactiva para Medicina en la Udelar**  
+Para ver claro tu camino, paso a paso, sin perderte en el intento.  
+Organiza tu carrera, marca tu avance y siéntete acompañado en el camino.  
+Todo en **una sola malla**. 💜
 
 ---
 
-## 🖥️ Cómo usarla
+## 🚀 ¿Qué es esto?
+Es una herramienta hecha **por y para estudiantes reales** de Medicina en la Udelar.  
+Te permite marcar materias aprobadas, desbloquear correlativas automáticamente, tomar notas, guardar tu progreso y motivarte viendo cómo avanzas.
 
-1. **Entrar a la página** y, si es tu primera vez, leer la pantalla inicial *"Cómo se usa"*.
-2. **Marcar materias aprobadas** tocando sobre su nombre.
-3. Al aprobar una materia:
-   - Se desbloquean sus correlativas.
-   - Aparece una frase motivadora estilo Notegood.
-4. Si querés **agregar notas o calificaciones**:
-   - Pulsa el ícono de lápiz ✏️.
-   - Escribí lo que quieras (ejemplo: “12 en el parcial” o “Repasar sistema nervioso”).
-   - Se guarda automáticamente.
-5. **Exportar avance**: Guarda un archivo para respaldo.
-6. **Importar avance**: Carga el archivo para restaurar tu progreso.
-7. **Borrar avance**: Botón para reiniciar todo y empezar desde cero.
+Nada de planillas eternas, nada de perder el progreso.  
+Todo guardado **automáticamente en la nube** y con el estilo **Notegood** que tanto amamos.
 
 ---
 
-## 📷 Capturas
+## 🎯 Funciones principales
 
-*(Acá podés poner imágenes o GIFs mostrando la malla en acción)*
-
----
-
-## 📋 Tecnologías usadas
-
-- HTML5
-- CSS3
-- JavaScript (Vanilla)
-- LocalStorage (para guardar el progreso en tu navegador)
-
----
-
-## 🧠 Sobre Notegood.uy
-
-Somos una marca **realista, humana y compañera**.  
-Estudiamos con vos, no desde arriba.  
-Te acompañamos en tu carrera con herramientas y resúmenes que te hacen la vida más fácil.
-
-📍 Instagram: [@notegood.uy](https://www.instagram.com/notegood.uy/)
+- ✅ **Guarda tu avance** sin perder nada (local + nube)
+- 🔓 **Correlativas automáticas** → apruebas una materia y se desbloquea lo que sigue
+- 📝 **Notas y calificaciones** por materia (con botón de cancelar si cambias de idea)
+- 🎉 **Confeti gigante y con emojis médicos** cuando completas la carrera
+- 🌗 **Modo claro/oscuro** independiente para landing y malla
+- 📊 **Barra de progreso motivadora** con frases personalizadas
+- 👋 **Mensaje de bienvenida** cada vez que entras
+- 📱 **Diseño responsive** para que se vea perfecto en PC y celular
+- 📌 **Botón flotante de Instagram** para compartir y seguir
 
 ---
 
-## 📜 Licencia
-
-Este proyecto está bajo la licencia MIT. Podés usarlo, modificarlo y compartirlo, siempre reconociendo la autoría original.
-
----
-
-## 💡 Idea extra
-
-Si querés sumar funcionalidades, algunas ideas son:
-- Calendario integrado para planificar parciales.
-- Contador de días para exámenes.
-- Seguimiento de horas de estudio.
+## 🛠 Tecnologías utilizadas
+- **HTML5** → estructura
+- **CSS3** → diseño y estilo Notegood
+- **JavaScript (Vanilla)** → interactividad
+- **Firebase Auth** → inicio de sesión con Google
+- **Firebase Firestore** → almacenamiento en la nube
+- **Canvas Confetti** → animaciones de celebración
+- **Responsive Design** → adaptado a escritorio y móvil
 
 ---
 
-> 🗣️ **Mensaje Notegood**: "Tranqui, lo estás haciendo bien. Paso a paso se llega lejos."
+## 💡 Cómo usarla
+
+1. **Clona o descarga** este repositorio:
+   ```bash
+   git clone https://github.com/TU_USUARIO/TU_REPOSITORIO.git
+2. Configura Firebase
+- Crea un proyecto en Firebase Console
+- Habilita Authentication con Google
+- Habilita Firestore Database en modo seguro
+- Copia tu configuración de Firebase en app.firebase.js
+- Abre index.html en tu navegador
+- Desde ahí podrás iniciar sesión con Google y acceder a tu malla interactiva.
+
+🫶 Créditos
+Hecho con 💜 y muuucho café por Notegood.uy — @notegood.uy
+💌 ¿Ideas o mejoras? Escribime, siempre estoy buscando formas de que estudiar Medicina sea más fácil y motivador.
+
+📜 Licencia
+
+Este proyecto es de uso personal y educativo.
+Si quieres adaptarlo para tu carrera o facultad, dale crédito a Notegood.uy 🙌
