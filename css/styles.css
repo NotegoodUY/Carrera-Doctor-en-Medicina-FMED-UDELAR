@@ -29,10 +29,6 @@ body.dark .ng-header{ background:linear-gradient(90deg,#5b4bff,#8b7dff); border-
   border-radius:999px; background:rgba(255,255,255,.18); border:1px solid rgba(255,255,255,.25);
   line-height:1; white-space:nowrap; color:#fff; text-decoration:none; cursor:pointer;
 }
-.logo:hover{ filter:brightness(1.03); }
-.logo:focus-visible{ outline:2px solid #fff; outline-offset:2px; }
-
-/* Controles */
 .controls{ display:flex; align-items:center; gap:.6rem; flex-wrap:wrap }
 .btn{
   border:1px solid rgba(255,255,255,.35); background:transparent; color:#fff;
@@ -42,14 +38,22 @@ body.dark .ng-header{ background:linear-gradient(90deg,#5b4bff,#8b7dff); border-
 .btn.ghost{ backdrop-filter:saturate(120%) blur(2px) }
 
 /* Landing hero */
-.hero{ padding:3rem 1rem 2rem }
+.hero{
+  position:relative; overflow:hidden;
+  background:
+    radial-gradient(1200px 600px at 90% -10%, rgba(108,92,231,.12), transparent 60%),
+    radial-gradient(900px 500px at -10% 0%, rgba(0,191,166,.10), transparent 55%),
+    linear-gradient(180deg, var(--bg) 0%, rgba(108,92,231,.06) 100%);
+  padding:3rem 1rem 2rem
+}
 .container{ max-width:1100px; margin:0 auto }
 .hero-title{ font-size:clamp(28px,4.6vw,56px); line-height:1.05; margin:0 0 .6rem }
-.hero-sub{ max-width:980px; font-size:clamp(16px,2.3vw,22px); color:var(--muted); margin:0 auto 1.2rem }
+.hero-title .brand{ background:linear-gradient(90deg, var(--brand), var(--accent)); -webkit-background-clip:text; background-clip:text; color:transparent }
+.hero-sub{ max-width:980px; font-size:clamp(16px,2.3vw,22px); color:var(--muted); margin:0 auto 1.2rem; text-align:center }
 .hero-inner{ text-align:center }
 .hero-cta{ display:flex; justify-content:center; gap:12px; margin:18px 0 10px }
 
-/* CTA principal (hover mejorado) */
+/* CTA principal (hover) */
 .btn-pri{
   --c1:#6c5ce7; --c2:#00bfa6;
   background:linear-gradient(90deg,var(--c1),var(--c2));
@@ -68,31 +72,34 @@ body.dark .ng-header{ background:linear-gradient(90deg,#5b4bff,#8b7dff); border-
 .hero-list{ list-style:none; padding:0; margin:10px auto 0; display:grid; gap:.5rem; max-width:760px; color:var(--muted) }
 .hero-list li{ display:flex; gap:.55rem; align-items:center; justify-content:center }
 
-/* Cards */
 .feature-cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; margin:28px auto 0 }
-.card{
-  background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px; text-align:left;
-  box-shadow:var(--shadow)
-}
+.card{ background:var(--card); border:1px solid var(--line); border-radius:18px; padding:18px; text-align:left; box-shadow:var(--shadow) }
 .card h3{ margin:0 0 .35rem 0 }
 
-/* Footer */
-.ng-footer{ display:flex; flex-direction:column; align-items:center; gap:.2rem; padding:1rem; font-size:.9rem; color:var(--muted); border-top:1px solid var(--line) }
-.ng-footer .made{ margin:.3rem 0 0 }
+.closing{max-width:820px;margin:18px auto 0;padding:0 16px;text-align:center;color:var(--muted);font-style:italic}
 
-/* Grid de malla */
+/* Barra progreso (fix: bar encima del track) */
 .header-bottom{ margin-top:.8rem }
-.progress{ max-width:1100px; margin:0 auto; padding:0 1rem }
+.progress{ max-width:1100px; margin:0 auto; padding:0 1rem; position:relative; height:12px }
 .progress-track{
-  width:100%; height:12px; border-radius:999px; background:var(--progress-track);
-  position:relative; box-shadow:inset 0 0 0 3px var(--progress-bg)
+  position:absolute; inset:0; border-radius:999px; background:var(--progress-track);
+  box-shadow:inset 0 0 0 3px var(--progress-bg)
 }
-.progress-bar{ height:100%; width:0%; border-radius:999px; transition:width .25s ease, background .2s ease }
+.progress-bar{
+  position:absolute; left:0; top:0; height:12px; width:0%; border-radius:999px;
+  transition:width .25s ease, background .2s ease
+}
+.mini-legend{ display:flex; gap:.8rem; justify-content:center; margin:.55rem 0 0; font-size:.9rem; color:#f8fafc }
+.mini-legend .lg{ display:inline-block; width:12px; height:12px; border-radius:999px; margin-right:.35rem; vertical-align:-2px; border:2px solid #fff }
+.lg-ok{ background:#10b981; border-color:#bbf7d0 }
+.lg-dis{ background:#fff; border-color:#fff }
+.lg-blq{ background:#f59e0b; border-color:#fde68a }
 
-/* KPI centrado */
 .progress-kpi{ max-width:980px; margin:.6rem auto 0; padding:0 1rem; display:flex; justify-content:center; align-items:center; gap:.5rem; text-align:center; font-weight:800 }
+.share-cta{ text-align:center; color:#f8fafc; margin:.4rem 0 0; font-size:.9rem }
+.share-cta a{ color:#fff; font-weight:700; text-decoration:underline }
 
-/* Layout columnas */
+/* Grid malla */
 .grid-container{ display:flex; flex-wrap:wrap; justify-content:center; padding:1rem; gap:1rem }
 .year{ min-width:280px; background:var(--card); border-radius:14px; padding:1rem; border:1px solid var(--line); box-shadow:var(--shadow) }
 .year.y1{background:var(--y1)} .year.y2{background:var(--y2)} .year.y3{background:var(--y3)}
@@ -103,7 +110,7 @@ body.dark .ng-header{ background:linear-gradient(90deg,#5b4bff,#8b7dff); border-
 .semestre{ background:var(--chip); border:1px solid var(--chip-b); border-radius:12px; padding:.6rem; margin-top:.7rem }
 .semestre h3{ margin:0 0 .45rem 0; color:var(--accent); font-size:1rem }
 
-/* Materias (colores conservados) */
+/* Materias */
 .materia{
   background:#fff; border-radius:12px; padding:.65rem .75rem; margin:.35rem 0;
   cursor:pointer; font-weight:600; border:1px solid var(--line);
@@ -117,7 +124,7 @@ body.dark .materia{ background:#0b1020 }
 .materia.bloqueada{ background:rgba(245,158,11,.075); border-color:#f59e0b }
 .materia.has-note{ outline:2px dashed rgba(108,92,231,.35); outline-offset:2px }
 
-/* Icono estado izq (verde aprobado, ámbar bloqueada, círculo blanco disponible) */
+/* Estado indicador izq */
 .materia::before{
   content:""; position:absolute; left:.55rem; top:50%; transform:translateY(-50%); width:1.05rem; height:1.05rem; border-radius:999px;
   border:2px solid #059669; background:#10b981;
@@ -125,32 +132,38 @@ body.dark .materia{ background:#0b1020 }
 .materia.bloqueada::before{ border-color:#9a3412; background:#f59e0b }
 .materia:not(.tachada):not(.bloqueada)::before{ background:#fff; border-color:#94a3b8 }
 
-/* Acciones a la derecha */
+/* Acciones derecha */
 .actions{ display:flex; gap:.45rem; align-items:center; flex-wrap:wrap; justify-content:flex-end }
-.grade-chip{
-  background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; padding:.25rem .5rem; border-radius:999px; font-size:.85rem; font-weight:800
-}
+.grade-chip{ background:#f1f5f9; color:#0f172a; border:1px solid #cbd5e1; padding:.25rem .5rem; border-radius:999px; font-size:.85rem; font-weight:800 }
 .grade-high{ background:#10b981; color:#052e2b; border-color:#059669 }
 .grade-mid{ background:#fde68a; color:#7a5e00; border-color:#f59e0b }
 .grade-low{ background:#fecaca; color:#7f1d1d; border-color:#fca5a5 }
-
-.note-btn{
-  background:#eef2ff; border:1px solid #c7d2fe; color:#1e293b;
-  padding:.35rem .7rem; border-radius:999px; font-weight:800; cursor:pointer
-}
+.note-btn{ background:#eef2ff; border:1px solid #c7d2fe; color:#1e293b; padding:.35rem .7rem; border-radius:999px; font-weight:800; cursor:pointer }
 .note-btn:hover{ filter:brightness(1.02) }
 body.dark .note-btn{ background:#1e1b4b; border-color:#3730a3; color:#e5e7eb }
 .nb-label{ white-space:nowrap }
 
-/* Tooltips correlativas (se mantienen) */
+/* Tooltip correlativas */
 .materia[data-tip]:hover::after{
   content:attr(data-tip); position:absolute; left:10px; right:10px; bottom:100%; transform:translateY(-6px);
   background:#111827; color:#f9fafb; border:1px solid rgba(255,255,255,.1);
   padding:.5rem .6rem; border-radius:10px; font-size:.8rem; line-height:1.2; white-space:pre-wrap; box-shadow:var(--shadow)
 }
 
-/* Footer malla */
-.ng-footer{ display:flex; flex-direction:column; align-items:center; gap:.2rem; padding:1rem; font-size:.9rem; color:var(--muted); border-top:1px solid var(--line) }
+/* Modal (notas / onboarding) */
+dialog{ border:none; padding:0; background:transparent }
+.note-form{
+  min-width:min(92vw,680px); border-radius:16px; padding:18px;
+  background:var(--card); color:var(--text); border:1px solid var(--line); box-shadow:var(--shadow)
+}
+.note-form h3{ margin:.2rem 0 .6rem }
+.field{ display:flex; gap:.6rem; align-items:flex-start; margin:.45rem 0 }
+.field label{ min-width:180px; font-weight:600 }
+.field input, .field textarea{
+  flex:1; width:100%; padding:.6rem .7rem; border-radius:10px; border:1px solid var(--line); background:#fff; color:#111827
+}
+body.dark .field input, body.dark .field textarea{ background:#0b1020; color:#e5e7eb; border-color:#1f2a44 }
+.note-actions{ display:flex; justify-content:flex-end; gap:.6rem; margin-top:.6rem }
 
 /* Toasts */
 .toast-container{ position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom) + 18px); transform:translateX(-50%); width:min(96vw,700px); display:grid; gap:10px; z-index:9999; pointer-events:none }
@@ -158,18 +171,14 @@ body.dark .note-btn{ background:#1e1b4b; border-color:#3730a3; color:#e5e7eb }
   pointer-events:auto; background:#111827; color:#f9fafb; padding:.75rem 1rem; border-radius:12px;
   box-shadow:0 10px 28px rgba(0,0,0,.22); border:1px solid rgba(255,255,255,.08);
   font-weight:600; letter-spacing:.2px; display:flex; align-items:center; gap:.6rem;
-  opacity:1; transform:translateY(0); transition:opacity .25s ease, transform .12s ease; will-change:opacity, transform
 }
-.toast.show{ transform:translateY(-2px) } .toast.hide{ opacity:0; transform:translateY(4px) }
-.toast:hover{ box-shadow:0 12px 30px rgba(0,0,0,.26) }
 .toast button.ok{ background:#00bbf9; color:#fff; border:none; border-radius:6px; padding:.3rem .6rem; font-weight:700; cursor:pointer }
-.toast button.ok:hover{ filter:brightness(1.05) }
 
-/* Confetti (más lento) */
+/* Confetti full-screen y lento */
 #confetti{ position:fixed; inset:0; pointer-events:none; overflow:hidden; z-index:9998 }
 .confetti-piece{
-  position:absolute; font-size:20px; will-change:transform, opacity;
-  animation: confetti-fall 1800ms linear forwards; /* antes eran ~900ms */
+  position:absolute; font-size:24px; will-change:transform, opacity;
+  animation: confetti-fall 1800ms linear forwards;
 }
 @keyframes confetti-fall{
   0%{ transform:translate(var(--x,0), var(--y,0)) rotate(0deg); opacity:1 }
@@ -184,7 +193,7 @@ body.dark .note-btn{ background:#1e1b4b; border-color:#3730a3; color:#e5e7eb }
 }
 .fab-ig svg{ width:26px; height:26px; fill:#fff }
 
-/* Micro-animaciones: reveal */
+/* Reveal */
 .reveal{ opacity:0; transform:translateY(12px); transition:opacity .6s ease, transform .6s ease }
 .reveal.show{ opacity:1; transform:none }
 
@@ -200,14 +209,7 @@ body.dark .note-btn{ background:#1e1b4b; border-color:#3730a3; color:#e5e7eb }
   .materia{ gap:.5rem; padding:.6rem .65rem .6rem 2rem }
 }
 @media (max-width: 540px){
-  /* Para que no haya scroll lateral: escondemos el logo en móvil */
-  .ng-header .logo{ display:none }
-  .ng-header .header-top{ gap:8px }
-  .ng-header .header-top .controls{ margin-left:auto }
-}
-@media (max-width: 420px){
-  .grade-chip{ display:none }
-  .note-btn .nb-label{ display:none }
+  .ng-header .logo{ display:none } /* evita scroll lateral en móvil */
   .ng-footer{ font-size:.85rem; padding-bottom:1.2rem }
   .fab-ig{ right:12px; bottom:14px; width:48px; height:48px; font-size:18px }
 }
