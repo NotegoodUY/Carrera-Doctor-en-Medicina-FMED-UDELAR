@@ -6,7 +6,7 @@
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
   <meta name="description" content="Malla interactiva para Medicina (UDELAR): marca materias, desbloquea correlativas, agrega notas y guarda tu progreso. by Notegood.uy">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=43">
+  <link rel="stylesheet" href="css/styles.css?v=44">
 </head>
 <body class="landing">
   <header class="ng-header" role="banner" aria-label="Encabezado Notegood">
@@ -88,8 +88,14 @@
     const provider = new firebase.auth.GoogleAuthProvider();
 
     document.getElementById('loginGoogle')?.addEventListener('click', async () => {
-      try { await auth.signInWithPopup(provider); location.href = 'malla.html'; }
-      catch (e) { console.error(e); alert(`Error: ${e.code}\n${e.message}`); }
+      try {
+        await auth.signInWithPopup(provider);
+        // redirige a la malla al loguear OK
+        location.href = 'malla.html';
+      } catch (e) {
+        console.error(e);
+        alert(`Error: ${e.code}\n${e.message}`);
+      }
     });
 
     document.getElementById('themeToggle')?.addEventListener('click', () => {
