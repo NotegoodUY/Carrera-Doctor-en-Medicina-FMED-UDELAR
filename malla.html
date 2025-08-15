@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Interactiva – Medicina UDELAR (Notegood)</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=42">
+  <link rel="stylesheet" href="css/styles.css?v=43">
 </head>
 <body>
   <header class="ng-header" role="banner">
@@ -25,11 +25,20 @@
         <div class="progress-track"></div>
         <div id="progressBar" class="progress-bar" style="width:0"></div>
       </div>
-      <!-- Leyenda eliminada a pedido -->
+
+      <!-- Mini leyenda discreta -->
+      <div class="mini-legend" aria-label="Leyenda">
+        <span><span class="lg lg-ok"></span> Aprobada</span>
+        <span><span class="lg lg-dis"></span> Disponible</span>
+        <span><span class="lg lg-blq"></span> Bloqueada</span>
+      </div>
+
       <div class="progress-kpi">
         <span id="progressPct">0%</span>
         <span id="progressMsg" class="progress-msg">¡A empezar!</span>
       </div>
+
+      <p class="share-cta">¿Te gustó? Compártela o sígueme en <a href="https://instagram.com/notegood.uy" target="_blank" rel="noopener">@notegood.uy</a> 💜</p>
     </div>
   </header>
 
@@ -44,16 +53,31 @@
     <form method="dialog" class="note-form">
       <h3 id="noteTitle">Notas</h3>
       <div class="field">
-        <span>Nota (0–12 opcional)</span>
-        <input id="gradeInput" type="number" min="0" max="12" step="1" inputmode="numeric">
+        <label for="gradeInput">Nota (0–12 opcional)</label>
+        <input id="gradeInput" type="number" min="0" max="12" step="1" inputmode="numeric" placeholder="0–12">
       </div>
       <div class="field">
-        <span>Notas (texto libre)</span>
+        <label for="noteText">Notas (texto libre)</label>
         <textarea id="noteText" rows="6" placeholder="Resumen, recordatorios, etc."></textarea>
       </div>
       <div class="note-actions">
         <button value="cancel" class="btn">Cancelar</button>
         <button id="saveNoteBtn" class="btn-pri" value="default">Guardar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Onboarding (una sola vez) -->
+  <dialog id="welcomeModal">
+    <form method="dialog" class="note-form">
+      <h3>Bienvenido a tu Malla Interactiva ✨</h3>
+      <p style="margin:.4rem 0 1rem">
+        Marca las materias que ya aprobaste, toma notas y mira tu progreso. <br>
+        ¡Todo se guarda solo (local + nube)!
+      </p>
+      <div class="note-actions">
+        <button value="cancel" class="btn">Luego</button>
+        <button id="gotItBtn" class="btn-pri" value="default">¡Entendido!</button>
       </div>
     </form>
   </dialog>
@@ -84,6 +108,6 @@
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
   </script>
 
-  <script src="js/app.firebase.js?v=42" defer></script>
+  <script src="js/app.firebase.js?v=43" defer></script>
 </body>
 </html>
