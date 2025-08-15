@@ -165,6 +165,8 @@ dialog{ border:none; padding:0; background:transparent }
 }
 body.dark .field input, body.dark .field textarea{ background:#0b1020; color:#e5e7eb; border-color:#1f2a44 }
 .note-actions{ display:flex; justify-content:flex-end; gap:.6rem; margin-top:.6rem }
+/* Centrar acciones SOLO en la bienvenida */
+.welcome-actions{ justify-content:center }
 
 /* Toasts */
 .toast-container{ position:fixed; left:50%; bottom:calc(env(safe-area-inset-bottom) + 18px); transform:translateX(-50%); width:min(96vw,700px); display:grid; gap:10px; z-index:9999; pointer-events:none; text-align:left }
