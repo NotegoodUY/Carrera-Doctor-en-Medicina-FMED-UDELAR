@@ -6,7 +6,7 @@
   <title>Notegood · Malla Interactiva – Medicina UDELAR</title>
   <meta name="description" content="Malla interactiva para Medicina (UDELAR): marcá materias, desbloqueá correlativas, agregá notas y guardá tu progreso. by Notegood.uy">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/styles.css?v=41">
+  <link rel="stylesheet" href="css/styles.css?v=42">
   <style>
     body.landing .hero{
       position:relative;overflow:hidden;
@@ -19,7 +19,6 @@
       background:linear-gradient(90deg, var(--brand), var(--accent));
       -webkit-background-clip:text;background-clip:text;color:transparent;
     }
-    .feature-cards .card h3{display:flex;gap:.4rem;align-items:center;margin-top:0}
     .closing{max-width:820px;margin:18px auto 0;padding:0 16px;text-align:center;color:var(--muted);font-style:italic}
   </style>
 </head>
@@ -35,40 +34,46 @@
 
   <main class="hero" role="main">
     <section class="hero-inner container">
-      <h1 class="hero-title">✨ Tu <span class="brand">Malla Interactiva</span> para Medicina en la Udelar</h1>
-      <p class="hero-sub">
-        Hecha por y para estudiantes reales. Marcá, organizá, anotá, y motivate viendo cómo avanzás paso a paso.
-        Con estilo Notegood 💜
+      <!-- Título/subtítulo actualizados -->
+      <h1 class="hero-title" data-reveal>
+        Tu <span class="brand">Malla Interactiva</span> de Medicina
+      </h1>
+      <p class="hero-sub" data-reveal>
+        Para ver claro tu camino, paso a paso, sin perderte en el intento.<br/>
+        <strong>Organizá tu carrera, marcá tu avance y sentite acompañada</strong> en el camino. Todo en una sola malla.
       </p>
 
-      <div class="hero-cta">
-        <button id="loginGoogle" class="btn-pri" aria-label="Empezar con Google"><span>🚀 Empezar mi malla →</span></button>
+      <div class="hero-cta" data-reveal>
+        <button id="loginGoogle" class="btn-pri" aria-label="Empezar con Google">
+          <span>🚀 Empezar mi malla →</span>
+        </button>
       </div>
 
+      <!-- Bullets reescritos -->
       <ul class="hero-list" aria-label="Beneficios">
-        <li>📁 Guardá tu progreso sin perder nada (local + nube)</li>
-        <li>🔓 Correlativas inteligentes que se desbloquean solas</li>
-        <li>📝 Agregá tus notas, calificaciones y recordatorios</li>
-        <li>🎉 Confeti incluido cuando completes tu camino</li>
+        <li data-reveal>✅ Guarda tu avance sin perder nada (local + nube)</li>
+        <li data-reveal>🔓 Correlativas que se desbloquean automáticamente</li>
+        <li data-reveal>📝 Notas, calificaciones y recordatorios por materia</li>
+        <li data-reveal>🎉 Confeti cuando completás la carrera (sí, literal)</li>
       </ul>
     </section>
 
     <section class="feature-cards container" aria-label="Características">
-      <article class="card">
+      <article class="card" data-reveal>
         <h3>🌱 Empezá sin enredos</h3>
         <p>Marcá tus materias y desbloqueá lo que sigue. Sin fórmulas raras.</p>
       </article>
-      <article class="card">
+      <article class="card" data-reveal>
         <h3>✍️ Recordá lo importante</h3>
         <p>Guardá tus notas y calificaciones: todo queda atado a tu usuario.</p>
       </article>
-      <article class="card">
+      <article class="card" data-reveal>
         <h3>📊 Motivación visual</h3>
         <p>Mirá cuánto avanzaste con contadores visuales, estilo Notegood.</p>
       </article>
     </section>
 
-    <p class="closing">🫶 Que estudiar medicina sea difícil, no quiere decir que tengamos que hacerlo solos.</p>
+    <p class="closing" data-reveal>🫶 Que estudiar medicina sea difícil, no quiere decir que tengamos que hacerlo solos.</p>
   </main>
 
   <footer class="ng-footer">
@@ -93,7 +98,7 @@
     if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG);
   </script>
 
-  <!-- Lógica landing -->
+  <!-- Lógica landing + micro-animaciones -->
   <script>
     const auth = firebase.auth();
     const provider = new firebase.auth.GoogleAuthProvider();
@@ -105,6 +110,16 @@
 
     document.getElementById('themeToggle')?.addEventListener('click', () => {
       document.body.classList.toggle('dark'); // no persistente
+    });
+
+    // Reveal on scroll (micro-animaciones suaves)
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target); }
+      });
+    },{ threshold: .12 });
+    document.querySelectorAll('[data-reveal]').forEach(el=>{
+      el.classList.add('reveal'); io.observe(el);
     });
   </script>
 </body>
