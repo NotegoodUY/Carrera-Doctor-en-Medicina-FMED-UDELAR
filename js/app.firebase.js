@@ -1,11 +1,10 @@
-/* Notegood Malla – v43
-   - Confeti más lento + emojis de medicina (full-screen)
-   - Toast con un solo OK
+/* Notegood Malla – v44
+   - Fix: centrados y redirección post login
+   - Confeti full-screen + emojis medicina
    - Modal Notas con Cancelar
-   - Progreso, correlativas y estados como te gustan
-   - Onboarding (una vez)
+   - Progreso, correlativas y estados
 */
-console.log('Notegood Malla v43');
+console.log('Notegood Malla v44');
 
 (function(){ try{ boot(); } catch(e){ console.error(e);
   const m=document.getElementById('malla'); if(m){ m.innerHTML='<div style="padding:1rem;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;max-width:960px;margin:1rem auto;font-weight:600;color:#7f1d1d">Error: '+e.message+'</div>'; }
@@ -45,11 +44,70 @@ function boot(){
   const progressCopy=p=> p===100?"¡Plan completo! Orgullo total ✨": p>=90?"Últimos detalles y a festejar 🎉": p>=75?"Último sprint, ya casi 💨": p>=50?"Mitad de camino, paso firme 💪": p>=25?"Buen envión, sigue así 🚀": p>0?"Primeros checks, ¡bien ahí! ✅":"Arranquemos tranqui, paso a paso 👟";
   const yearLabel=i=>["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"][i]||`Año ${i+1}`;
 
-  /* PLAN */
-  const PLAN=[ /* (igual al tuyo, abreviado por espacio) */ ];
-  PLAN.push(); PLAN.pop(); // <- evita warnings del abreviado (no tocar nada de tu JSON real)
-  // **Reemplaza este bloque por tu PLAN completo si lo prefieres**.
-  // Si quieres exactamente el que ya venías usando, déjalo tal cual en tu repo.
+  /* === PLAN (igual al tuyo actual) === */
+  const PLAN = [
+    { semestres: [
+      { numero: "1º semestre", materias: [
+        { id:"MIBCM", nombre:"Introducción a la Biología Celular y Molecular" },
+        { id:"MIBES", nombre:"Introducción a la Bioestadística" },
+        { id:"MSPHB", nombre:"Salud y Humanidades y Bioética" },
+        { id:"MAT1",  nombre:"Aprendizaje en Territorio 1" }
+      ]},
+      { numero: "2º semestre", materias: [
+        { id:"MBCM", nombre:"Biología Celular y Molecular", previas:["MIBCM"] },
+        { id:"MAT2", nombre:"Aprendizaje en Territorio 2", previas:["MAT1"] }
+      ]}
+    ]},
+    { semestres: [
+      { numero: "3º semestre", materias: [
+        { id:"MANAT", nombre:"Anatomía (CBCC2)", previas:["MSPHB"] },
+        { id:"MHBIO", nombre:"Histología y Biofísica (CBCC2)", previas:["MBCM"] }
+      ]},
+      { numero: "4º semestre", materias: [
+        { id:"HIST",  nombre:"Histología (Neuro y Cardio)",  previas:["MBCM"] },
+        { id:"BCC3N", nombre:"Neurociencias",                 previas:["MBCM"] },
+        { id:"BCC4C", nombre:"Cardiovascular y Respiratorio", previas:["MBCM"] }
+      ]}
+    ]},
+    { semestres: [
+      { numero: "5º semestre", materias: [
+        { id:"BCC5", nombre:"Digestivo Renal Endocrino Metab y Repr (CBCC5)", previas:["MBCM","MANAT"] }
+      ]},
+      { numero: "6º semestre", materias: [
+        { id:"BCC6", nombre:"Hematología e Inmunobiología (CBCC6)", previas:["MBCM"] },
+        { id:"MC1",  nombre:"Metodología Científica 1", req:{ allOf:["MIBES"], oneOf:[["HIST","BCC3N","BCC4C"]] } }
+      ]}
+    ]},
+    { semestres: [
+      { numero: "7º semestre", materias: [
+        { id:"M4PNA", nombre:"Medicina en el Primer Nivel de Atención", req:{ allOf:["__TRIENIO1__"] } },
+        { id:"M4BCP", nombre:"Bases Científicas de la Patología",       req:{ allOf:["__TRIENIO1__"] } }
+      ]},
+      { numero: "8º semestre", materias: [
+        { id:"M4PED", nombre:"Pediatría (4º – anual)",     req:{ allOf:["__TRIENIO1__"] } },
+        { id:"M4GYN", nombre:"Ginecología y Neonatología", req:{ allOf:["__TRIENIO1__"] } }
+      ]}
+    ]},
+    { semestres: [
+      { numero: "9º y 10º semestre", materias: [
+        { id:"MCM",  nombre:"Clínica Médica (5º – anual)", req:{ allOf:["__TRIENIO1__","M4BCP","M4PNA"] } },
+        { id:"MPMT", nombre:"Patología Médica y Terapéutica", req:{ allOf:["__TRIENIO1__","M4BCP"] } }
+      ]}
+    ]},
+    { semestres: [
+      { numero: "11º y 12º semestre", materias: [
+        { id:"M6CQ",  nombre:"Clínica Quirúrgica (6º – anual)", req:{ allOf:["__TRIENIO1__","M4BCP","M4PNA"] } },
+        { id:"M6PQ",  nombre:"Patología Quirúrgica (6º – anual)", req:{ allOf:["__TRIENIO1__","M4BCP"] } },
+        { id:"M6MFC", nombre:"MFC – Salud Mental en Comunidad – Psicología Médica", req:{ allOf:["__TRIENIO1__","M4PNA"] } },
+        { id:"MC2",   nombre:"Metodología Científica 2 (6º – anual)", req:{ allOf:["__TRIENIO1__","M4BCP","M4PNA"], oneOf:[["M4PED","M4GYN","MCM","M6CQ","M6MFC"]] } }
+      ]}
+    ]},
+    { semestres: [
+      { numero: "13º y 14º semestre", materias: [
+        { id:"INTO", nombre:"Internado Obligatorio", req:{ allOf:["__TODO_ANTES__"] } }
+      ]}
+    ]}
+  ];
 
   /* Estado */
   const KEY='malla-medicina-notegood', NOTES_KEY='malla-medicina-notes', GRADES_KEY='malla-medicina-grades';
@@ -83,7 +141,7 @@ function boot(){
   function ensureToasts(){ if(!document.querySelector('.toast-container')){ const tc=document.createElement('div'); tc.className='toast-container'; document.body.appendChild(tc);} }
   function toast(txt,ms=5000){ ensureToasts(); const tc=document.querySelector('.toast-container'); while(tc.children.length>=3) tc.firstElementChild.remove(); const t=document.createElement('div'); t.className='toast'; t.innerHTML=`<span class="t-msg">${txt}</span> <button class="ok" aria-label="Cerrar">OK</button>`; t.addEventListener('click',e=>{ if(e.target.classList.contains('ok')||e.currentTarget===t) t.remove(); }); tc.appendChild(t); setTimeout(()=>t.remove(),ms); }
 
-  /* Confetti full-screen y lento */
+  /* Confetti */
   const EMOJIS=["🎉","✨","🎈","🎊","💫","⭐","💜","🩺","💉","🧪","🧬","🩸","🏥","🧠","🫀","🫁","💊"];
   function confettiBurst(n=120, spread=0.42){
     const root=document.getElementById('confetti'); if(!root) return;
@@ -159,8 +217,12 @@ function boot(){
     const pct= total? Math.round(aprob/total*100): 0;
     const copy=progressCopy(pct);
 
-    const p=document.getElementById('progressText'); if(p) p.textContent=`${aprob} / ${total} materias aprobadas · ${pct}% — Tu avance: ${pct}% 💪 ¡Bien hecho!`;
-    const bar=document.getElementById('progressBar'); if(bar){ const col=pct<=25?'#ff6b6b':(pct<=75?'#ff9f68':'#4ade80'); bar.style.width=pct+'%'; bar.style.background=`linear-gradient(90deg, ${col}, ${col})`; }
+    const p=document.getElementById('progressText');
+    if(p) p.textContent=`${aprob} / ${total} materias aprobadas · ${pct}% — Tu avance: ${pct}% 💪 ¡Bien hecho!`;
+
+    const bar=document.getElementById('progressBar');
+    if(bar){ const col=pct<=25?'#ff6b6b':(pct<=75?'#ff9f68':'#4ade80'); bar.style.width=pct+'%'; bar.style.background=`linear-gradient(90deg, ${col}, ${col})`; }
+
     const pctEl=document.getElementById('progressPct'); if(pctEl) pctEl.textContent=pct+'%';
     const msg=document.getElementById('progressMsg'); if(msg) msg.textContent=copy;
 
@@ -190,8 +252,7 @@ function boot(){
   modal?.addEventListener('close',()=>{ currentNoteId=null; });
 
   /* Tema + Reset */
-  const toggleTheme=()=>{ document.body.classList.toggle('dark'); };
-  document.getElementById('themeToggle')?.addEventListener('click',toggleTheme);
+  document.getElementById('themeToggle')?.addEventListener('click',()=>{ document.body.classList.toggle('dark'); });
   document.getElementById('resetBtn')?.addEventListener('click',async()=>{
     if(!confirm('¿Seguro que quieres borrar TODO tu avance, notas y calificaciones?')) return;
     localStorage.removeItem(KEY); localStorage.removeItem(NOTES_KEY); localStorage.removeItem(GRADES_KEY);
@@ -207,11 +268,18 @@ function boot(){
 
   /* Auth */
   const loginBtn=document.getElementById('loginGoogle'), logoutBtn=document.getElementById('logoutBtn'), badge=document.getElementById('userBadge');
-  loginBtn?.addEventListener('click', async()=>{ try{ await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }catch(e){ console.error(e); toast('No se pudo iniciar sesión ❌',2500); }});
+
+  // por si alguien entra directo a malla sin sesion
+  if(!auth.currentUser){ loginBtn?.style.setProperty('display',''); }
+
+  loginBtn?.addEventListener('click', async()=>{ 
+    try{ await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
+    catch(e){ console.error(e); toast('No se pudo iniciar sesión ❌',2500); }
+  });
   logoutBtn?.addEventListener('click', async()=>{ await auth.signOut(); location.href='index.html'; });
 
   auth.onAuthStateChanged(async user=>{
-    if(!user){ location.href='index.html?redirect=malla.html'; return; }
+    if(!user){ /* si se desloguea, vuelve a landing */ return; }
     const first=(user.displayName||user.email||'Usuario').split(' ')[0];
     if(badge){ badge.style.display=''; badge.textContent=`Hola, ${first}`; }
     if(logoutBtn) logoutBtn.style.display='';
@@ -224,7 +292,7 @@ function boot(){
       Object.assign(estado,cloud.estado||{}); Object.assign(notas,cloud.notas||{}); Object.assign(grades,cloud.grades||{});
       save(KEY,estado); save(NOTES_KEY,notas); save(GRADES_KEY,grades);
     }
-    render();
+    render(); // asegura que la malla aparece tras login
     toast('Sesión iniciada ☁️',1600);
   });
 
