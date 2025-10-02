@@ -61,4 +61,4 @@ Hecho con 💜 y muuucho café por Notegood.uy — @notegood.uy
 📜 Licencia
 
 Este proyecto es de uso personal y educativo.
-Si quieres adaptarlo para tu carrera o facultad, dale crédito a Notegood.uy 🙌
+Si quieres adaptarlo para tu carrera o facultad, dale crédito a Notegood.uy
