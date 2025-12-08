@@ -53,7 +53,16 @@
         "numero": "6º semestre",
         "materias": [
           { "id": "b6", "nombre": "Hematología e Inmunobiología", "previas": ["bio"] },
-          { "id": "met1", "nombre": "Metodología Científica 1", "previas": ["bioest", "cbcc5"] }
+
+          {
+            "id": "met1",
+            "nombre": "Metodología Científica 1",
+            "previas": {
+              "all": ["bioest"],
+              "any": ["bio", "at2", "anatomia", "histobiof", "histoneuro", "neuro", "cardioresp", "cbcc5", "b6"],
+              "anyMin": 1
+            }
+          }
         ]
       }
     ]
