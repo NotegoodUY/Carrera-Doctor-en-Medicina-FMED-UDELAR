@@ -6,9 +6,16 @@
 */
 console.log('Notegood Malla v46');
 
-(function(){ try{ boot(); } catch(e){ console.error(e);
-  const m=document.getElementById('malla'); if(m){ m.innerHTML='<div style="padding:1rem;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;max-width:960px;margin:1rem auto;font-weight:600;color:#7f1d1d">Error: '+e.message+'</div>'; }
-}})();
+(function(){ 
+  try{ boot(); } 
+  catch(e){ 
+    console.error(e);
+    const m=document.getElementById('malla'); 
+    if(m){ 
+      m.innerHTML='<div style="padding:1rem;background:#fee2e2;border:1px solid #fecaca;border-radius:12px;max-width:960px;margin:1rem auto;font-weight:600;color:#7f1d1d">Error: '+e.message+'</div>'; 
+    }
+  }
+})();
 
 function boot(){
   if (!firebase.apps?.length) firebase.initializeApp(window.FB_CONFIG || {});
@@ -39,12 +46,23 @@ function boot(){
     "Un paso más cerca del título gracias a {m} 💼"
   ];
   let frasesPool=[...FRASES];
-  const frasePara=m=>{ if(!frasesPool.length) frasesPool=[...FRASES]; return frasesPool.splice(Math.floor(Math.random()*frasesPool.length),1)[0].replace("{m}",m); };
+  const frasePara=m=>{ 
+    if(!frasesPool.length) frasesPool=[...FRASES]; 
+    return frasesPool.splice(Math.floor(Math.random()*frasesPool.length),1)[0].replace("{m}",m); 
+  };
 
-  const progressCopy=p=> p===100?"¡Plan completo! Orgullo total ✨": p>=90?"Últimos detalles y a festejar 🎉": p>=75?"Último sprint, ya casi 💨": p>=50?"Mitad de camino, paso firme 💪": p>=25?"Buen envión, sigue así 🚀": p>0?"Primeros checks, ¡bien ahí! ✅":"Arranquemos tranqui, paso a paso 👟";
+  const progressCopy=p=> 
+    p===100?"¡Plan completo! Orgullo total ✨":
+    p>=90?"Últimos detalles y a festejar 🎉":
+    p>=75?"Último sprint, ya casi 💨":
+    p>=50?"Mitad de camino, paso firme 💪":
+    p>=25?"Buen envión, sigue así 🚀":
+    p>0?"Primeros checks, ¡bien ahí! ✅":
+    "Arranquemos tranqui, paso a paso 👟";
+
   const yearLabel=i=>["1er año","2do año","3er año","4to año","5to año","6to año","7mo año"][i]||`Año ${i+1}`;
 
-  /* === PLAN (igual al tuyo actual) === */
+  /* === PLAN === */
   const PLAN = [
     { semestres: [
       { numero: "1º semestre", materias: [
@@ -58,6 +76,7 @@ function boot(){
         { id:"MAT2", nombre:"Aprendizaje en Territorio 2", previas:["MAT1"] }
       ]}
     ]},
+
     { semestres: [
       { numero: "3º semestre", materias: [
         { id:"MANAT", nombre:"Anatomía (CBCC2)", previas:["MSPHB"] },
@@ -69,15 +88,26 @@ function boot(){
         { id:"BCC4C", nombre:"Cardiovascular y Respiratorio", previas:["MBCM"] }
       ]}
     ]},
+
     { semestres: [
       { numero: "5º semestre", materias: [
         { id:"BCC5", nombre:"Digestivo Renal Endocrino Metab y Repr (CBCC5)", previas:["MBCM","MANAT"] }
       ]},
       { numero: "6º semestre", materias: [
         { id:"BCC6", nombre:"Hematología e Inmunobiología (CBCC6)", previas:["MBCM"] },
-        { id:"MC1",  nombre:"Metodología Científica 1", req:{ allOf:["MIBES"], oneOf:[["HIST","BCC3N","BCC4C"]] } }
+
+        /* ✅ CORREGIDA: Bioestadística + al menos 1 de la lista */
+        { 
+          id:"MC1",
+          nombre:"Metodología Científica 1",
+          req:{
+            allOf:["MIBES"],
+            oneOf:[["MBCM","MAT2","MANAT","MHBIO","HIST","BCC3N","BCC4C","BCC5","BCC6"]]
+          }
+        }
       ]}
     ]},
+
     { semestres: [
       { numero: "7º semestre", materias: [
         { id:"M4PNA", nombre:"Medicina en el Primer Nivel de Atención", req:{ allOf:["__TRIENIO1__"] } },
@@ -88,12 +118,14 @@ function boot(){
         { id:"M4GYN", nombre:"Ginecología y Neonatología", req:{ allOf:["__TRIENIO1__"] } }
       ]}
     ]},
+
     { semestres: [
       { numero: "9º y 10º semestre", materias: [
         { id:"MCM",  nombre:"Clínica Médica (5º – anual)", req:{ allOf:["__TRIENIO1__","M4BCP","M4PNA"] } },
         { id:"MPMT", nombre:"Patología Médica y Terapéutica", req:{ allOf:["__TRIENIO1__","M4BCP"] } }
       ]}
     ]},
+
     { semestres: [
       { numero: "11º y 12º semestre", materias: [
         { id:"M6CQ",  nombre:"Clínica Quirúrgica (6º – anual)", req:{ allOf:["__TRIENIO1__","M4BCP","M4PNA"] } },
@@ -102,6 +134,7 @@ function boot(){
         { id:"MC2",   nombre:"Metodología Científica 2 (6º – anual)", req:{ allOf:["__TRIENIO1__","M4BCP","M4PNA"], oneOf:[["M4PED","M4GYN","MCM","M6CQ","M6MFC"]] } }
       ]}
     ]},
+
     { semestres: [
       { numero: "13º y 14º semestre", materias: [
         { id:"INTO", nombre:"Internado Obligatorio", req:{ allOf:["__TODO_ANTES__"] } }
@@ -128,18 +161,64 @@ function boot(){
   }
 
   /* Requisitos */
-  const idsTrienio1=()=>{ const out=[]; PLAN.slice(0,3).forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); return out; };
-  const idsTodoAntes=()=>{ const out=[]; PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); return out.filter(id=>id!=='INTO'); };
+  const idsTrienio1=()=>{ 
+    const out=[]; 
+    PLAN.slice(0,3).forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); 
+    return out; 
+  };
+  const idsTodoAntes=()=>{ 
+    const out=[]; 
+    PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>out.push(m.id)))); 
+    return out.filter(id=>id!=='INTO'); 
+  };
   const TRIENIO1=idsTrienio1(), TODO_ANTES=idsTodoAntes();
-  const NAME=(()=>{ const map={}; PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>map[m.id]=m.nombre))); return map; })();
+
+  const NAME=(()=>{ 
+    const map={}; 
+    PLAN.forEach(a=>a.semestres.forEach(s=>s.materias.forEach(m=>map[m.id]=m.nombre))); 
+    return map; 
+  })();
+
   const isOk=id=>!!estado[id];
-  function normReq(m){ const req={allOf:[],oneOf:[]}; if(Array.isArray(m.previas)) req.allOf.push(...m.previas); if(m.req?.allOf) req.allOf.push(...m.req.allOf); if(m.req?.oneOf) req.oneOf.push(...m.req.oneOf); req.allOf=req.allOf.flatMap(id=> id==='__TRIENIO1__'?TRIENIO1: id==='__TODO_ANTES__'?TODO_ANTES: [id]); return req; }
+
+  function normReq(m){
+    const req={allOf:[],oneOf:[]};
+    if(Array.isArray(m.previas)) req.allOf.push(...m.previas);
+    if(m.req?.allOf) req.allOf.push(...m.req.allOf);
+    if(m.req?.oneOf) req.oneOf.push(...m.req.oneOf);
+    req.allOf=req.allOf.flatMap(id=> id==='__TRIENIO1__'?TRIENIO1: id==='__TODO_ANTES__'?TODO_ANTES: [id]);
+    return req;
+  }
+
   const cumple=req=> (req.allOf||[]).every(id=>isOk(id)) && (!(req.oneOf||[]).length || (req.oneOf||[]).some(g=>g.some(id=>isOk(id))));
-  function faltantes(req){ const faltAll=(req.allOf||[]).filter(id=>!isOk(id)); const grupos=(req.oneOf||[]).map(g=>g.some(id=>isOk(id))?null:g).filter(Boolean); const n=id=>NAME[id]||id; const parts=[]; if(faltAll.length) parts.push("Te falta aprobar:\n• "+faltAll.map(n).join("\n• ")); if(grupos.length) parts.push("Y al menos 1 de:\n• "+grupos[0].map(n).join("\n• ")); return parts.join("\n\n"); }
+
+  function faltantes(req){
+    const faltAll=(req.allOf||[]).filter(id=>!isOk(id));
+    const grupos=(req.oneOf||[]).map(g=>g.some(id=>isOk(id))?null:g).filter(Boolean);
+    const n=id=>NAME[id]||id;
+    const parts=[];
+    if(faltAll.length) parts.push("Te falta aprobar:\n• "+faltAll.map(n).join("\n• "));
+    if(grupos.length) parts.push("Y al menos 1 de:\n• "+grupos[0].map(n).join("\n• "));
+    return parts.join("\n\n");
+  }
 
   /* Toasts (1 OK) */
-  function ensureToasts(){ if(!document.querySelector('.toast-container')){ const tc=document.createElement('div'); tc.className='toast-container'; document.body.appendChild(tc);} }
-  function toast(txt,ms=5000){ ensureToasts(); const tc=document.querySelector('.toast-container'); while(tc.children.length>=3) tc.firstElementChild.remove(); const t=document.createElement('div'); t.className='toast'; t.innerHTML=`<span class="t-msg">${txt}</span> <button class="ok" aria-label="Cerrar">OK</button>`; t.addEventListener('click',e=>{ if(e.target.classList.contains('ok')||e.currentTarget===t) t.remove(); }); tc.appendChild(t); setTimeout(()=>t.remove(),ms); }
+  function ensureToasts(){ 
+    if(!document.querySelector('.toast-container')){
+      const tc=document.createElement('div'); tc.className='toast-container'; document.body.appendChild(tc);
+    }
+  }
+  function toast(txt,ms=5000){
+    ensureToasts();
+    const tc=document.querySelector('.toast-container');
+    while(tc.children.length>=3) tc.firstElementChild.remove();
+    const t=document.createElement('div');
+    t.className='toast';
+    t.innerHTML=`<span class="t-msg">${txt}</span> <button class="ok" aria-label="Cerrar">OK</button>`;
+    t.addEventListener('click',e=>{ if(e.target.classList.contains('ok')||e.currentTarget===t) t.remove(); });
+    tc.appendChild(t);
+    setTimeout(()=>t.remove(),ms);
+  }
 
   /* Confetti */
   const EMOJIS=["🎉","✨","🎈","🎊","💫","⭐","💜","🩺","💉","🧪","🧬","🩸","🏥","🧠","🫀","🫁","💊"];
@@ -183,24 +262,38 @@ function boot(){
 
           const gradeVal=grades[m.id];
           if(typeof gradeVal==='number' && !Number.isNaN(gradeVal)){
-            const chip=document.createElement('span'); chip.className='grade-chip '+(gradeVal>=11?'grade-high':(gradeVal>=7?'grade-mid':'grade-low')); chip.textContent=`Nota: ${gradeVal}`; actions.appendChild(chip);
+            const chip=document.createElement('span');
+            chip.className='grade-chip '+(gradeVal>=11?'grade-high':(gradeVal>=7?'grade-mid':'grade-low'));
+            chip.textContent=`Nota: ${gradeVal}`;
+            actions.appendChild(chip);
           }
 
-          const nb=document.createElement('button'); nb.className='note-btn'; nb.type='button'; nb.innerHTML=`<span class="nb-label">Notas</span>`;
+          const nb=document.createElement('button');
+          nb.className='note-btn';
+          nb.type='button';
+          nb.innerHTML=`<span class="nb-label">Notas</span>`;
           nb.addEventListener('click',ev=>{ ev.stopPropagation(); openNote(m.id,m.nombre); });
           actions.appendChild(nb);
 
           div.appendChild(actions);
 
           const req=normReq(m);
-          const done=!!estado[m.id]; if(done){ div.classList.add('tachada'); aprob++; }
+          const done=!!estado[m.id]; 
+          if(done){ div.classList.add('tachada'); aprob++; }
           const bloqueada=!cumple(req);
-          if(bloqueada){ div.classList.add('bloqueada'); const tip=faltantes(req); if(tip) div.setAttribute('data-tip',tip); }
+          if(bloqueada){ 
+            div.classList.add('bloqueada'); 
+            const tip=faltantes(req); 
+            if(tip) div.setAttribute('data-tip',tip); 
+          }
+
           if ((notas[m.id] && notas[m.id].trim()) || (typeof gradeVal==='number')) div.classList.add('has-note');
 
           div.addEventListener('click', ()=>{
             if(div.classList.contains('bloqueada')) return;
-            const was=!!estado[m.id]; estado[m.id]=!was; save(KEY,estado);
+            const was=!!estado[m.id];
+            estado[m.id]=!was; 
+            save(KEY,estado);
             if(auth.currentUser) cloudSaveDebounced({estado,notas,grades});
             if(!was && estado[m.id]){ toast(frasePara(m.nombre)); confettiBurst(120); }
             render();
@@ -221,7 +314,11 @@ function boot(){
     if(p) p.textContent=`${aprob} / ${total} materias aprobadas · ${pct}% — Tu avance: ${pct}% 💪 ¡Bien hecho!`;
 
     const bar=document.getElementById('progressBar');
-    if(bar){ const col=pct<=25?'#ff6b6b':(pct<=75?'#ff9f68':'#4ade80'); bar.style.width=pct+'%'; bar.style.background=`linear-gradient(90deg, ${col}, ${col})`; }
+    if(bar){ 
+      const col=pct<=25?'#ff6b6b':(pct<=75?'#ff9f68':'#4ade80');
+      bar.style.width=pct+'%';
+      bar.style.background=`linear-gradient(90deg, ${col}, ${col})`;
+    }
 
     const pctEl=document.getElementById('progressPct'); if(pctEl) pctEl.textContent=pct+'%';
     const msg=document.getElementById('progressMsg'); if(msg) msg.textContent=copy;
@@ -231,7 +328,11 @@ function boot(){
 
   /* Modal Notas */
   let currentNoteId=null;
-  const modal=document.getElementById('noteModal'), noteTitle=document.getElementById('noteTitle'), noteText=document.getElementById('noteText'), gradeInput=document.getElementById('gradeInput'), saveNoteBtn=document.getElementById('saveNoteBtn');
+  const modal=document.getElementById('noteModal'),
+        noteTitle=document.getElementById('noteTitle'),
+        noteText=document.getElementById('noteText'),
+        gradeInput=document.getElementById('gradeInput'),
+        saveNoteBtn=document.getElementById('saveNoteBtn');
 
   function openNote(id,nombre){
     currentNoteId=id;
@@ -243,25 +344,54 @@ function boot(){
 
   saveNoteBtn?.addEventListener('click',e=>{
     e.preventDefault(); if(!currentNoteId) return;
-    if(noteText){ notas[currentNoteId]=noteText.value||''; save(NOTES_KEY,notas); }
-    if(gradeInput){ const raw=gradeInput.value.trim(); if(raw===''){ delete grades[currentNoteId]; } else { let n=Number(raw); if(Number.isFinite(n)){ if(n<0)n=0; if(n>12)n=12; grades[currentNoteId]=Math.round(n); } } save(GRADES_KEY,grades); }
+
+    if(noteText){ 
+      notas[currentNoteId]=noteText.value||''; 
+      save(NOTES_KEY,notas); 
+    }
+
+    if(gradeInput){
+      const raw=gradeInput.value.trim();
+      if(raw===''){ 
+        delete grades[currentNoteId]; 
+      } else {
+        let n=Number(raw);
+        if(Number.isFinite(n)){
+          if(n<0)n=0; if(n>12)n=12;
+          grades[currentNoteId]=Math.round(n);
+        }
+      }
+      save(GRADES_KEY,grades);
+    }
+
     if(auth.currentUser) cloudSaveDebounced({estado,notas,grades});
     try{ modal?.close(); }catch{ modal?.removeAttribute('open'); }
-    currentNoteId=null; toast('Notas guardadas ✅',2000); render();
+    currentNoteId=null; 
+    toast('Notas guardadas ✅',2000); 
+    render();
   });
+
   modal?.addEventListener('close',()=>{ currentNoteId=null; });
 
   /* Tema + Reset */
   document.getElementById('themeToggle')?.addEventListener('click',()=>{ document.body.classList.toggle('dark'); });
+
   document.getElementById('resetBtn')?.addEventListener('click',async()=>{
     if(!confirm('¿Seguro que quieres borrar TODO tu avance, notas y calificaciones?')) return;
     localStorage.removeItem(KEY); localStorage.removeItem(NOTES_KEY); localStorage.removeItem(GRADES_KEY);
-    for(const k of Object.keys(estado)) delete estado[k]; for(const k of Object.keys(notas)) delete notas[k]; for(const k of Object.keys(grades)) delete grades[k];
-    if(auth.currentUser){ try{ await progressRef().set({estado:{},notas:{},grades:{},updatedAt: firebase.firestore.FieldValue.serverTimestamp()}); }catch{} }
-    toast('Se reinició tu avance 💫',2500); render();
+    for(const k of Object.keys(estado)) delete estado[k];
+    for(const k of Object.keys(notas)) delete notas[k];
+    for(const k of Object.keys(grades)) delete grades[k];
+    if(auth.currentUser){ 
+      try{ 
+        await progressRef().set({estado:{},notas:{},grades:{},updatedAt: firebase.firestore.FieldValue.serverTimestamp()}); 
+      }catch{} 
+    }
+    toast('Se reinició tu avance 💫',2500); 
+    render();
   });
 
-  /* ===== Bienvenida SIEMPRE (solo botón “¡Vamos!”; copy 1ª vez vs siguientes) ===== */
+  /* ===== Bienvenida SIEMPRE ===== */
   const welcome   = document.getElementById('welcomeModal');
   const wTitle    = document.getElementById('welcomeTitle');
   const wBody     = document.getElementById('welcomeBody');
@@ -292,7 +422,9 @@ function boot(){
   });
 
   /* Auth */
-  const loginBtn=document.getElementById('loginGoogle'), logoutBtn=document.getElementById('logoutBtn'), badge=document.getElementById('userBadge');
+  const loginBtn=document.getElementById('loginGoogle'),
+        logoutBtn=document.getElementById('logoutBtn'),
+        badge=document.getElementById('userBadge');
 
   if(!auth.currentUser){ loginBtn?.style.setProperty('display',''); }
 
@@ -300,10 +432,15 @@ function boot(){
     try{ await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); }
     catch(e){ console.error(e); toast('No se pudo iniciar sesión ❌',2500); }
   });
-  logoutBtn?.addEventListener('click', async()=>{ await auth.signOut(); location.href='index.html'; });
+
+  logoutBtn?.addEventListener('click', async()=>{ 
+    await auth.signOut(); 
+    location.href='index.html'; 
+  });
 
   auth.onAuthStateChanged(async user=>{
     if(!user){ return; }
+
     const firstName=(user.displayName||user.email||'Usuario').split(' ')[0];
     if(badge){ badge.style.display=''; badge.textContent=`Hola, ${firstName}`; }
     if(logoutBtn) logoutBtn.style.display='';
@@ -313,11 +450,16 @@ function boot(){
 
     const cloud=await cloudLoad();
     if(cloud && (cloud.estado||cloud.notas||cloud.grades)){
-      Object.assign(estado,cloud.estado||{}); Object.assign(notas,cloud.notas||{}); Object.assign(grades,cloud.grades||{});
-      save(KEY,estado); save(NOTES_KEY,notas); save(GRADES_KEY,grades);
+      Object.assign(estado,cloud.estado||{});
+      Object.assign(notas,cloud.notas||{});
+      Object.assign(grades,cloud.grades||{});
+      save(KEY,estado); 
+      save(NOTES_KEY,notas); 
+      save(GRADES_KEY,grades);
     }
+
     render();
-    openWelcome();      // mostrar bienvenida tras iniciar sesión
+    openWelcome();
     toast('Sesión iniciada ☁️',1600);
   });
 
